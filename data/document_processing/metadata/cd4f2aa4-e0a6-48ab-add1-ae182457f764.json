@@ -1,0 +1,27 @@
+{
+  "document_id": "cd4f2aa4-e0a6-48ab-add1-ae182457f764",
+  "url": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+  "processing_timestamp": "2025-06-22T05:56:49.201788",
+  "extraction_method": "standard",
+  "quality_score": 0.7,
+  "page_count": 1,
+  "analysis": {
+    "structure_analysis": {
+      "word_count": 3,
+      "character_count": 15,
+      "paragraph_count": 1,
+      "has_title": true,
+      "estimated_reading_time": 0.015
+    },
+    "categories": [
+      "general"
+    ],
+    "tags": [],
+    "content_type": "text_document",
+    "analysis_timestamp": "2025-06-22T05:56:49.201788"
+  },
+  "user_metadata": {
+    "test_document": true,
+    "source": "w3.org"
+  }
+}

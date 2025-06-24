@@ -1,0 +1,399 @@
+"""
+A2A (Agent-to-Agent) Protocol Integration
+
+Provides peer-to-peer communication capabilities for distributed agent coordination.
+"""
+
+import logging
+import uuid
+from typing import Dict, List, Optional, Any, Set, Callable
+from datetime import datetime, timedelta
+from dataclasses import dataclass, field
+import aiohttp
+from aiohttp import web
+
+logger = logging.getLogger(__name__)
+
+
+@dataclass
+class AgentCard:
+    """Agent capability advertisement card for A2A discovery."""
+    agent_id: str
+    name: str
+    description: str
+    capabilities: List[str]
+    communication_protocols: List[str]
+    supported_tasks: List[str]
+    performance_metrics: Dict[str, float]
+    evolution_generation: int = 0
+    evolution_fitness: float = 0.0
+    evolution_lineage: List[str] = field(default_factory=list)
+    last_updated: datetime = field(default_factory=datetime.utcnow)
+    availability_status: str = "available"
+    endpoint_url: str = ""
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert agent card to dictionary."""
+        return {
+            "agent_id": self.agent_id,
+            "name": self.name,
+            "description": self.description,
+            "capabilities": self.capabilities,
+            "communication_protocols": self.communication_protocols,
+            "supported_tasks": self.supported_tasks,
+            "performance_metrics": self.performance_metrics,
+            "evolution_generation": self.evolution_generation,
+            "evolution_fitness": self.evolution_fitness,
+            "evolution_lineage": self.evolution_lineage,
+            "last_updated": self.last_updated.isoformat(),
+            "availability_status": self.availability_status,
+            "endpoint_url": self.endpoint_url
+        }
+    
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> 'AgentCard':
+        """Create agent card from dictionary."""
+        data["last_updated"] = datetime.fromisoformat(data["last_updated"])
+        return cls(**data)
+
+
+@dataclass
+class A2APeerInfo:
+    """Information about a discovered A2A peer."""
+    peer_id: str
+    endpoint_url: str
+    agent_cards: List[AgentCard] = field(default_factory=list)
+    last_seen: datetime = field(default_factory=datetime.utcnow)
+    connection_status: str = "discovered"
+    capabilities: Set[str] = field(default_factory=set)
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert peer info to dictionary."""
+        return {
+            "peer_id": self.peer_id,
+            "endpoint_url": self.endpoint_url,
+            "agent_cards": [card.to_dict() for card in self.agent_cards],
+            "last_seen": self.last_seen.isoformat(),
+            "connection_status": self.connection_status,
+            "capabilities": list(self.capabilities)
+        }
+
+
+class A2AServer:
+    """A2A Protocol JSON-RPC Server."""
+    
+    def __init__(self, host: str = "localhost", port: int = 8888):
+        self.host = host
+        self.port = port
+        self.app = web.Application()
+        self.runner: Optional[web.AppRunner] = None
+        self.site: Optional[web.TCPSite] = None
+        
+        # A2A state
+        self.local_agent_cards: Dict[str, AgentCard] = {}
+        self.discovered_peers: Dict[str, A2APeerInfo] = {}
+        self.active_sessions: Dict[str, Dict[str, Any]] = {}
+        
+        # Message handlers
+        self.message_handlers: Dict[str, Callable] = {
+            "discover_agents": self._handle_discover_agents,
+            "register_agent": self._handle_register_agent,
+            "negotiate_task": self._handle_negotiate_task,
+            "delegate_task": self._handle_delegate_task,
+            "evolution_share": self._handle_evolution_share,
+            "consensus_vote": self._handle_consensus_vote
+        }
+        
+        # Setup routes
+        self._setup_routes()
+        
+    def _setup_routes(self):
+        """Setup HTTP routes for A2A protocol."""
+        self.app.router.add_post('/a2a/rpc', self._handle_rpc)
+        self.app.router.add_get('/a2a/discover', self._handle_discovery)
+        self.app.router.add_get('/a2a/agents', self._handle_list_agents)
+        self.app.router.add_post('/a2a/agents', self._handle_publish_agent)
+        
+    async def start(self):
+        """Start the A2A server."""
+        self.runner = web.AppRunner(self.app)
+        await self.runner.setup()
+        self.site = web.TCPSite(self.runner, self.host, self.port)
+        await self.site.start()
+        logger.info(f"A2A Server started on {self.host}:{self.port}")
+        
+    async def stop(self):
+        """Stop the A2A server."""
+        if self.site:
+            await self.site.stop()
+        if self.runner:
+            await self.runner.cleanup()
+        logger.info("A2A Server stopped")
+        
+    async def publish_agent_card(self, agent_card: AgentCard) -> bool:
+        """Publish an agent card for discovery."""
+        try:
+            self.local_agent_cards[agent_card.agent_id] = agent_card
+            logger.info(f"Published agent card: {agent_card.agent_id}")
+            return True
+        except Exception as e:
+            logger.error(f"Failed to publish agent card: {e}")
+            return False
+            
+    async def discover_peers(self, discovery_urls: List[str]) -> List[A2APeerInfo]:
+        """Discover A2A peers from discovery URLs."""
+        discovered = []
+        
+        for url in discovery_urls:
+            try:
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(f"{url}/a2a/discover") as response:
+                        if response.status == 200:
+                            data = await response.json()
+                            peer_info = A2APeerInfo(
+                                peer_id=data["peer_id"],
+                                endpoint_url=url,
+                                capabilities=set(data.get("capabilities", []))
+                            )
+                            self.discovered_peers[peer_info.peer_id] = peer_info
+                            discovered.append(peer_info)
+                            
+            except Exception as e:
+                logger.warning(f"Failed to discover peer at {url}: {e}")
+                
+        return discovered
+        
+    async def send_rpc_request(self, peer_url: str, method: str, params: Dict[str, Any]) -> Dict[str, Any]:
+        """Send JSON-RPC request to peer."""
+        request_id = str(uuid.uuid4())
+        payload = {
+            "jsonrpc": "2.0",
+            "method": method,
+            "params": params,
+            "id": request_id
+        }
+        
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.post(f"{peer_url}/a2a/rpc", json=payload) as response:
+                    if response.status == 200:
+                        result = await response.json()
+                        return result.get("result", {})
+                    else:
+                        return {"error": f"HTTP {response.status}"}
+                        
+        except Exception as e:
+            logger.error(f"Failed to send RPC request to {peer_url}: {e}")
+            return {"error": str(e)}
+            
+    async def _handle_rpc(self, request: web.Request) -> web.Response:
+        """Handle JSON-RPC requests."""
+        try:
+            data = await request.json()
+            method = data.get("method")
+            params = data.get("params", {})
+            request_id = data.get("id")
+            
+            if method in self.message_handlers:
+                result = await self.message_handlers[method](params)
+                response = {
+                    "jsonrpc": "2.0",
+                    "result": result,
+                    "id": request_id
+                }
+            else:
+                response = {
+                    "jsonrpc": "2.0",
+                    "error": {"code": -32601, "message": "Method not found"},
+                    "id": request_id
+                }
+                
+            return web.json_response(response)
+            
+        except Exception as e:
+            logger.error(f"Error handling RPC request: {e}")
+            return web.json_response({
+                "jsonrpc": "2.0",
+                "error": {"code": -32603, "message": "Internal error"},
+                "id": None
+            }, status=500)
+            
+    async def _handle_discovery(self, request: web.Request) -> web.Response:
+        """Handle peer discovery requests."""
+        discovery_info = {
+            "peer_id": f"pygent-{uuid.uuid4().hex[:8]}",
+            "capabilities": list(set().union(*[set(card.capabilities) for card in self.local_agent_cards.values()])),
+            "agent_count": len(self.local_agent_cards),
+            "protocol_version": "1.0",
+            "supported_methods": list(self.message_handlers.keys())
+        }
+        return web.json_response(discovery_info)
+        
+    async def _handle_list_agents(self, request: web.Request) -> web.Response:
+        """Handle agent listing requests."""
+        agents = [card.to_dict() for card in self.local_agent_cards.values()]
+        return web.json_response({"agents": agents})
+        
+    async def _handle_publish_agent(self, request: web.Request) -> web.Response:
+        """Handle agent publishing requests."""
+        try:
+            data = await request.json()
+            agent_card = AgentCard.from_dict(data)
+            success = await self.publish_agent_card(agent_card)
+            return web.json_response({"success": success})
+        except Exception as e:
+            return web.json_response({"error": str(e)}, status=400)
+            
+    async def _handle_discover_agents(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """Handle agent discovery RPC method."""
+        capabilities = params.get("capabilities", [])
+        performance_threshold = params.get("performance_threshold", 0.0)
+        
+        matching_agents = []
+        for card in self.local_agent_cards.values():
+            # Check capability match
+            if capabilities and not any(cap in card.capabilities for cap in capabilities):
+                continue
+                
+            # Check performance threshold
+            avg_performance = sum(card.performance_metrics.values()) / max(len(card.performance_metrics), 1)
+            if avg_performance < performance_threshold:
+                continue
+                
+            matching_agents.append(card.to_dict())
+              return {"agents": matching_agents}
+        
+    async def _handle_register_agent(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """Handle agent registration RPC method."""
+        try:
+            agent_card = AgentCard.from_dict(params)
+            success = await self.publish_agent_card(agent_card)
+            return {"success": success}
+        except Exception as e:
+            return {"error": str(e)}
+            
+    async def _handle_negotiate_task(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """Handle task negotiation RPC method."""
+        try:
+            task_requirements = params.get("requirements", {})
+            complexity = task_requirements.get("complexity", 1.0)
+            deadline = params.get("deadline")
+            max_bid = params.get("max_bid", 100)
+            
+            # Calculate bid based on current load and capabilities
+            current_load = len(self.peer_registry)  # Simple load metric
+            capability_match = self._assess_capability_match(task_requirements)
+            
+            # Bid calculation: lower bid for better match and lower load
+            base_bid = max_bid * 0.5
+            load_factor = min(current_load * 0.1, 0.4)
+            capability_factor = (1.0 - capability_match) * 0.3
+            
+            final_bid = base_bid + (base_bid * (load_factor + capability_factor))
+            final_bid = min(final_bid, max_bid)
+            
+            return {
+                "status": "bid_submitted",
+                "bid": round(final_bid, 2),
+                "estimated_completion": self._estimate_completion_time(complexity),
+                "confidence": capability_match
+            }
+        except Exception as e:
+            logger.error(f"Task negotiation error: {e}")
+            return {"status": "negotiation_failed", "error": str(e)}
+        
+    async def _handle_delegate_task(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """Handle task delegation RPC method."""
+        # Placeholder for task delegation logic
+        return {"status": "task_accepted", "task_id": params.get("task_id")}
+        
+    async def _handle_evolution_share(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """Handle evolution data sharing RPC method."""
+        # Placeholder for evolution sharing logic
+        return {"status": "evolution_data_received"}
+        
+    async def _handle_consensus_vote(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """Handle consensus voting RPC method."""
+        # Placeholder for consensus voting logic
+        return {"vote": "approve", "vote_id": params.get("vote_id")}
+
+
+class AgentDiscoveryService:
+    """Service for discovering and managing A2A agents."""
+    
+    def __init__(self, a2a_server: A2AServer):
+        self.a2a_server = a2a_server
+        self.discovery_cache: Dict[str, List[AgentCard]] = {}
+        self.cache_expiry = timedelta(minutes=10)
+        self.last_discovery = {}
+        
+    async def find_agents(self, 
+                         capabilities: Optional[List[str]] = None,
+                         performance_threshold: float = 0.0,
+                         availability_status: str = "available") -> List[AgentCard]:
+        """Find agents matching criteria."""
+        # Check local cache first
+        cache_key = f"{capabilities}_{performance_threshold}_{availability_status}"
+        if cache_key in self.discovery_cache:
+            last_update = self.last_discovery.get(cache_key, datetime.min)
+            if datetime.utcnow() - last_update < self.cache_expiry:
+                return self.discovery_cache[cache_key]
+        
+        # Discover from local agents
+        matching_agents = []
+        for card in self.a2a_server.local_agent_cards.values():
+            if self._matches_criteria(card, capabilities, performance_threshold, availability_status):
+                matching_agents.append(card)
+        
+        # Discover from peers
+        for peer in self.a2a_server.discovered_peers.values():
+            try:
+                params = {
+                    "capabilities": capabilities or [],
+                    "performance_threshold": performance_threshold,
+                    "availability_status": availability_status
+                }
+                result = await self.a2a_server.send_rpc_request(
+                    peer.endpoint_url, "discover_agents", params
+                )
+                
+                if "agents" in result:
+                    for agent_data in result["agents"]:
+                        agent_card = AgentCard.from_dict(agent_data)
+                        if self._matches_criteria(agent_card, capabilities, performance_threshold, availability_status):
+                            matching_agents.append(agent_card)
+                            
+            except Exception as e:
+                logger.warning(f"Failed to discover from peer {peer.peer_id}: {e}")
+        
+        # Update cache
+        self.discovery_cache[cache_key] = matching_agents
+        self.last_discovery[cache_key] = datetime.utcnow()
+        
+        return matching_agents
+        
+    def _matches_criteria(self, card: AgentCard, capabilities: Optional[List[str]], 
+                         performance_threshold: float, availability_status: str) -> bool:
+        """Check if agent card matches discovery criteria."""
+        # Check availability
+        if card.availability_status != availability_status:
+            return False
+            
+        # Check capabilities
+        if capabilities and not any(cap in card.capabilities for cap in capabilities):
+            return False
+            
+        # Check performance threshold
+        if card.performance_metrics:
+            avg_performance = sum(card.performance_metrics.values()) / len(card.performance_metrics)
+            if avg_performance < performance_threshold:
+                return False
+                
+        return True
+        
+    async def refresh_peer_discovery(self, discovery_urls: List[str]):
+        """Refresh peer discovery from URLs."""
+        await self.a2a_server.discover_peers(discovery_urls)
+        # Clear cache to force fresh discovery
+        self.discovery_cache.clear()
+        self.last_discovery.clear()

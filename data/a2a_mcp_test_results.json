@@ -1,0 +1,42 @@
+{
+  "total_tests": 5,
+  "passed_tests": 5,
+  "success_rate": 100.0,
+  "test_results": [
+    {
+      "test": "Server Health",
+      "success": true,
+      "details": "Server healthy, uptime: 52.2s",
+      "duration_ms": 2.0,
+      "timestamp": "2025-06-22T08:00:12.565006"
+    },
+    {
+      "test": "Agent Card Discovery",
+      "success": true,
+      "details": "Agent: PyGent Factory A2A Agent v1.0.0",
+      "duration_ms": 2.0,
+      "timestamp": "2025-06-22T08:00:12.567005"
+    },
+    {
+      "test": "A2A Message Sending",
+      "success": true,
+      "details": "Task created: 9210ca21-6137-4940-9dbe-213b1582bd63, status: completed",
+      "duration_ms": 3.0,
+      "timestamp": "2025-06-22T08:00:12.570007"
+    },
+    {
+      "test": "MCP Agent Listing",
+      "success": true,
+      "details": "Found 0 registered agents",
+      "duration_ms": 1.0,
+      "timestamp": "2025-06-22T08:00:12.572007"
+    },
+    {
+      "test": "Server Info",
+      "success": true,
+      "details": "Server: A2A MCP Server, 7 capabilities",
+      "duration_ms": 1.0,
+      "timestamp": "2025-06-22T08:00:12.573006"
+    }
+  ]
+}

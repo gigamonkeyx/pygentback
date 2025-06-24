@@ -1,0 +1,456 @@
+{
+  "servers": [
+    {
+      "id": "postgresql-official",
+      "name": "PostgreSQL MCP Server (Official)",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-postgres", "postgresql://postgres:postgres@localhost:54321/pygent_factory"],
+      "capabilities": ["database-queries", "advanced-sql", "schema-management", "data-operations"],
+      "transport": "stdio",
+      "config": {
+        "category": "database",
+        "author": "Model Context Protocol",
+        "verified": true,
+        "description": "Official PostgreSQL database integration with advanced SQL capabilities",
+        "priority": 1,
+        "startup_order": 1
+      },
+      "auto_start": true,
+      "restart_on_failure": true,
+      "max_restarts": 3,
+      "timeout": 45
+    },
+    {
+      "id": "github-official",
+      "name": "GitHub MCP Server (Official)",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-github"],
+      "capabilities": ["repository-operations", "commit-management", "issue-tracking", "pr-management"],
+      "transport": "stdio",
+      "config": {
+        "category": "development",
+        "author": "Model Context Protocol",
+        "verified": true,
+        "description": "Official GitHub integration for repository operations and code management",
+        "priority": 2,
+        "startup_order": 3
+      },
+      "auto_start": true,
+      "restart_on_failure": true,
+      "max_restarts": 3,
+      "timeout": 30,
+      "environment": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+    {
+      "id": "memory-official",
+      "name": "Memory MCP Server (Official)",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-memory"],
+      "capabilities": ["memory-storage", "knowledge-persistence", "context-management"],
+      "transport": "stdio",
+      "config": {
+        "category": "storage",
+        "author": "Model Context Protocol",
+        "verified": true,
+        "description": "Official memory server for persistent knowledge and context storage",
+        "priority": 2,
+        "startup_order": 2
+      },
+      "auto_start": true,
+      "restart_on_failure": true,
+      "max_restarts": 3,
+      "timeout": 30
+    },
+    {
+      "id": "filesystem-python",
+      "name": "Python Filesystem",
+      "command": ["D:\\mcp\\pygent-factory\\.venv\\Scripts\\python.exe", "mcp_servers/filesystem_server.py", "."],
+      "capabilities": ["file-read", "file-write", "directory-list", "file-search", "file-operations"],
+      "transport": "stdio",
+      "config": {
+        "category": "development",
+        "author": "Model Context Protocol",
+        "verified": true,
+        "description": "Real Python-based filesystem operations with secure access",
+        "priority": 1,
+        "startup_order": 4
+      },
+      "auto_start": true,
+      "restart_on_failure": true,
+      "max_restarts": 3,
+      "timeout": 30
+    },    {
+      "id": "fetch-mcp",
+      "name": "Fetch Server",
+      "command": ["D:\\mcp\\pygent-factory\\.venv\\Scripts\\python.exe", "-m", "mcp_server_fetch"],
+      "capabilities": ["http-fetch", "web-requests", "api-calls", "content-retrieval"],
+      "transport": "stdio",
+      "config": {
+        "category": "web",
+        "author": "Model Context Protocol",
+        "verified": true,
+        "description": "HTTP fetch capabilities for web requests and API calls",
+        "priority": 2
+      },
+      "auto_start": true,
+      "restart_on_failure": true,
+      "max_restarts": 3,
+      "timeout": 30
+    },    {
+      "id": "time-mcp",
+      "name": "Time Server",
+      "command": ["D:\\mcp\\pygent-factory\\.venv\\Scripts\\python.exe", "mcp_servers\\time_server.py"],
+      "capabilities": ["time-queries", "timezone-conversion", "date-formatting", "scheduling"],
+      "transport": "stdio",
+      "config": {
+        "category": "utilities",
+        "author": "Model Context Protocol",
+        "verified": true,
+        "description": "Time and date operations with timezone support",
+        "priority": 3
+      },
+      "auto_start": true,
+      "restart_on_failure": true,
+      "max_restarts": 3,
+      "timeout": 30
+    },    {
+      "id": "sequentialthinking-mcp",
+      "name": "Sequential Thinking",
+      "command": ["node", "d:\\mcp\\pygent-factory\\mcp-servers\\src\\sequentialthinking\\dist\\index.cjs"],
+      "capabilities": ["thought-chains", "reasoning-steps", "logical-progression", "decision-trees"],
+      "transport": "stdio",
+      "config": {
+        "category": "reasoning",
+        "author": "Model Context Protocol",
+        "verified": true,
+        "description": "Sequential thinking and reasoning chain management",
+        "priority": 4
+      },
+      "auto_start": true,
+      "restart_on_failure": true,
+      "max_restarts": 3,
+      "timeout": 30
+    },    {
+      "id": "memory-mcp",
+      "name": "Memory Server",
+      "command": ["node", "d:\\mcp\\pygent-factory\\mcp-servers\\src\\memory\\dist\\index.cjs"],
+      "capabilities": ["memory-storage", "context-persistence", "session-memory", "knowledge-base"],
+      "transport": "stdio",
+      "config": {
+        "category": "persistence",
+        "author": "Model Context Protocol",
+        "verified": true,
+        "description": "Memory and context persistence for agent continuity",
+        "priority": 2
+      },
+      "auto_start": true,
+      "restart_on_failure": true,
+      "max_restarts": 3,
+      "timeout": 30
+    },    {
+      "id": "git-mcp",
+      "name": "Git Server",
+      "command": ["D:\\mcp\\pygent-factory\\.venv\\Scripts\\python.exe", "-m", "mcp_server_git"],
+      "capabilities": ["git-operations", "version-control", "repository-management", "branch-operations"],
+      "transport": "stdio",
+      "config": {
+        "category": "development",
+        "author": "Model Context Protocol",
+        "verified": true,
+        "description": "Git version control operations and repository management",
+        "priority": 2
+      },
+      "auto_start": true,
+      "restart_on_failure": true,
+      "max_restarts": 3,
+      "timeout": 30
+    },{
+      "id": "python-mcp",
+      "name": "Python Code Server",
+      "command": ["D:\\mcp\\pygent-factory\\.venv\\Scripts\\python.exe", "d:\\mcp\\pygent-factory\\mcp_server_python.py"],
+      "capabilities": ["python-execution", "code-analysis", "package-management", "debugging", "code-formatting", "performance-profiling", "documentation-generation", "test-generation"],
+      "transport": "stdio",
+      "config": {
+        "category": "development",
+        "author": "PyGent Factory",
+        "verified": true,
+        "description": "Comprehensive Python development server with safe code execution, analysis, and quality tools",
+        "priority": 1
+      },
+      "auto_start": true,
+      "restart_on_failure": true,
+      "max_restarts": 3,
+      "timeout": 30
+    },    {
+      "id": "context7",
+      "name": "Context7 Documentation",
+      "command": ["D:\\nodejs\\npx.cmd", "@upstash/context7-mcp"],
+      "capabilities": ["library-documentation", "code-examples", "api-reference", "version-specific-docs"],
+      "transport": "stdio",
+      "config": {
+        "category": "development",
+        "author": "Upstash",
+        "verified": true,
+        "description": "Up-to-date code documentation and examples for any library",
+        "tools": ["resolve-library-id", "get-library-docs"],
+        "priority": 2
+      },
+      "auto_start": true,
+      "restart_on_failure": true,
+      "max_restarts": 3,
+      "timeout": 30
+    },    {
+      "id": "github-mcp",
+      "name": "GitHub Repository",
+      "command": ["D:\\nodejs\\npx.cmd", "@modelcontextprotocol/server-github"],
+      "capabilities": ["repository-management", "issue-tracking", "pull-requests", "code-search"],
+      "transport": "stdio",
+      "config": {
+        "category": "development",
+        "author": "Model Context Protocol",
+        "verified": true,
+        "description": "GitHub repository operations and management for code collaboration",
+        "priority": 3
+      },
+      "auto_start": true,
+      "restart_on_failure": true,
+      "max_restarts": 3,
+      "timeout": 30
+    },{
+      "id": "cloudflare-browser",
+      "name": "Cloudflare Browser Rendering",
+      "command": [],
+      "capabilities": ["web-scraping", "markdown-conversion", "screenshot-capture"],      "transport": "sse",
+      "host": "browser.mcp.cloudflare.com",
+      "path": "/sse",
+      "use_ssl": true,
+      "config": {
+        "category": "web",
+        "author": "Cloudflare",
+        "verified": true,
+        "description": "Fetch web pages, convert them to markdown and take screenshots",
+        "priority": 4,
+        "authentication": {
+          "required": true,
+          "type": "api_token",
+          "description": "Requires Cloudflare user API token with Browser Rendering:Read permissions"
+        }
+      },
+      "auto_start": false,
+      "restart_on_failure": true,
+      "max_restarts": 3,
+      "timeout": 60
+    },    {
+      "id": "cloudflare-docs",
+      "name": "Cloudflare Documentation",
+      "command": [],
+      "capabilities": ["documentation-search", "api-reference", "guides", "tutorials"],      "transport": "sse",
+      "host": "docs.mcp.cloudflare.com",
+      "path": "/sse",
+      "use_ssl": true,
+      "config": {
+        "category": "documentation",
+        "author": "Cloudflare",
+        "verified": true,
+        "description": "Search and access Cloudflare documentation and guides",
+        "priority": 3,
+        "authentication": {
+          "required": false,
+          "type": "optional",
+          "description": "Public documentation access, no authentication required"
+        }
+      },
+      "auto_start": true,
+      "restart_on_failure": true,
+      "max_restarts": 3,
+      "timeout": 60
+    },    {
+      "id": "cloudflare-radar",
+      "name": "Cloudflare Radar",
+      "command": [],
+      "capabilities": ["internet-insights", "security-trends", "traffic-analysis", "attack-data"],      "transport": "sse",
+      "host": "radar.mcp.cloudflare.com",
+      "path": "/sse",
+      "use_ssl": true,
+      "config": {
+        "category": "analytics",
+        "author": "Cloudflare",
+        "verified": true,
+        "description": "Internet insights and security trends from Cloudflare Radar",
+        "priority": 4,
+        "authentication": {
+          "required": false,
+          "type": "optional",
+          "description": "Public radar data access, no authentication required"
+        }
+      },
+      "auto_start": true,
+      "restart_on_failure": true,
+      "max_restarts": 3,
+      "timeout": 60
+    },    {
+      "id": "cloudflare-bindings",
+      "name": "Cloudflare Workers Bindings",
+      "command": [],
+      "capabilities": ["workers-bindings", "kv-storage", "durable-objects", "r2-storage"],      "transport": "sse",
+      "host": "bindings.mcp.cloudflare.com",
+      "path": "/sse",
+      "use_ssl": true,
+      "config": {
+        "category": "cloud",
+        "author": "Cloudflare",
+        "verified": true,
+        "description": "Cloudflare Workers bindings and storage services",
+        "priority": 4,
+        "authentication": {
+          "required": true,
+          "type": "api_token",
+          "description": "Requires Cloudflare user API token with Workers:Read and Workers KV Storage:Read permissions"
+        }
+      },
+      "auto_start": false,
+      "restart_on_failure": true,
+      "max_restarts": 3,
+      "timeout": 60
+    },    {
+      "id": "embedding-mcp-server",
+      "name": "PyGent Factory Embedding Server",
+      "command": ["D:\\mcp\\pygent-factory\\.venv\\Scripts\\python.exe", "src/servers/embedding_mcp_server.py", "0.0.0.0", "8002"],
+      "capabilities": ["embeddings", "vector-operations", "text-processing", "openai-compatible", "multi-provider"],
+      "transport": "http",
+      "host": "localhost",
+      "port": 8002,
+      "config": {
+        "category": "ai-services",
+        "author": "PyGent Factory Team",
+        "verified": true,
+        "description": "OpenAI-compatible embedding service with multi-provider support (OpenAI, SentenceTransformer, Ollama)",
+        "priority": 1,
+        "startup_order": 5,
+        "endpoints": {
+          "embeddings": "/v1/embeddings",
+          "health": "/health"
+        },
+        "features": [
+          "OpenAI API compatibility",
+          "Multi-provider fallback",
+          "Built-in caching",
+          "Performance monitoring",
+          "Batch processing",
+          "GPU acceleration"
+        ]
+      },
+      "auto_start": true,
+      "restart_on_failure": true,
+      "max_restarts": 3,
+      "timeout": 30
+    },
+    {
+      "id": "document-processing-mcp-server",
+      "name": "PyGent Factory Document Processing Server",
+      "command": ["D:\\mcp\\pygent-factory\\.venv\\Scripts\\python.exe", "src/servers/document_processing_mcp_server.py", "0.0.0.0", "8003"],
+      "capabilities": ["document-processing", "text-extraction", "ocr", "content-analysis", "quality-assessment", "metadata-generation"],
+      "transport": "http",
+      "host": "localhost",
+      "port": 8003,
+      "config": {
+        "category": "document-services",
+        "author": "PyGent Factory Team",
+        "verified": true,
+        "description": "Comprehensive document processing service with PDF extraction, OCR, and AI analysis",
+        "priority": 2,
+        "startup_order": 6,
+        "endpoints": {
+          "process": "/v1/documents/process",
+          "extract": "/v1/documents/extract-text",
+          "analyze": "/v1/documents/analyze",
+          "health": "/health"
+        },
+        "features": [
+          "PDF download and validation",
+          "Multi-method text extraction",
+          "OCR fallback processing",
+          "Quality assessment",
+          "AI-powered content analysis",
+          "Metadata generation",
+          "Concurrent processing"
+        ]
+      },
+      "auto_start": true,
+      "restart_on_failure": true,
+      "max_restarts": 3,
+      "timeout": 60
+    },
+    {
+      "id": "vector-search-mcp-server",
+      "name": "PyGent Factory Vector Search Server",
+      "command": ["D:\\mcp\\pygent-factory\\.venv\\Scripts\\python.exe", "src/servers/vector_search_mcp_server_standalone.py", "0.0.0.0", "8004"],
+      "capabilities": ["vector-search", "semantic-search", "collection-management", "similarity-matching", "embedding-generation"],
+      "transport": "http",
+      "host": "localhost",
+      "port": 8004,
+      "config": {
+        "category": "vector-services",
+        "author": "PyGent Factory Team",
+        "verified": true,
+        "description": "Standalone vector search service with in-memory storage and semantic search",
+        "priority": 3,
+        "startup_order": 7,
+        "endpoints": {
+          "collections": "/v1/collections",
+          "add_documents": "/v1/collections/{collection_name}/documents",
+          "search": "/v1/collections/{collection_name}/search",
+          "health": "/health"
+        },
+        "features": [
+          "In-memory vector storage",
+          "Semantic search and similarity matching",
+          "Collection management",
+          "Mock embedding generation",
+          "Similarity threshold filtering",
+          "Performance optimization"
+        ]
+      },
+      "auto_start": true,
+      "restart_on_failure": true,
+      "max_restarts": 3,
+      "timeout": 30
+    },
+    {
+      "id": "agent-orchestration-mcp-server",
+      "name": "PyGent Factory Agent Orchestration Server",
+      "command": ["D:\\mcp\\pygent-factory\\.venv\\Scripts\\python.exe", "src/servers/agent_orchestration_mcp_server.py", "0.0.0.0", "8005"],
+      "capabilities": ["agent-management", "task-dispatching", "workflow-orchestration", "priority-scheduling", "performance-monitoring"],
+      "transport": "http",
+      "host": "localhost",
+      "port": 8005,
+      "config": {
+        "category": "orchestration-services",
+        "author": "PyGent Factory Team",
+        "verified": true,
+        "description": "Multi-agent coordination and workflow management service",
+        "priority": 1,
+        "startup_order": 8,
+        "endpoints": {
+          "agents": "/v1/agents",
+          "create_agent": "/v1/agents",
+          "tasks": "/v1/tasks",
+          "submit_task": "/v1/tasks",
+          "task_status": "/v1/tasks/{task_id}",
+          "health": "/health"
+        },
+        "features": [
+          "Agent lifecycle management",
+          "Task dispatching and scheduling",
+          "Priority-based task execution",
+          "Performance monitoring",
+          "Multi-agent coordination",
+          "Workflow orchestration"
+        ]
+      },
+      "auto_start": true,
+      "restart_on_failure": true,
+      "max_restarts": 3,
+      "timeout": 30
+    }
+  ]
+}

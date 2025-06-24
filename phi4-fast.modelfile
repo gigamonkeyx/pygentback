@@ -1,0 +1,11 @@
+FROM phi4:latest
+
+# Speed optimizations
+PARAMETER num_predict 100
+PARAMETER temperature 0.3
+PARAMETER top_p 0.8
+PARAMETER num_ctx 2048
+PARAMETER repeat_penalty 1.1
+
+# System prompt for concise responses
+SYSTEM You are a helpful AI assistant. Give concise, direct answers without unnecessary elaboration.

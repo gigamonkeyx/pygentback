@@ -1,0 +1,106 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: pygent_postgres
+    environment:
+      POSTGRES_DB: pygent_factory
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "54321:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - a2a_network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: pygent_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - a2a_network
+
+  # A2A Multi-Agent Server
+  a2a_server:
+    build:
+      context: .
+      dockerfile: Dockerfile.a2a
+    container_name: pygent_a2a_server
+    env_file:
+      - .env.production
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+      - A2A_SECRET_KEY=${A2A_SECRET_KEY:-dev-secret-key}
+    ports:
+      - "8080:8080"
+      - "9090:9090"  # Prometheus metrics
+    volumes:
+      - ./logs:/app/logs:rw
+      - ./data:/app/data:rw
+      - ./config:/app/config:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    networks:
+      - a2a_network
+
+  # A2A Demo Client (optional)
+  a2a_demo:
+    build:
+      context: .
+      dockerfile: Dockerfile.a2a
+    container_name: pygent_a2a_demo
+    environment:
+      - A2A_SERVER_URL=http://a2a_server:8080
+    command: ["python", "a2a_live_demo.py"]
+    depends_on:
+      a2a_server:
+        condition: service_healthy
+    profiles:
+      - demo
+    networks:
+      - a2a_network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  a2a_network:
+    driver: bridge

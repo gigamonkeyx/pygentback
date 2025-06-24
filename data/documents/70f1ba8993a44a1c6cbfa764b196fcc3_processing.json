@@ -1,0 +1,33 @@
+{
+  "document_id": "70f1ba8993a44a1c6cbfa764b196fcc3",
+  "source_url": "https://archive.org/download/personalmemoirso01sher/personalmemoirso01sher.pdf",
+  "download_metadata": {
+    "status": "already_exists"
+  },
+  "extraction_metadata": {
+    "methods_used": [
+      "standard"
+    ],
+    "extraction_timestamp": "2025-06-21T23:55:32.742851",
+    "total_pages": 544,
+    "text_quality": {
+      "quality": "medium",
+      "score": 0.6740035142883566,
+      "char_count": 778536,
+      "word_count": 115559,
+      "alpha_ratio": 0.6740754441670006,
+      "artifact_ratio": 3.5964939322009514e-05
+    },
+    "file_path": "D:\\mcp\\pygent-factory\\data\\documents\\70f1ba8993a44a1c6cbfa764b196fcc3.pdf"
+  },
+  "vector_metadata": {
+    "error": "Vector storage failed: object NoneType can't be used in 'await' expression"
+  },
+  "processing_timestamp": "2025-06-22T00:01:23.543928",
+  "original_metadata": {
+    "title": "Personal Memoirs of Gen. W. T. Sherman, Vol. 1",
+    "author": "William T. Sherman",
+    "source_type": "primary",
+    "era": "American Civil War"
+  }
+}

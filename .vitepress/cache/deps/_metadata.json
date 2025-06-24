@@ -1,0 +1,25 @@
+{
+  "hash": "4031a0c0",
+  "configHash": "c4b6faf7",
+  "lockfileHash": "bb3d5b92",
+  "browserHash": "ca487811",
+  "optimized": {
+    "vue": {
+      "src": "C:/Users/Ifightcats/AppData/Local/npm-cache/_npx/a3af1b0fdbe56d97/node_modules/vue/dist/vue.runtime.esm-bundler.js",
+      "file": "vue.js",
+      "fileHash": "f9b9422a",
+      "needsInterop": false
+    },
+    "@theme/index": {
+      "src": "C:/Users/Ifightcats/AppData/Local/npm-cache/_npx/a3af1b0fdbe56d97/node_modules/vitepress/dist/client/theme-default/index.js",
+      "file": "@theme_index.js",
+      "fileHash": "a32b3fd4",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-4DWXL5AZ": {
+      "file": "chunk-4DWXL5AZ.js"
+    }
+  }
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Snake Game Debug</title>
+</head>
+<body>
+    <h1>Snake Game Debug Test</h1>
+    <canvas id="gameCanvas" width="800" height="600" style="border: 1px solid black;"></canvas>
+    <br>
+    <button onclick="testGame()">Test Game</button>
+    <div id="debug"></div>
+    
+    <script>
+        function testGame() {
+            const debug = document.getElementById('debug');
+            debug.innerHTML = '<h3>Testing Components:</h3>';
+            
+            try {
+                // Test 1: Basic canvas
+                const canvas = document.getElementById('gameCanvas');
+                const ctx = canvas.getContext('2d');
+                debug.innerHTML += '✅ Canvas OK<br>';
+                
+                // Test 2: Draw something simple
+                ctx.fillStyle = 'red';
+                ctx.fillRect(10, 10, 50, 50);
+                debug.innerHTML += '✅ Canvas Drawing OK<br>';
+                
+                // Test 3: Load WebGL Effects
+                if (typeof WebGLEffects !== 'undefined') {
+                    debug.innerHTML += '✅ WebGL Effects Class Found<br>';
+                    try {
+                        const webgl = new WebGLEffects(canvas);
+                        debug.innerHTML += '✅ WebGL Effects Initialized<br>';
+                    } catch (e) {
+                        debug.innerHTML += '❌ WebGL Effects Error: ' + e.message + '<br>';
+                    }
+                } else {
+                    debug.innerHTML += '❌ WebGL Effects Class Not Found<br>';
+                }
+                
+                // Test 4: Load Snake Generator
+                if (typeof SnakeGenerator !== 'undefined') {
+                    debug.innerHTML += '✅ Snake Generator Found<br>';
+                    const generator = new SnakeGenerator();
+                    const snake = generator.createSnake();
+                    debug.innerHTML += '✅ Snake Created: ' + snake.name + '<br>';
+                } else {
+                    debug.innerHTML += '❌ Snake Generator Not Found<br>';
+                }
+                
+                // Test 5: Load Game Class
+                if (typeof SnakeBattleGame !== 'undefined') {
+                    debug.innerHTML += '✅ Game Class Found<br>';
+                    try {
+                        const game = new SnakeBattleGame();
+                        debug.innerHTML += '✅ Game Initialized<br>';
+                    } catch (e) {
+                        debug.innerHTML += '❌ Game Init Error: ' + e.message + '<br>';
+                        debug.innerHTML += '❌ Stack: ' + e.stack + '<br>';
+                    }
+                } else {
+                    debug.innerHTML += '❌ Game Class Not Found<br>';
+                }
+                
+            } catch (e) {
+                debug.innerHTML += '❌ Test Error: ' + e.message + '<br>';
+            }
+        }
+    </script>
+    
+    <!-- Load all the game scripts -->
+    <script src="webgl-effects.js"></script>
+    <script src="snake-generator.js"></script>
+    <script src="tournament-system.js"></script>
+    <script src="learning-system.js"></script>
+    <script src="snake-ai.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>

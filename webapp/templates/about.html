@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}About - PIARES{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1>About PIARES</h1>
+        <p class="lead">Historical Research Platform with Global Perspectives</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <h3>Mission</h3>
+        <p>PIARES (Platform for Integrated Academic Research and Educational Scholarship) is dedicated to providing comprehensive historical research with global perspectives. Our platform emphasizes cross-cultural analysis, primary source materials, and non-European viewpoints to create a more inclusive understanding of historical events and processes.</p>
+
+        <h3>Research Topics</h3>
+        <p>Our research covers 12 major historical topics:</p>
+        <ul>
+            <li><strong>Scientific Revolutions</strong> - Global knowledge transfer and innovation</li>
+            <li><strong>Enlightenment</strong> - Cross-cultural philosophical developments</li>
+            <li><strong>Early Modern Exploration</strong> - Global perspectives on exploration</li>
+            <li><strong>Tokugawa Japan</strong> - Social and cultural transformations</li>
+            <li><strong>Colonialism in Southeast Asia</strong> - Local responses and resistance</li>
+            <li><strong>Ming & Qing Dynasties</strong> - Chinese imperial history</li>
+            <li><strong>Haitian Revolution</strong> - Global impact and diaspora influences</li>
+            <li><strong>Opposition to Imperialism</strong> - Resistance movements worldwide</li>
+            <li><strong>World's Fairs & Zoos</strong> - Cultural display and colonial exhibition</li>
+            <li><strong>Eugenics</strong> - Global scientific racism and resistance</li>
+            <li><strong>Globalization & Dictatorships</strong> - Economic integration and authoritarianism</li>
+            <li><strong>Decolonization</strong> - Independence movements and cultural revival</li>
+        </ul>
+
+        <h3>Methodology</h3>
+        <p>Our research methodology emphasizes:</p>
+        <ul>
+            <li>Primary source analysis from multiple cultural perspectives</li>
+            <li>Cross-cultural comparative approaches</li>
+            <li>Integration of non-Western scholarly traditions</li>
+            <li>Global historical connections and influences</li>
+            <li>Resistance to European-centric historical narratives</li>
+        </ul>
+
+        <h3>Data Sources</h3>
+        <p>Research content is gathered from leading academic databases including:</p>
+        <ul>
+            <li>Google Scholar</li>
+            <li>arXiv</li>
+            <li>JSTOR (planned)</li>
+            <li>Project MUSE (planned)</li>
+            <li>Regional academic databases</li>
+        </ul>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Platform Statistics</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Research Topics:</strong> 12</p>
+                <p><strong>Geographic Scope:</strong> Global</p>
+                <p><strong>Primary Sources:</strong> Emphasized</p>
+                <p><strong>Cultural Perspectives:</strong> Multi-cultural</p>
+                <p><strong>Last Updated:</strong> {{ moment().format('MMMM YYYY') }}</p>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5>Contact</h5>
+            </div>
+            <div class="card-body">
+                <p>For questions about the research platform or to contribute content:</p>
+                <p><strong>Website:</strong> timpayne.net/piares</p>
+                <p><strong>Focus:</strong> Global Historical Perspectives</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{
+  "task_id": "c0261755-4146-4998-851c-151fecb4f0b1",
+  "task_type": "general",
+  "description": "Process some text",
+  "status": "completed",
+  "priority": 1,
+  "assigned_agent": "f495b9f8-8517-49ea-8600-1c9002f0ac13",
+  "created_at": "2025-06-22T06:22:42.769155",
+  "started_at": "2025-06-22T06:22:42.829707",
+  "completed_at": "2025-06-22T06:22:42.937964",
+  "result": {
+    "task_id": "c0261755-4146-4998-851c-151fecb4f0b1",
+    "agent_id": "f495b9f8-8517-49ea-8600-1c9002f0ac13",
+    "result": "Completed general task: Process some text",
+    "execution_time": 0.1,
+    "success": true
+  },
+  "error_message": null
+}

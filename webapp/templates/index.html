@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}PIARES - Historical Research Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">Historical Research Dashboard</h1>
+        <p class="lead">Explore comprehensive historical research with global perspectives across 12 major topics.</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total Papers</h5>
+                <h2>{{ total_papers }}</h2>
+                <p class="card-text">Academic papers collected</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h5 class="card-title">Research Topics</h5>
+                <h2>{{ total_topics }}</h2>
+                <p class="card-text">Historical research areas</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <h5 class="card-title">Global Scope</h5>
+                <h2>5+</h2>
+                <p class="card-text">Continents covered</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <h3>Research Topics</h3>
+        <div class="row">
+            {% for topic_id, topic_config in topics_config.items() %}
+            <div class="col-md-6 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{{ url_for('topic_detail', topic_id=topic_id) }}" class="text-decoration-none">
+                                {{ topic_id.replace('_', ' ').title() }}
+                            </a>
+                        </h5>
+                        <p class="card-text">
+                            <strong>Regions:</strong> {{ topic_config.regions|join(', ') }}<br>
+                            <strong>Focus:</strong> {{ topic_config.focus_areas|join(', ') }}
+                        </p>
+                        <a href="{{ url_for('topic_detail', topic_id=topic_id) }}" class="btn btn-primary btn-sm">
+                            Explore Research
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <h3>Recent Papers</h3>
+        {% for paper in recent_papers[:5] %}
+        <div class="card mb-2">
+            <div class="card-body">
+                <h6 class="card-title">{{ paper.title }}</h6>
+                <p class="card-text">
+                    <small class="text-muted">
+                        {{ paper.topic_name }} | {{ paper.published_date }}
+                        {% if paper.citations %}| {{ paper.citations }} citations{% endif %}
+                    </small>
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

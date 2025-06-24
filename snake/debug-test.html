@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Test - Elite Snake Arena</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #001122;
+            color: #00ffff;
+            font-family: 'Courier New', monospace;
+        }
+        #debug-log {
+            background: #000;
+            border: 1px solid #00ffff;
+            padding: 10px;
+            height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        canvas {
+            border: 2px solid #00ffff;
+            background: #000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Debug Test - Elite Snake Arena</h1>
+    <div id="debug-log"></div>
+    <canvas id="game-canvas" width="800" height="600"></canvas>
+
+    <script>
+        // Override console.log to show in page
+        const debugLog = document.getElementById('debug-log');
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            debugLog.textContent += '[LOG] ' + args.join(' ') + '\n';
+            debugLog.scrollTop = debugLog.scrollHeight;
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            debugLog.textContent += '[ERROR] ' + args.join(' ') + '\n';
+            debugLog.scrollTop = debugLog.scrollHeight;
+        };
+        
+        console.log('🐍 Debug test starting...');
+    </script>
+
+    <!-- Load scripts one by one to identify issues -->
+    <script>
+        console.log('📜 Loading EliteSnakeGenerator...');
+    </script>
+    <script src="elite-snake-generator.js"></script>
+    
+    <script>
+        console.log('📜 Loading EliteVisualEffects...');
+    </script>
+    <script src="elite-visual-effects.js"></script>
+    
+    <script>
+        console.log('📜 Loading EliteBattleEngine...');
+    </script>
+    <script src="elite-battle-engine.js"></script>
+    
+    <script>
+        console.log('📜 Loading EliteEvolutionSystem...');
+    </script>
+    <script src="elite-evolution-system.js"></script>
+    
+    <script>
+        console.log('📜 Loading EliteTournamentSystem...');
+    </script>
+    <script src="elite-tournament-system.js"></script>
+    
+    <script>
+        console.log('📜 All scripts loaded, testing instantiation...');
+        
+        try {
+            const canvas = document.getElementById('game-canvas');
+            const ctx = canvas.getContext('2d');
+            console.log('✅ Canvas acquired');
+            
+            const generator = new EliteSnakeGenerator();
+            console.log('✅ EliteSnakeGenerator created');
+            
+            const visualEffects = new EliteVisualEffects(canvas, ctx);
+            console.log('✅ EliteVisualEffects created');
+            
+            const battleEngine = new EliteBattleEngine(canvas, ctx, visualEffects);
+            console.log('✅ EliteBattleEngine created');
+            
+            const evolutionSystem = new EliteEvolutionSystem();
+            console.log('✅ EliteEvolutionSystem created');
+            
+            const tournamentSystem = new EliteTournamentSystem();
+            console.log('✅ EliteTournamentSystem created');
+            
+            console.log('🎉 All systems instantiated successfully!');
+            
+        } catch (error) {
+            console.error('❌ Error during instantiation:', error);
+        }
+    </script>
+</body>
+</html>

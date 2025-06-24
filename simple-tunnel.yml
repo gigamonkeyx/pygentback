@@ -1,0 +1,26 @@
+# Simple Cloudflared Tunnel Configuration for PyGent Factory
+
+tunnel: 2c34f6aa-7978-4a1a-8410-50af0047925e
+credentials-file: C:\Users\Ifightcats\.cloudflared\2c34f6aa-7978-4a1a-8410-50af0047925e.json
+
+# Simple ingress rules
+ingress:
+  # API endpoints
+  - hostname: api.timpayne.net
+    service: http://localhost:8000
+    originRequest:
+      noTLSVerify: true
+      upgradeWebsocket: true
+      
+  # WebSocket endpoints
+  - hostname: ws.timpayne.net
+    service: http://localhost:8000
+    originRequest:
+      noTLSVerify: true
+      upgradeWebsocket: true
+      
+  # Catch-all rule (required)
+  - service: http_status:404
+
+# Logging
+loglevel: info

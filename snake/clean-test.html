@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Snake Arena - Clean Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #001122, #112233);
+            color: #00ffff;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+        }
+        
+        .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .control-panel {
+            width: 300px;
+            background: rgba(0, 20, 40, 0.8);
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            padding: 20px;
+            height: fit-content;
+        }
+          .main-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 20px;
+        }
+        
+        #game-canvas {
+            border: 3px solid #00ffff;
+            border-radius: 10px;
+            background: #000;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+            display: block;
+            margin: 0 auto;
+        }
+          .btn {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0;
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            user-select: none;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(45deg, #0099ff, #00ccff);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 153, 255, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+            background: linear-gradient(45deg, #004499, #0066cc);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .status {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00ffff;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 14px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+        
+        h3 {
+            color: #ffff00;
+            text-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <h1>🐍 Elite Snake Evolution Arena</h1>
+    
+    <div class="container">
+        <div class="control-panel">
+            <h3>🎮 Game Controls</h3>
+            <button id="btn-demo-battle" class="btn">⚔️ Start Demo Battle</button>
+            <button id="btn-demo-tournament" class="btn">🏆 Start Demo Tournament</button>
+            <button id="btn-pause" class="btn">⏸️ Pause/Resume</button>
+            <button id="btn-reset" class="btn">🔄 Reset Game</button>
+            
+            <h3>📊 Status</h3>
+            <div id="status-log" class="status">Initializing...</div>
+            
+            <h3>📈 Performance</h3>
+            <div id="performance-info" class="status">
+                FPS: <span id="fps-display">--</span><br>
+                Mode: <span id="mode-display">--</span>
+            </div>
+        </div>
+        
+        <div class="main-area">
+            <canvas id="game-canvas" width="1000" height="700"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Status logging
+        const statusLog = document.getElementById('status-log');
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        function addToLog(message, type = 'log') {
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? '#ff6666' : '#00ffff';
+            statusLog.innerHTML += `<span style="color: ${color}">[${timestamp}] ${message}</span><br>`;
+            statusLog.scrollTop = statusLog.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addToLog(args.join(' '), 'log');
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addToLog(args.join(' '), 'error');
+        };
+        
+        // Performance monitoring
+        function updatePerformance() {
+            if (window.eliteGameMaster) {
+                const fpsDisplay = document.getElementById('fps-display');
+                const modeDisplay = document.getElementById('mode-display');
+                
+                if (fpsDisplay && eliteGameMaster.performance) {
+                    fpsDisplay.textContent = eliteGameMaster.performance.currentFPS || '--';
+                }
+                
+                if (modeDisplay) {
+                    modeDisplay.textContent = eliteGameMaster.gameMode || '--';
+                }
+            }
+        }
+          setInterval(updatePerformance, 500);
+        
+        // Add immediate button feedback
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.getElementsByClassName('btn');
+            for (let btn of buttons) {
+                btn.addEventListener('click', function() {
+                    // Visual feedback
+                    this.style.background = 'linear-gradient(45deg, #ff6600, #ff9900)';
+                    this.textContent = '⏳ ' + this.textContent.substring(2);
+                    
+                    // Reset after delay
+                    setTimeout(() => {
+                        this.style.background = '';
+                        this.textContent = this.textContent.replace('⏳ ', '');
+                    }, 1000);
+                });
+            }
+        });
+        
+        console.log('🐍 Elite Snake Arena - Clean Test Version');
+    </script>
+
+    <!-- Load all game modules -->
+    <script src="elite-snake-generator.js"></script>
+    <script src="elite-visual-effects.js"></script>
+    <script src="elite-battle-engine.js"></script>
+    <script src="elite-evolution-system.js"></script>
+    <script src="elite-tournament-system.js"></script>
+    <script src="elite-game-master-clean.js"></script>
+</body>
+</html>

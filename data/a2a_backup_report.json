@@ -1,0 +1,29 @@
+{
+  "success": true,
+  "timestamp": "2025-06-22T21:45:13.841248",
+  "backups_created": 3,
+  "total_backups": 3,
+  "backup_results": [
+    {
+      "success": true,
+      "backup_path": "backups\\a2a_full_backup_20250622_214513.db",
+      "backup_size": 421888,
+      "original_size": 421888,
+      "backup_type": "full_database"
+    },
+    {
+      "success": true,
+      "backup_path": "backups\\a2a_tables_backup_20250622_214513.json",
+      "tables_backed_up": 0,
+      "backup_type": "a2a_tables"
+    },
+    {
+      "success": true,
+      "backup_path": "backups\\a2a_schema_backup_20250622_214513.json",
+      "tables_count": 18,
+      "backup_type": "schema"
+    }
+  ],
+  "rollback_script": "backups\\a2a_rollback_backup_20250622_214513.py",
+  "backup_directory": "backups"
+}

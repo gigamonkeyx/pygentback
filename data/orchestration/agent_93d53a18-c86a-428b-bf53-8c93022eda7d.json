@@ -1,0 +1,14 @@
+{
+  "agent_id": "93d53a18-c86a-428b-bf53-8c93022eda7d",
+  "name": "Reasoning Agent 1",
+  "agent_type": "reasoning",
+  "capabilities": [
+    "logical_reasoning",
+    "problem_solving"
+  ],
+  "status": "idle",
+  "created_at": "2025-06-22T06:25:23.151168",
+  "last_active": "2025-06-22T06:25:23.151168",
+  "task_count": 0,
+  "success_rate": 1.0
+}

@@ -1,0 +1,17 @@
+{
+  "collection_summary": {
+    "start_time": "2025-05-29T02:27:27.716388",
+    "end_time": "2025-05-29T08:33:37.086778",
+    "duration_hours": 6.102602886111111,
+    "papers_collected": 0,
+    "total_citations": 0,
+    "avg_citations_per_paper": 0.0,
+    "topics_covered": 4
+  },
+  "collection_data": {
+    "scientific_revolutions": [],
+    "enlightenment": [],
+    "decolonization": [],
+    "haitian_revolution": []
+  }
+}

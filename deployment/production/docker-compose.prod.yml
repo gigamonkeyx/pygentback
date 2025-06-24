@@ -1,0 +1,165 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database - Real Implementation
+  postgres:
+    image: postgres:15-alpine
+    container_name: pygent_postgres_prod
+    environment:
+      POSTGRES_DB: pygent_factory
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - pygent_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d pygent_factory"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache - Real Implementation
+  redis:
+    image: redis:7-alpine
+    container_name: pygent_redis_prod
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - pygent_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # PyGent Factory Core Service - Real Agent Implementation
+  pygent-core:
+    build:
+      context: ../../
+      dockerfile: deployment/production/Dockerfile.core
+    container_name: pygent_core_prod
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/pygent_factory
+      - REDIS_URL=redis://redis:6379
+      - OLLAMA_URL=http://ollama:11434
+      - LOG_LEVEL=info
+      - REAL_AGENTS_ENABLED=true
+      - MOCK_IMPLEMENTATIONS_DISABLED=true
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../../src:/app/src:ro
+      - logs_data:/app/logs
+    networks:
+      - pygent_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Ollama Service - Real AI Model Implementation
+  ollama:
+    image: ollama/ollama:latest
+    container_name: pygent_ollama_prod
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - pygent_network
+    restart: unless-stopped
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
+      - OLLAMA_HOST=0.0.0.0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Agent Orchestration Service - Real Implementation
+  agent-orchestrator:
+    build:
+      context: ../../
+      dockerfile: deployment/production/Dockerfile.orchestrator
+    container_name: pygent_orchestrator_prod
+    environment:
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/pygent_factory
+      - REDIS_URL=redis://redis:6379
+      - CORE_SERVICE_URL=http://pygent-core:8000
+      - REAL_AGENT_INTEGRATION=true
+    depends_on:
+      pygent-core:
+        condition: service_healthy
+    ports:
+      - "8001:8001"
+    volumes:
+      - logs_data:/app/logs
+    networks:
+      - pygent_network
+    restart: unless-stopped
+
+  # Monitoring and Observability
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: pygent_prometheus_prod
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    networks:
+      - pygent_network
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: pygent_grafana_prod
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+    networks:
+      - pygent_network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  ollama_data:
+    driver: local
+  logs_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+networks:
+  pygent_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

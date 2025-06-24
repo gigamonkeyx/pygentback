@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>PyGent Factory - Agent Workflow Diagram</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        @page {
+            size: A3;
+            margin: 15mm;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.4;
+            color: #2c3e50;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .content {
+            max-width: none;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            page-break-after: avoid;
+        }
+        
+        h2 {
+            color: #2980b9;
+            font-size: 22px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            page-break-after: avoid;
+        }
+        
+        h3 {
+            color: #34495e;
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            page-break-after: avoid;
+        }
+        
+        .mermaid {
+            text-align: center;
+            margin: 30px 0;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            page-break-inside: avoid;
+            transform: scale(0.8);
+            transform-origin: center;
+        }
+        
+        code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        p {
+            margin: 10px 0;
+            text-align: justify;
+        }
+        
+        .print-instructions {
+            background: #e8f5e8;
+            border: 1px solid #4CAF50;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        @media print {
+            .print-instructions {
+                display: none;
+            }
+            
+            body {
+                padding: 0;
+            }
+            
+            .mermaid {
+                transform: scale(0.7);
+                page-break-inside: avoid;
+            }
+            
+            h1, h2, h3 {
+                page-break-after: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="print-instructions">
+        📄 <strong>To save as PDF:</strong> Press Ctrl+P → Choose "Save as PDF" → Select A3 or A4 landscape → Save
+    </div>
+    
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            themeVariables: {
+                primaryColor: '#3498db',
+                primaryTextColor: '#2c3e50',
+                primaryBorderColor: '#2980b9',
+                lineColor: '#34495e',
+                background: '#ffffff',
+                fontSize: '14px'
+            },
+            flowchart: {
+                nodeSpacing: 50,
+                rankSpacing: 50
+            }
+        });
+        
+        // Wait for diagrams to render then notify user
+        setTimeout(() => {
+            console.log('Mermaid diagrams should be ready for printing');
+        }, 3000);
+    </script>
+    
+    <div class="content"><h1>\1</h1>
+
+<h2>\1</h2>
+This diagram shows the complete workflow for agent creation, lifecycle management, and evolutionary optimization in the PyGent Factory system.
+
+<h2>\1</h2>
+
+<div class="mermaid">graph TD
+    A[Agent Request] --> B[AgentFactory.create_agent]
+    B --> C{Agent Type Valid?}
+    C -->|No| D[Return Error]
+    C -->|Yes| E[Create AgentConfig]
+    E --> F[Initialize BaseAgent]
+    F --> G[Load Capabilities]
+    G --> H[Initialize MCP Tools]
+    H --> I[Agent-Specific Init]
+    I --> J[Register in AgentRegistry]
+    J --> K[Set Status: ACTIVE]
+    K --> L[Agent Ready]
+    
+    subgraph "Agent Types"
+        M[ReasoningAgent<br/>- ToT Engine<br/>- Problem Solving]
+        N[EvolutionAgent<br/>- Genetic Algorithms<br/>- Optimization]
+        O[GeneralAgent<br/>- Conversation<br/>- Basic Tasks]
+        P[SearchAgent<br/>- Information Retrieval<br/>- Web Search]
+        Q[CodingAgent<br/>- Code Generation<br/>- Debugging]
+        R[ResearchAgent<br/>- Academic Research<br/>- Data Analysis]
+    end
+    
+    E --> M
+    E --> N
+    E --> O
+    E --> P
+    E --> Q
+    E --> R</div>
+
+<h2>\1</h2>
+
+<div class="mermaid">stateDiagram-v2
+    [*] --> CREATED: Agent Instance Created
+    CREATED --> INITIALIZING: initialize() called
+    INITIALIZING --> ACTIVE: Initialization Success
+    INITIALIZING --> ERROR: Initialization Failed
+    
+    ACTIVE --> BUSY: Processing Request
+    BUSY --> ACTIVE: Request Complete
+    ACTIVE --> PAUSED: Manual Pause
+    PAUSED --> ACTIVE: Resume
+    
+    ACTIVE --> STOPPING: shutdown() called
+    BUSY --> STOPPING: shutdown() called
+    PAUSED --> STOPPING: shutdown() called
+    ERROR --> STOPPING: Manual Shutdown
+    
+    STOPPING --> STOPPED: Cleanup Complete
+    STOPPED --> [*]
+    
+    ERROR --> RECOVERING: Auto Recovery
+    RECOVERING --> ACTIVE: Recovery Success
+    RECOVERING --> ERROR: Recovery Failed</div>
+
+<h2>\1</h2>
+
+<div class="mermaid">graph LR
+    A[Incoming Message] --> B[Message Queue]
+    B --> C[Priority Check]
+    C --> D[Capability Match]
+    D --> E{Agent Available?}
+    E -->|No| F[Queue/Defer]
+    E -->|Yes| G[Process Message]
+    
+    G --> H[MCP Tool Selection]
+    H --> I[Execute Logic]
+    I --> J[Generate Response]
+    J --> K[Update Status]
+    K --> L[Send Response]
+    
+    subgraph "Message Types"
+        M[REQUEST<br/>- Task Execution<br/>- Query Processing]
+        N[COMMAND<br/>- Configuration<br/>- Control Operations]
+        O[EVENT<br/>- Status Updates<br/>- Notifications]
+        P[RESPONSE<br/>- Task Results<br/>- Acknowledgments]
+    end
+    
+    A --> M
+    A --> N
+    A --> O
+    A --> P</div>
+
+<h2>\1</h2>
+
+<div class="mermaid">graph TD
+    A[Evolution Request] --> B[EvolutionAgent]
+    B --> C[Parse Optimization Context]
+    C --> D[Initialize Population]
+    D --> E[Generation Loop]
+    
+    E --> F[Evaluate Fitness]
+    F --> G[Selection Process]
+    G --> H[Crossover Operations]
+    H --> I[Mutation Process]
+    I --> J[Create New Generation]
+    J --> K{Max Generations?}
+    K -->|No| E
+    K -->|Yes| L[Return Best Solution]
+    
+    subgraph "Genetic Operations"
+        D --> M[Random Population<br/>- Strategy Genomes<br/>- Performance Genes]
+        G --> N[Tournament Selection<br/>- Fitness-Based<br/>- Diversity Preservation]
+        H --> O[Uniform Crossover<br/>- Gene Recombination<br/>- Strategy Mixing]
+        I --> P[Adaptive Mutation<br/>- Gene Modification<br/>- Rate Adjustment]
+    end
+    
+    subgraph "Fitness Evaluation"
+        F --> Q[Performance Metrics<br/>- Success Rate<br/>- Execution Time<br/>- Resource Usage]
+        F --> R[Multi-Objective<br/>- Speed vs Accuracy<br/>- Cost vs Quality]
+        F --> S[Environmental Factors<br/>- Context Adaptation<br/>- Dynamic Conditions]
+    end</div>
+
+<h2>\1</h2>
+
+<div class="mermaid">graph TB
+    A[Orchestration Request] --> B[EvolutionaryOrchestrator]
+    B --> C[Current Strategy Genome]
+    C --> D[Performance Monitoring]
+    D --> E{Performance Degraded?}
+    E -->|No| F[Continue Current Strategy]
+    E -->|Yes| G[Trigger Evolution]
+    
+    G --> H[Strategy Population]
+    H --> I[Parallel Evaluation]
+    I --> J[Fitness Assessment]
+    J --> K[Strategy Selection]
+    K --> L[Update Active Strategy]
+    L --> M[Deploy New Configuration]
+    M --> D
+    
+    subgraph "Strategy Genes"
+        N[Task Allocation<br/>- Load Balancing<br/>- Priority Queues]
+        O[Agent Coordination<br/>- Communication Patterns<br/>- Synchronization]
+        P[Resource Management<br/>- Memory Usage<br/>- CPU Allocation]
+        Q[Error Handling<br/>- Retry Strategies<br/>- Fallback Plans]
+    end
+    
+    H --> N
+    H --> O
+    H --> P
+    H --> Q</div>
+
+<h2>\1</h2>
+
+<div class="mermaid">graph LR
+    A[Agent A] --> B[Message Protocol]
+    B --> C[A2A Discovery Service]
+    C --> D[Agent B]
+    D --> E[Response Protocol]
+    E --> F[Performance Metrics]
+    F --> G[Protocol Evolution]
+    G --> H[Optimized Protocol]
+    H --> B
+    
+    subgraph "Communication Patterns"
+        I[Direct Messaging<br/>- Point-to-Point<br/>- Request-Response]
+        J[Broadcast<br/>- Event Distribution<br/>- Status Updates]
+        K[Multicast<br/>- Group Coordination<br/>- Collaborative Tasks]
+        L[Pipeline<br/>- Sequential Processing<br/>- Data Flow]
+    end
+    
+    B --> I
+    B --> J
+    B --> K
+    B --> L
+    
+    subgraph "Evolution Factors"
+        M[Latency Optimization]
+        N[Bandwidth Efficiency]
+        O[Error Recovery]
+        P[Security Enhancement]
+    end
+    
+    G --> M
+    G --> N
+    G --> O
+    G --> P</div>
+
+<h2>\1</h2>
+
+<div class="mermaid">graph TB
+    subgraph "Creation Layer"
+        A[AgentFactory] --> B[AgentRegistry]
+        A --> C[MCP Integration]
+        A --> D[Memory Management]
+    end
+    
+    subgraph "Execution Layer"
+        E[Message Processing] --> F[Task Execution]
+        F --> G[Tool Orchestration]
+        G --> H[Response Generation]
+    end
+    
+    subgraph "Evolution Layer"
+        I[Performance Monitoring] --> J[Strategy Evolution]
+        J --> K[Genome Optimization]
+        K --> L[Deployment]
+    end
+    
+    subgraph "Coordination Layer"
+        M[Agent Discovery] --> N[Communication Protocols]
+        N --> O[Collaborative Tasks]
+        O --> P[Emergent Behaviors]
+    end
+    
+    B --> E
+    H --> I
+    L --> E
+    P --> I
+    
+    subgraph "Feedback Loops"
+        Q[Performance → Evolution]
+        R[Evolution → Strategy]
+        S[Strategy → Execution]
+        T[Execution → Performance]
+    end
+    
+    I --> Q
+    Q --> J
+    J --> R
+    R --> F
+    F --> S
+    S --> H
+    H --> T
+    T --> I</div>
+
+<h2>\1</h2>
+
+<h3>\1</h3>
+1. **Request Validation**: Validates agent type and configuration
+2. **Template Application**: Uses predefined templates for agent types
+3. **Capability Loading**: Registers agent-specific capabilities
+4. **MCP Integration**: Connects to available MCP tools
+5. **Registry Management**: Tracks all active agents
+
+<h3>\1</h3>
+- **Status Tracking**: Real-time status monitoring and transitions
+- **Resource Management**: Concurrent task limits and memory usage
+- **Error Recovery**: Automatic recovery from failures
+- **Graceful Shutdown**: Clean resource cleanup
+
+<h3>\1</h3>
+- **Genetic Algorithms**: Population-based optimization
+- **Multi-Objective Fitness**: Balances speed, accuracy, and resources
+- **Adaptive Strategies**: Self-improving coordination patterns
+- **Performance Feedback**: Continuous optimization based on results
+
+<h3>\1</h3>
+- **Discovery Service**: Automatic peer agent discovery
+- **Protocol Evolution**: Self-optimizing communication patterns
+- **Quality of Service**: Guaranteed delivery and performance
+- **Emergent Coordination**: Spontaneous collaborative behaviors
+
+This workflow shows how agents are born, live, work, evolve, and coordinate in a continuous cycle of improvement and adaptation.
+</div>
+    
+    <div style="text-align: center; margin-top: 40px; color: #7f8c8d; font-style: italic;">
+        <p>Generated from PyGent Factory Agent Workflow Analysis - 7 interactive diagrams</p>
+    </div>
+</body>
+</html>

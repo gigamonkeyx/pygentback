@@ -1,0 +1,37 @@
+{
+  "total_tests": 5,
+  "passed_tests": 5,
+  "success_rate": 100.0,
+  "test_results": [
+    {
+      "test": "Provider Availability",
+      "success": true,
+      "details": "Available: 4, Current: ollama",
+      "duration_ms": 2050.99
+    },
+    {
+      "test": "Embedding Consistency",
+      "success": true,
+      "details": "All embeddings identical",
+      "duration_ms": 6652.74
+    },
+    {
+      "test": "Performance Characteristics",
+      "success": true,
+      "details": "Avg: 2412.5ms across 3 cases",
+      "duration_ms": 7242.57
+    },
+    {
+      "test": "Batch vs Single Performance",
+      "success": true,
+      "details": "Batch 3.3x faster (2064.0ms vs 6807.0ms)",
+      "duration_ms": 8871.01
+    },
+    {
+      "test": "Unicode & Special Chars",
+      "success": true,
+      "details": "All 4 cases handled",
+      "duration_ms": 8838.45
+    }
+  ]
+}

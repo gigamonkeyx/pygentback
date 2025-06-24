@@ -1,0 +1,28 @@
+tunnel: 4686bed4-4608-4de0-9c83-4a061d6a0dae
+credentials-file: C:\Users\Ifightcats\.cloudflared\4686bed4-4608-4de0-9c83-4a061d6a0dae.json
+
+ingress:
+  # PyGent Factory API endpoints
+  - hostname: api.timpayne.net
+    service: http://localhost:8000
+    originRequest:
+      noTLSVerify: true
+      connectTimeout: 30s
+      tlsTimeout: 30s
+      tcpKeepAlive: 30s
+      keepAliveConnections: 10
+      keepAliveTimeout: 90s
+  
+  # WebSocket connections for real-time features
+  - hostname: ws.timpayne.net
+    service: http://localhost:8000
+    originRequest:
+      noTLSVerify: true
+      connectTimeout: 30s
+      tlsTimeout: 30s
+      tcpKeepAlive: 30s
+      keepAliveConnections: 10
+      keepAliveTimeout: 90s
+  
+  # Catch-all rule (required)
+  - service: http_status:404

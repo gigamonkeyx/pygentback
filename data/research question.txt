@@ -1,0 +1,51 @@
+Focus on Primary Sources
+ 
+Here are some topics I’ve been thinking about:
+ 
+Scientific Revolutions (Beyond an exclusively European perspective)
+                Example: Art & Architecture
+                Example: Literacy
+ 
+Enlightenment
+                Example: Shifting notions of human rights
+                Example: Shifting political values
+ 
+Early Modern Exploration
+                Example: Cartography
+                Example: Flora & Funa
+                Example: Describing Otherness
+ 
+Tokugawa Japan
+                Example: Women
+                Example: Art
+                Example: Shift Role of Samurai
+ 
+Colonialism in Southeast Asia (select specific countries)
+                Example: Non-European Response
+                Example: European life abroad
+ 
+Ming & Qing Dynasties
+                Example: Education
+                
+Haitian Revolution
+                Example: Influences of Haitian Diasporas (select specific places)
+ 
+ 
+Opposition to Imperialism (China, African nations)
+ 
+Opposition to Imperialism (European, Latin American, Southeast Asian, African)
+ 
+World’s Fair & Zoos
+ 
+Eugenics in A Global Perspective
+ 
+Globalization, Imperialism, and the Rise of Modern Dictatorships
+ 
+Decolonization (Global Perspectives or Case Studies)
+
+I have an idea. 
+1. we need to process research data first by downloading the actual papers when possible and when not links and summaries can act as a accessable memory and should be saved if access is needded to build context in the next step.
+2. Research context building will come from vector db and other ways to store data. we should discuss this part. We need to process the data so that we can use it. Analysie is and produce content that is honest and true to the source matierial. Hallusonations, fake bullshit kills the product.
+3. Parse the needed data first. Generate summaries for all topics then primary sources. 
+4. Validation.
+5.Final document needs to be created as a pdf with all academic standards for formating.

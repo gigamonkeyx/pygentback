@@ -1,0 +1,14 @@
+{
+  "agent_id": "f495b9f8-8517-49ea-8600-1c9002f0ac13",
+  "name": "General Agent 1",
+  "agent_type": "general",
+  "capabilities": [
+    "general_tasks",
+    "text_processing"
+  ],
+  "status": "idle",
+  "created_at": "2025-06-22T06:22:34.570829",
+  "last_active": "2025-06-22T06:22:34.570829",
+  "task_count": 0,
+  "success_rate": 1.0
+}

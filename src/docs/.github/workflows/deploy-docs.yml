@@ -1,0 +1,209 @@
+name: Deploy PyGent Factory Documentation
+
+on:
+  push:
+    branches: [main, master]
+    paths: ['docs/**']
+  pull_request:
+    branches: [main, master]
+    paths: ['docs/**']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'docs/package-lock.json'
+      
+      - name: Install dependencies
+        run: |
+          cd docs
+          npm ci
+      
+      - name: Build documentation
+        run: |
+          cd docs
+          npm run build
+        env:
+          NODE_ENV: production
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation-build
+          path: docs/dist/
+          retention-days: 30
+
+  deploy-staging:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: documentation-build
+          path: dist/
+      
+      - name: Deploy to staging
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: dist/
+          destination_dir: staging/${{ github.event.number }}
+          cname: docs-staging.pygent.ai
+      
+      - name: Comment PR with staging link
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '📖 Documentation preview deployed to: https://docs-staging.pygent.ai/staging/${{ github.event.number }}/'
+            })
+
+  deploy-production:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    environment:
+      name: production
+      url: https://docs.pygent.ai
+    
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: documentation-build
+          path: dist/
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: dist/
+          cname: docs.pygent.ai
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: 'Deploy documentation ${{ github.sha }}'
+      
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: pygent-factory-docs
+          directory: dist/
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Notify deployment success
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: 'success',
+              target_url: 'https://docs.pygent.ai',
+              description: 'Documentation deployed successfully',
+              context: 'deployment/docs'
+            })
+
+  lighthouse:
+    needs: deploy-production
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: |
+            https://docs.pygent.ai
+            https://docs.pygent.ai/getting-started/introduction
+            https://docs.pygent.ai/concepts/architecture
+            https://docs.pygent.ai/api/rest-endpoints
+          configPath: './docs/.lighthouserc.json'
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+  seo-check:
+    needs: deploy-production
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    steps:
+      - name: SEO and accessibility check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const urls = [
+              'https://docs.pygent.ai',
+              'https://docs.pygent.ai/getting-started/introduction',
+              'https://docs.pygent.ai/concepts/architecture'
+            ];
+            
+            for (const url of urls) {
+              try {
+                const response = await fetch(url);
+                const html = await response.text();
+                
+                // Check for essential SEO elements
+                const hasTitle = html.includes('<title>');
+                const hasDescription = html.includes('name="description"');
+                const hasOG = html.includes('property="og:');
+                
+                console.log(`${url}: Title: ${hasTitle}, Description: ${hasDescription}, OpenGraph: ${hasOG}`);
+              } catch (error) {
+                console.error(`Error checking ${url}:`, error);
+              }
+            }
+
+  update-search-index:
+    needs: deploy-production
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    steps:
+      - name: Update Algolia search index
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Update search index after deployment
+            const response = await fetch('https://api.algolia.com/1/indexes/pygent-docs/clear', {
+              method: 'POST',
+              headers: {
+                'X-Algolia-API-Key': '${{ secrets.ALGOLIA_ADMIN_KEY }}',
+                'X-Algolia-Application-Id': '${{ secrets.ALGOLIA_APP_ID }}'
+              }
+            });
+            
+            if (response.ok) {
+              console.log('Search index cleared successfully');
+            } else {
+              console.error('Failed to clear search index');
+            }
+        env:
+          ALGOLIA_ADMIN_KEY: ${{ secrets.ALGOLIA_ADMIN_KEY }}
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}

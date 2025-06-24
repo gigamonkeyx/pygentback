@@ -1,0 +1,61 @@
+{
+  "timestamp": "72294.5",
+  "total_tests": 12,
+  "passed": 12,
+  "failed": 0,
+  "success_rate": 100.0,
+  "test_results": [
+    {
+      "test": "basic_connectivity",
+      "status": "PASS"
+    },
+    {
+      "test": "authentication_flow",
+      "status": "PASS"
+    },
+    {
+      "test": "navigation_routing",
+      "status": "PASS"
+    },
+    {
+      "test": "chat_interface",
+      "status": "PASS"
+    },
+    {
+      "test": "reasoning_page",
+      "status": "PASS"
+    },
+    {
+      "test": "evolution_page",
+      "status": "PASS"
+    },
+    {
+      "test": "search_page",
+      "status": "PASS"
+    },
+    {
+      "test": "monitoring_page",
+      "status": "PASS"
+    },
+    {
+      "test": "mcp_marketplace",
+      "status": "PASS"
+    },
+    {
+      "test": "settings_page",
+      "status": "PASS"
+    },
+    {
+      "test": "responsive_design",
+      "status": "PASS"
+    },
+    {
+      "test": "websocket_connectivity",
+      "status": "PASS"
+    }
+  ],
+  "errors": [
+    "Console error: Failed to connect to WebSocket: Error: Connection failed\n    at checkConnection (http://localhost:5173/src/services/websocket.ts?t=1748892998118:23:20)",
+    "Console error: Failed to connect to WebSocket: Error: Backend not available - running in offline mode\n    at http://localhost:5173/src/services/websocket.ts?t=1748892998118:65:20"
+  ]
+}

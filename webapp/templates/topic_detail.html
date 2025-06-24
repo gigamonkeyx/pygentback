@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}{{ topic_name }} - PIARES{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Dashboard</a></li>
+                <li class="breadcrumb-item active">{{ topic_name }}</li>
+            </ol>
+        </nav>
+
+        <h1>{{ topic_name }}</h1>
+        <p class="lead">Comprehensive research on {{ topic_name.lower() }} with global perspectives</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Research Focus</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    {% for area in topic_config.focus_areas %}
+                    <li><i class="bi bi-check-circle"></i> {{ area.replace('_', ' ').title() }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Geographic Scope</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    {% for region in topic_config.regions %}
+                    <li><i class="bi bi-geo-alt"></i> {{ region.replace('_', ' ').title() }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Primary Sources</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    {% for source in topic_config.primary_sources %}
+                    <li><i class="bi bi-file-text"></i> {{ source.replace('_', ' ').title() }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <h3>Research Papers ({{ research_data.get('total_papers', 0) }} found)</h3>
+
+        {% if research_data.get('sample_papers') %}
+        {% for paper in research_data.sample_papers %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ paper.title }}</h5>
+                <p class="card-text">
+                    <strong>Authors:</strong> {{ paper.authors|join(', ') }}<br>
+                    <strong>Published:</strong> {{ paper.published_date }} |
+                    <strong>Source:</strong> {{ paper.source }}
+                    {% if paper.citations %}| <strong>Citations:</strong> {{ paper.citations }}{% endif %}
+                    {% if paper.is_open_access %}<span class="badge bg-success">Open Access</span>{% endif %}
+                </p>
+                <p class="card-text">{{ paper.abstract }}</p>
+                {% if paper.url %}
+                <a href="{{ paper.url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                    View Paper
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="alert alert-info">
+            <h5>No papers found yet</h5>
+            <p>Research data for this topic is still being collected. Check back soon for comprehensive academic content.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

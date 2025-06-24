@@ -1,0 +1,47 @@
+{
+  "name": "pygent-factory-docs",
+  "version": "1.0.0",
+  "description": "PyGent Factory Documentation Website",
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev --port 3001",
+    "build": "vitepress build",
+    "build:hybrid": "vitepress build && npm run sync:frontend",
+    "sync:frontend": "node scripts/sync-to-frontend.js",
+    "preview": "vitepress preview",
+    "serve": "vitepress serve",
+    "docs:dev": "vitepress dev --port 3001",
+    "docs:build": "vitepress build",
+    "docs:preview": "vitepress preview"
+  },
+  "dependencies": {
+    "@mermaid-js/mermaid-cli": "^11.4.2",
+    "autoprefixer": "^10.4.21",
+    "vue": "^3.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "vitepress": "^1.0.0"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "mcp",
+    "documentation",
+    "vitepress",
+    "python",
+    "machine-learning"
+  ],
+  "author": "PyGent Factory Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gigamonkeyx/pygent.git",
+    "directory": "docs"
+  },
+  "homepage": "https://docs.pygent.ai",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

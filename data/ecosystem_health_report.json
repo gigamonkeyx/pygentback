@@ -1,0 +1,73 @@
+{
+  "ecosystem_health": {
+    "ecosystem_status": "healthy",
+    "servers_online": 5,
+    "total_servers": 5,
+    "server_statuses": {
+      "document_processing": {
+        "name": "Document Processing MCP Server",
+        "port": 8003,
+        "status": "healthy",
+        "response_time_ms": 2.0,
+        "error": null
+      },
+      "vector_search": {
+        "name": "Vector Search MCP Server",
+        "port": 8004,
+        "status": "healthy",
+        "response_time_ms": 1.0,
+        "error": null
+      },
+      "agent_orchestration": {
+        "name": "Agent Orchestration MCP Server",
+        "port": 8005,
+        "status": "healthy",
+        "response_time_ms": 2.0,
+        "error": null
+      },
+      "a2a_mcp": {
+        "name": "A2A MCP Server",
+        "port": 8006,
+        "status": "healthy",
+        "response_time_ms": 2.0,
+        "error": null
+      },
+      "simple_a2a_agent": {
+        "name": "Simple A2A Agent",
+        "port": 8007,
+        "status": "healthy",
+        "response_time_ms": 2.0,
+        "error": null
+      }
+    },
+    "timestamp": "2025-06-22T08:19:36.148067"
+  },
+  "inter_server_communication": {
+    "tests_passed": 4,
+    "total_tests": 4,
+    "success_rate": 100.0,
+    "test_results": [
+      {
+        "test": "a2a_discovery",
+        "status": "pass",
+        "details": "3 agents"
+      },
+      {
+        "test": "a2a_messaging",
+        "status": "pass",
+        "details": "Message to PyGent Factory A2A Agent"
+      },
+      {
+        "test": "document_processing",
+        "status": "pass",
+        "details": "6 capabilities"
+      },
+      {
+        "test": "vector_search",
+        "status": "pass",
+        "details": "5 capabilities"
+      }
+    ]
+  },
+  "overall_status": "healthy"
+}

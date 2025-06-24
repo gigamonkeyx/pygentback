@@ -1,0 +1,120 @@
+# Prometheus Configuration for PyGent Factory Production
+# Real Implementation Monitoring - Zero Mock Code
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    environment: 'production'
+    system: 'pygent-factory'
+    implementation: 'real-agents-only'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+# Load rules once and periodically evaluate them
+rule_files:
+  - "alert_rules.yml"
+  - "recording_rules.yml"
+
+# Scrape configurations
+scrape_configs:
+  # PyGent Factory Core Service - Real Agent Implementation
+  - job_name: 'pygent-core'
+    static_configs:
+      - targets: ['pygent-core:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+    params:
+      format: ['prometheus']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'pygent-core'
+      - target_label: service
+        replacement: 'core-service'
+      - target_label: implementation_type
+        replacement: 'real-agents'
+
+  # Agent Orchestrator Service - Real Implementation
+  - job_name: 'agent-orchestrator'
+    static_configs:
+      - targets: ['agent-orchestrator:8001']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+    relabel_configs:
+      - target_label: service
+        replacement: 'agent-orchestrator'
+      - target_label: implementation_type
+        replacement: 'real-coordination'
+
+  # PostgreSQL Database - Real Data Persistence
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres:5432']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    relabel_configs:
+      - target_label: service
+        replacement: 'postgresql'
+      - target_label: data_type
+        replacement: 'real-data'
+
+  # Redis Cache - Real Caching Layer
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    relabel_configs:
+      - target_label: service
+        replacement: 'redis'
+      - target_label: cache_type
+        replacement: 'real-cache'
+
+  # Ollama AI Service - Real Model Inference
+  - job_name: 'ollama'
+    static_configs:
+      - targets: ['ollama:11434']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    relabel_configs:
+      - target_label: service
+        replacement: 'ollama'
+      - target_label: ai_type
+        replacement: 'real-models'
+
+  # Node Exporter - System Metrics
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    relabel_configs:
+      - target_label: service
+        replacement: 'system-metrics'
+
+  # Prometheus Self-Monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    relabel_configs:
+      - target_label: service
+        replacement: 'prometheus'
+
+# Remote write configuration for long-term storage (optional)
+# remote_write:
+#   - url: "https://your-remote-storage/api/v1/write"
+#     basic_auth:
+#       username: "your-username"
+#       password: "your-password"
+
+# Storage configuration
+storage:
+  tsdb:
+    retention.time: 30d
+    retention.size: 10GB
+    wal-compression: true

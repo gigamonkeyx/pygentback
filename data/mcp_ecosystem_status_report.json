@@ -1,0 +1,152 @@
+{
+  "timestamp": "2025-06-22T06:49:23.534324",
+  "ecosystem_name": "PyGent Factory MCP Ecosystem",
+  "version": "1.0.0",
+  "http_servers": {
+    "embedding": {
+      "server_id": "embedding",
+      "name": "Embedding MCP Server",
+      "description": "Multi-provider embeddings with OpenAI compatibility",
+      "type": "HTTP",
+      "port": 8002,
+      "status": "healthy",
+      "response_time": 2.0568082332611084,
+      "uptime": 4856.15,
+      "performance": {
+        "uptime_seconds": 4856.15,
+        "request_count": 26,
+        "avg_response_time": 182.55,
+        "cache_hit_rate": 0.0,
+        "total_embeddings": 26,
+        "error_rate": 0.0
+      },
+      "endpoints": [
+        "embeddings",
+        "health"
+      ],
+      "error": null
+    },
+    "document-processing": {
+      "server_id": "document-processing",
+      "name": "Document Processing MCP Server",
+      "description": "PDF processing, OCR, text extraction, AI analysis",
+      "type": "HTTP",
+      "port": 8003,
+      "status": "healthy",
+      "response_time": 2.070774793624878,
+      "uptime": 2577.43,
+      "performance": {
+        "uptime_seconds": 2577.43,
+        "documents_processed": 0,
+        "text_extractions": 0,
+        "analyses_performed": 10,
+        "average_processing_time": 0.0,
+        "average_quality_score": 0.0,
+        "error_rate": 0.0
+      },
+      "endpoints": [
+        "process",
+        "extract",
+        "analyze",
+        "health"
+      ],
+      "error": null
+    },
+    "vector-search": {
+      "server_id": "vector-search",
+      "name": "Vector Search MCP Server",
+      "description": "Semantic search, collection management, similarity matching",
+      "type": "HTTP",
+      "port": 8004,
+      "status": "healthy",
+      "response_time": 2.0580976009368896,
+      "uptime": 2131.94,
+      "performance": {
+        "uptime_seconds": 2131.94,
+        "searches_performed": 7,
+        "documents_added": 3,
+        "collections_created": 1,
+        "average_search_time_ms": 0.29,
+        "error_count": 0
+      },
+      "endpoints": [
+        "collections",
+        "add_documents",
+        "search",
+        "health"
+      ],
+      "error": null
+    },
+    "agent-orchestration": {
+      "server_id": "agent-orchestration",
+      "name": "Agent Orchestration MCP Server",
+      "description": "Multi-agent coordination and workflow management",
+      "type": "HTTP",
+      "port": 8005,
+      "status": "healthy",
+      "response_time": 2.0430305004119873,
+      "uptime": 1536.3,
+      "performance": {
+        "uptime_seconds": 1536.3,
+        "agents_created": 3,
+        "tasks_submitted": 7,
+        "tasks_completed": 7,
+        "workflows_created": 0,
+        "pending_tasks": 0,
+        "running_tasks": 0,
+        "average_execution_time_ms": 100.0,
+        "success_rate": 100.0,
+        "error_count": 0
+      },
+      "endpoints": [
+        "agents",
+        "create_agent",
+        "tasks",
+        "submit_task",
+        "task_status",
+        "health"
+      ],
+      "error": null
+    }
+  },
+  "stdio_servers": {
+    "memory": {
+      "server_id": "memory",
+      "name": "Memory MCP Server (Official)",
+      "description": "Knowledge graph and persistent memory storage",
+      "type": "STDIO",
+      "command": "npx -y @modelcontextprotocol/server-memory",
+      "status": "failed",
+      "available": false,
+      "error": "[WinError 2] The system cannot find the file specified"
+    },
+    "filesystem": {
+      "server_id": "filesystem",
+      "name": "Filesystem MCP Server (Official)",
+      "description": "Secure filesystem operations and file management",
+      "type": "STDIO",
+      "command": "npx -y @modelcontextprotocol/server-filesystem",
+      "status": "failed",
+      "available": false,
+      "error": "[WinError 2] The system cannot find the file specified"
+    },
+    "postgresql": {
+      "server_id": "postgresql",
+      "name": "PostgreSQL MCP Server (Official)",
+      "description": "Advanced SQL database operations and schema management",
+      "type": "STDIO",
+      "command": "npx -y @modelcontextprotocol/server-postgres",
+      "status": "failed",
+      "available": false,
+      "error": "[WinError 2] The system cannot find the file specified"
+    }
+  },
+  "summary": {
+    "total_servers": 7,
+    "running_servers": 4,
+    "available_servers": 0,
+    "failed_servers": 3,
+    "success_rate": 57.14285714285714,
+    "overall_status": "fair"
+  }
+}

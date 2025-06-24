@@ -1,0 +1,19 @@
+{
+  "task_id": "fb619128-85f6-4087-83d1-dfa9fc9bb8db",
+  "task_type": "general",
+  "description": "Critical priority task",
+  "status": "completed",
+  "priority": 4,
+  "assigned_agent": "0e736aee-1fbf-4988-9b5c-eaa754599fb9",
+  "created_at": "2025-06-22T06:23:02.146503",
+  "started_at": "2025-06-22T06:23:02.176393",
+  "completed_at": "2025-06-22T06:23:02.284630",
+  "result": {
+    "task_id": "fb619128-85f6-4087-83d1-dfa9fc9bb8db",
+    "agent_id": "0e736aee-1fbf-4988-9b5c-eaa754599fb9",
+    "result": "Completed general task: Critical priority task",
+    "execution_time": 0.1,
+    "success": true
+  },
+  "error_message": null
+}

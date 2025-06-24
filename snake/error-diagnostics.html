@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 Snake Arena - Error Diagnostics</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #000;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .log-container {
+            background: #001100;
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            height: 400px;
+            overflow-y: auto;
+        }
+        
+        .error { color: #ff3333; font-weight: bold; }
+        .warning { color: #ffff33; }
+        .success { color: #33ff33; }
+        .info { color: #33ccff; }
+        .debug { color: #cccccc; }
+        
+        .status-panel {
+            background: #000033;
+            border: 2px solid #0066ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .test-btn {
+            padding: 10px 20px;
+            margin: 5px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .test-btn:hover {
+            background: #0088ff;
+        }
+        
+        h1 { color: #ffff00; text-align: center; }
+        h2 { color: #00ffff; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Elite Snake Arena - Complete Diagnostics</h1>
+    
+    <div class="status-panel">
+        <h2>📊 System Status</h2>
+        <div id="system-status">Initializing diagnostics...</div>
+    </div>
+    
+    <div class="status-panel">
+        <h2>🧪 Quick Tests</h2>
+        <button class="test-btn" onclick="testBasicJS()">Test Basic JS</button>
+        <button class="test-btn" onclick="testCanvas()">Test Canvas</button>
+        <button class="test-btn" onclick="testModules()">Test Modules</button>
+        <button class="test-btn" onclick="testGameMaster()">Test Game Master</button>
+        <button class="test-btn" onclick="clearLogs()">Clear Logs</button>
+    </div>
+    
+    <div class="log-container" id="diagnostic-log">
+        <div class="info">[DIAGNOSTIC] Starting comprehensive error diagnostics...</div>
+    </div>
+
+    <script>
+        // Enhanced error catching and logging
+        const logContainer = document.getElementById('diagnostic-log');
+        const statusContainer = document.getElementById('system-status');
+        
+        let errorCount = 0;
+        let warningCount = 0;
+        let loadedModules = 0;
+        let totalModules = 5;
+        
+        function updateStatus() {
+            statusContainer.innerHTML = `
+                <div>Errors: <span style="color: ${errorCount > 0 ? '#ff3333' : '#33ff33'}">${errorCount}</span></div>
+                <div>Warnings: <span style="color: ${warningCount > 0 ? '#ffff33' : '#33ff33'}">${warningCount}</span></div>
+                <div>Modules Loaded: <span style="color: ${loadedModules === totalModules ? '#33ff33' : '#ffff33'}">${loadedModules}/${totalModules}</span></div>
+                <div>Game Master: <span style="color: ${window.eliteGameMaster ? '#33ff33' : '#ff3333'}">${window.eliteGameMaster ? 'Ready' : 'Not Found'}</span></div>
+            `;
+        }
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = type;
+            logEntry.innerHTML = `<span style="color: #666;">[${timestamp}]</span> ${message}`;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+            
+            if (type === 'error') errorCount++;
+            if (type === 'warning') warningCount++;
+            updateStatus();
+            
+            // Keep only last 100 entries
+            if (logContainer.children.length > 100) {
+                logContainer.removeChild(logContainer.firstChild);
+            }
+        }
+        
+        function clearLogs() {
+            logContainer.innerHTML = '';
+            errorCount = 0;
+            warningCount = 0;
+            updateStatus();
+            log('Logs cleared', 'info');
+        }
+        
+        // Override all console methods
+        const originalConsole = {
+            log: console.log,
+            error: console.error,
+            warn: console.warn,
+            info: console.info,
+            debug: console.debug
+        };
+        
+        console.log = function(...args) {
+            originalConsole.log.apply(console, args);
+            log('LOG: ' + args.join(' '), 'info');
+        };
+        
+        console.error = function(...args) {
+            originalConsole.error.apply(console, args);
+            log('ERROR: ' + args.join(' '), 'error');
+        };
+        
+        console.warn = function(...args) {
+            originalConsole.warn.apply(console, args);
+            log('WARNING: ' + args.join(' '), 'warning');
+        };
+        
+        console.info = function(...args) {
+            originalConsole.info.apply(console, args);
+            log('INFO: ' + args.join(' '), 'info');
+        };
+        
+        console.debug = function(...args) {
+            originalConsole.debug.apply(console, args);
+            log('DEBUG: ' + args.join(' '), 'debug');
+        };
+        
+        // Catch all unhandled errors
+        window.addEventListener('error', function(event) {
+            log(`UNHANDLED ERROR: ${event.error?.message || event.message} at ${event.filename}:${event.lineno}:${event.colno}`, 'error');
+            log(`Stack: ${event.error?.stack || 'No stack trace'}`, 'debug');
+        });
+        
+        window.addEventListener('unhandledrejection', function(event) {
+            log(`UNHANDLED PROMISE REJECTION: ${event.reason}`, 'error');
+        });
+        
+        // Test functions
+        function testBasicJS() {
+            log('Testing basic JavaScript functionality...', 'info');
+            
+            try {
+                // Test basic operations
+                const testArray = [1, 2, 3];
+                const testObject = { name: 'test', value: 42 };
+                const testFunction = () => 'Hello World';
+                
+                log(`✅ Array test: ${testArray.length} items`, 'success');
+                log(`✅ Object test: ${testObject.name} = ${testObject.value}`, 'success');
+                log(`✅ Function test: ${testFunction()}`, 'success');
+                
+                // Test DOM manipulation
+                const testDiv = document.createElement('div');
+                testDiv.textContent = 'Test DOM element';
+                log('✅ DOM manipulation works', 'success');
+                
+                // Test modern JS features
+                const [first, ...rest] = testArray;
+                const { name, value } = testObject;
+                log(`✅ ES6 destructuring: first=${first}, name=${name}`, 'success');
+                
+            } catch (error) {
+                log(`❌ Basic JS test failed: ${error.message}`, 'error');
+            }
+        }
+        
+        function testCanvas() {
+            log('Testing canvas functionality...', 'info');
+            
+            try {
+                const canvas = document.createElement('canvas');
+                canvas.width = 400;
+                canvas.height = 300;
+                
+                const ctx = canvas.getContext('2d');
+                if (!ctx) {
+                    throw new Error('Cannot get 2D context');
+                }
+                
+                // Test basic drawing
+                ctx.fillStyle = '#ff0000';
+                ctx.fillRect(10, 10, 50, 50);
+                
+                ctx.strokeStyle = '#00ff00';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(70, 10, 50, 50);
+                
+                ctx.fillStyle = '#0000ff';
+                ctx.font = '16px Arial';
+                ctx.fillText('Canvas Test', 10, 100);
+                
+                log('✅ Canvas drawing operations work', 'success');
+                log(`✅ Canvas size: ${canvas.width}x${canvas.height}`, 'success');
+                
+            } catch (error) {
+                log(`❌ Canvas test failed: ${error.message}`, 'error');
+            }
+        }
+        
+        function testModules() {
+            log('Testing module availability...', 'info');
+            
+            const expectedModules = [
+                'EliteSnakeGenerator',
+                'EliteVisualEffects', 
+                'EliteBattleEngine',
+                'EliteEvolutionSystem',
+                'EliteTournamentSystem'
+            ];
+            
+            expectedModules.forEach(moduleName => {
+                if (typeof window[moduleName] !== 'undefined') {
+                    log(`✅ ${moduleName} is available`, 'success');
+                    
+                    try {
+                        // Try to instantiate
+                        if (moduleName === 'EliteSnakeGenerator') {
+                            const instance = new window[moduleName]();
+                            log(`✅ ${moduleName} can be instantiated`, 'success');
+                        } else if (moduleName === 'EliteEvolutionSystem' || moduleName === 'EliteTournamentSystem') {
+                            const instance = new window[moduleName]();
+                            log(`✅ ${moduleName} can be instantiated`, 'success');
+                        } else {
+                            log(`⚠️ ${moduleName} requires parameters for instantiation`, 'warning');
+                        }
+                    } catch (error) {
+                        log(`❌ ${moduleName} instantiation failed: ${error.message}`, 'error');
+                    }
+                } else {
+                    log(`❌ ${moduleName} is not available`, 'error');
+                }
+            });
+        }
+        
+        function testGameMaster() {
+            log('Testing Game Master...', 'info');
+            
+            if (window.eliteGameMaster) {
+                log('✅ EliteGameMaster instance found', 'success');
+                log(`✅ Initialized: ${window.eliteGameMaster.isInitialized}`, window.eliteGameMaster.isInitialized ? 'success' : 'warning');
+                log(`✅ Game Mode: ${window.eliteGameMaster.gameMode}`, 'info');
+                
+                // Test canvas
+                if (window.eliteGameMaster.canvas) {
+                    log(`✅ Canvas: ${window.eliteGameMaster.canvas.width}x${window.eliteGameMaster.canvas.height}`, 'success');
+                } else {
+                    log('❌ No canvas found in Game Master', 'error');
+                }
+                
+                // Test systems
+                const systems = ['snakeGenerator', 'visualEffects', 'battleEngine', 'evolutionSystem', 'tournamentSystem'];
+                systems.forEach(system => {
+                    if (window.eliteGameMaster[system]) {
+                        log(`✅ ${system} system loaded`, 'success');
+                    } else {
+                        log(`❌ ${system} system missing`, 'error');
+                    }
+                });
+                
+            } else {
+                log('❌ EliteGameMaster not found', 'error');
+            }
+        }
+        
+        // Module loading tracking
+        function moduleLoaded(name) {
+            loadedModules++;
+            log(`📦 ${name} loaded (${loadedModules}/${totalModules})`, 'success');
+            updateStatus();
+            
+            if (loadedModules === totalModules) {
+                log('🎉 All modules loaded! Running final tests...', 'success');
+                setTimeout(() => {
+                    testModules();
+                    testGameMaster();
+                }, 1000);
+            }
+        }
+        
+        function moduleError(name, error) {
+            log(`💥 ${name} failed to load: ${error}`, 'error');
+            updateStatus();
+        }
+        
+        // Initialize
+        log('🚀 Diagnostic system ready', 'success');
+        updateStatus();
+    </script>
+
+    <!-- Load modules with detailed tracking -->
+    <script>
+        log('📦 Loading EliteSnakeGenerator...', 'info');
+    </script>
+    <script src="elite-snake-generator.js" 
+            onload="moduleLoaded('EliteSnakeGenerator')" 
+            onerror="moduleError('EliteSnakeGenerator', 'Script load failed')"></script>
+    
+    <script>
+        log('📦 Loading EliteVisualEffects...', 'info');
+    </script>
+    <script src="elite-visual-effects.js" 
+            onload="moduleLoaded('EliteVisualEffects')" 
+            onerror="moduleError('EliteVisualEffects', 'Script load failed')"></script>
+    
+    <script>
+        log('📦 Loading EliteBattleEngine...', 'info');
+    </script>
+    <script src="elite-battle-engine.js" 
+            onload="moduleLoaded('EliteBattleEngine')" 
+            onerror="moduleError('EliteBattleEngine', 'Script load failed')"></script>
+    
+    <script>
+        log('📦 Loading EliteEvolutionSystem...', 'info');
+    </script>
+    <script src="elite-evolution-system.js" 
+            onload="moduleLoaded('EliteEvolutionSystem')" 
+            onerror="moduleError('EliteEvolutionSystem', 'Script load failed')"></script>
+    
+    <script>
+        log('📦 Loading EliteTournamentSystem...', 'info');
+    </script>
+    <script src="elite-tournament-system.js" 
+            onload="moduleLoaded('EliteTournamentSystem')" 
+            onerror="moduleError('EliteTournamentSystem', 'Script load failed')"></script>
+    
+    <script>
+        log('📦 Loading EliteGameMaster...', 'info');
+    </script>
+    <script src="elite-game-master-clean.js" 
+            onload="log('🎮 EliteGameMaster loaded', 'success')" 
+            onerror="moduleError('EliteGameMaster', 'Script load failed')"></script>
+</body>
+</html>

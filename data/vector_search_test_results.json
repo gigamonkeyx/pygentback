@@ -1,0 +1,63 @@
+{
+  "total_tests": 8,
+  "passed_tests": 8,
+  "success_rate": 100.0,
+  "test_results": [
+    {
+      "test": "Server Health",
+      "success": true,
+      "details": "Status: healthy, Uptime: 150.77s",
+      "duration_ms": 2051.4,
+      "timestamp": "2025-06-22T06:16:34.696135"
+    },
+    {
+      "test": "Root Endpoint",
+      "success": true,
+      "details": "Service: Vector Search MCP Server, Capabilities: 4, Endpoints: 4",
+      "duration_ms": 2048.91,
+      "timestamp": "2025-06-22T06:16:36.745050"
+    },
+    {
+      "test": "Collection Creation",
+      "success": true,
+      "details": "Created collection: test_collection, Dimension: 384",
+      "duration_ms": 2042.12,
+      "timestamp": "2025-06-22T06:16:38.787174"
+    },
+    {
+      "test": "List Collections",
+      "success": true,
+      "details": "Found 1 collections including test collection",
+      "duration_ms": 2051.2,
+      "timestamp": "2025-06-22T06:16:40.838377"
+    },
+    {
+      "test": "Add Documents",
+      "success": true,
+      "details": "Added 3 documents to collection",
+      "duration_ms": 2058.35,
+      "timestamp": "2025-06-22T06:16:42.898730"
+    },
+    {
+      "test": "Semantic Search",
+      "success": true,
+      "details": "Found 3 results, Best score: 0.811",
+      "duration_ms": 2051.39,
+      "timestamp": "2025-06-22T06:16:44.968118"
+    },
+    {
+      "test": "Similarity Threshold",
+      "success": true,
+      "details": "Threshold filtering working: 3 results above 0.8",
+      "duration_ms": 2049.8,
+      "timestamp": "2025-06-22T06:16:47.017914"
+    },
+    {
+      "test": "Performance Multiple Searches",
+      "success": true,
+      "details": "Completed 5 searches, Avg time: 2041.3ms, Total results: 15",
+      "duration_ms": 10206.56,
+      "timestamp": "2025-06-22T06:16:57.225473"
+    }
+  ]
+}

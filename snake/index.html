@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Battle Arena - AI Evolution</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: white;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .game-container {
+            display: flex;
+            flex: 1;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .game-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .game-canvas {
+            border: 4px solid #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            background: #2c3e50;
+        }
+
+        .game-controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn.danger {
+            background: linear-gradient(45deg, #f44336, #d32f2f);
+        }
+
+        .side-panel {
+            width: 350px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            height: fit-content;
+            backdrop-filter: blur(10px);
+        }
+
+        .snake-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid;
+        }
+
+        .snake1-card {
+            border-color: #ff6b6b;
+        }
+
+        .snake2-card {
+            border-color: #4ecdc4;
+        }
+
+        .snake-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px 8px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        .skills-section {
+            margin-top: 10px;
+        }
+
+        .skills-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #ffd700;
+        }        .skill-item {
+            background: rgba(255, 215, 0, 0.2);
+            padding: 4px 8px;
+            border-radius: 12px;
+            margin: 2px;
+            display: inline-block;
+            font-size: 0.8em;
+            color: #ffffff;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.3s;
+            position: relative;
+            cursor: help;
+        }
+
+        .skill-item:hover {
+            background: rgba(255, 215, 0, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Custom tooltip for skill items */
+        .skill-item[title]:hover::before {
+            content: attr(title);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(30, 30, 60, 0.95));
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            white-space: nowrap;
+            z-index: 1001;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 215, 0, 0.5);
+            animation: tooltipFadeIn 0.2s ease-out;
+        }
+
+        /* Tooltip arrow */
+        .skill-item[title]:hover::after {
+            content: '';
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid rgba(0, 0, 0, 0.95);
+            z-index: 1001;
+        }
+
+        @keyframes tooltipFadeIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(5px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        .lives-display {
+            text-align: center;
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .pedigree-section {
+            margin-top: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .generation {
+            font-size: 0.8em;
+            margin: 2px 0;
+            opacity: 0.8;
+        }
+
+        .powerup-display {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 215, 0, 0.9);
+            color: black;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .learning-log {
+            max-height: 200px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            margin-top: 10px;
+        }
+
+        .log-entry {
+            margin: 2px 0;
+            padding: 2px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes powerup-spawn {
+            0% { transform: scale(0) rotate(0deg); }
+            100% { transform: scale(1) rotate(360deg); }
+        }
+
+        .powerup-animation {
+            animation: powerup-spawn 0.5s ease-out;
+        }        .winners-circle {
+            margin-top: 20px;
+        }
+
+        /* Tournament Ladder Styles */
+        .tournament-ladder {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            max-width: 800px;
+            backdrop-filter: blur(10px);
+        }
+
+        .ladder-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .ladder-header h3 {
+            margin: 0;
+            color: #ffd700;
+            font-size: 1.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        #ladder-status {
+            margin-top: 10px;
+            font-size: 1.1em;
+            color: #ffffff;
+        }
+
+        .ladder-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 20px;
+        }
+
+        .ladder-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .ladder-section h4 {
+            margin: 0 0 10px 0;
+            color: #ffd700;
+            font-size: 1.1em;
+            text-align: center;
+        }
+
+        #current-match-display {
+            text-align: center;
+            padding: 10px;
+            background: rgba(255, 100, 100, 0.2);
+            border-radius: 8px;
+            border: 2px solid #ff6464;
+        }
+
+        .match-fighter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 5px 0;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+        }
+
+        .vs-divider {
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #ff6464;
+            margin: 5px 0;
+        }
+
+        #bracket-visualization {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .bracket-round {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .bracket-round::before {
+            content: attr(data-round);
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8em;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .bracket-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #ffd700;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 0 5px;
+            min-width: 60px;
+            text-align: center;
+            font-size: 0.9em;
+            position: relative;
+        }
+
+        .bracket-box.eliminated {
+            background: rgba(255, 0, 0, 0.2);
+            border-color: #ff6464;
+            opacity: 0.6;
+        }
+
+        .bracket-box.survivor {
+            background: rgba(0, 255, 0, 0.2);
+            border-color: #64ff64;
+            box-shadow: 0 0 10px rgba(100, 255, 100, 0.3);
+        }
+
+        .bracket-arrow {
+            width: 20px;
+            height: 2px;
+            background: #ffd700;
+            position: relative;
+        }
+
+        .bracket-arrow::after {
+            content: '';
+            position: absolute;
+            right: -5px;
+            top: -3px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid #ffd700;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+        }
+
+        #survivors-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .survivor-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            margin: 5px 0;
+            background: rgba(100, 255, 100, 0.1);
+            border-radius: 5px;
+            border-left: 3px solid #64ff64;
+        }
+
+        .survivor-entry.champion {
+            background: linear-gradient(45deg, rgba(255, 215, 0, 0.3), rgba(255, 165, 0, 0.3));
+            border-left-color: #ffd700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .survivor-name {
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .survivor-stats {
+            font-size: 0.8em;
+            color: #cccccc;
+        }
+
+        .uber-skill-indicator {
+            background: linear-gradient(45deg, #9b59b6, #e74c3c);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7em;
+            font-weight: bold;
+        }
+
+        @media (max-width: 1200px) {
+            .ladder-content {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🐍 Snake Battle Arena - AI Evolution 🐍</h1>
+        <p>Watch as AI snakes battle, learn, and evolve through generations!</p>
+    </div>
+
+    <div class="game-container">
+        <div class="side-panel">
+            <div id="snake1-card" class="snake-card snake1-card">
+                <div class="snake-name" id="snake1-name">Loading...</div>
+                <div class="lives-display">Lives: <span id="snake1-lives">3</span></div>
+                <div class="score-display">Score: <span id="snake1-score">0</span></div>
+                <div class="stats-grid" id="snake1-stats"></div>
+                <div class="skills-section">
+                    <div class="skills-title">Passive Skills</div>
+                    <div id="snake1-skills"></div>
+                </div>
+                <div class="pedigree-section">
+                    <div class="skills-title">Pedigree</div>
+                    <div id="snake1-pedigree"></div>
+                </div>
+            </div>
+
+            <div id="snake2-card" class="snake-card snake2-card">
+                <div class="snake-name" id="snake2-name">Loading...</div>
+                <div class="lives-display">Lives: <span id="snake2-lives">3</span></div>
+                <div class="score-display">Score: <span id="snake2-score">0</span></div>
+                <div class="stats-grid" id="snake2-stats"></div>
+                <div class="skills-section">
+                    <div class="skills-title">Passive Skills</div>
+                    <div id="snake2-skills"></div>
+                </div>
+                <div class="pedigree-section">
+                    <div class="skills-title">Pedigree</div>
+                    <div id="snake2-pedigree"></div>
+                </div>
+            </div>
+
+            <div class="learning-log">
+                <div class="skills-title">Evolution Log</div>
+                <div id="learning-log"></div>
+            </div>
+            
+            <div class="winners-circle">
+                <div class="skills-title">🏆 Winners Circle</div>
+                <div id="winners-circle" style="max-height: 150px; overflow-y: auto; background: rgba(0, 0, 0, 0.3); padding: 10px; border-radius: 5px; font-size: 0.8em;"></div>
+            </div>
+            
+            <div class="tournament-status" id="tournament-panel" style="display: none;">
+                <div class="skills-title">🏟️ Tournament Status</div>
+                <div id="tournament-info" style="background: rgba(0, 0, 0, 0.3); padding: 10px; border-radius: 5px; font-size: 0.9em; margin-bottom: 10px;"></div>
+                <div class="skills-title">🏆 Current Bracket</div>
+                <div id="tournament-bracket" style="max-height: 200px; overflow-y: auto; background: rgba(0, 0, 0, 0.3); padding: 10px; border-radius: 5px; font-size: 0.8em;"></div>
+            </div>
+        </div>        <div class="game-area">
+            <canvas id="gameCanvas" class="game-canvas" width="800" height="600"></canvas>
+            
+            <!-- Tournament Ladder Display -->
+            <div id="tournament-ladder" class="tournament-ladder" style="display: none;">
+                <div class="ladder-header">
+                    <h3>🏆 Tournament Ladder</h3>
+                    <div id="ladder-status"></div>
+                </div>
+                <div class="ladder-content">
+                    <div class="ladder-section">
+                        <h4>Current Round</h4>
+                        <div id="current-match-display"></div>
+                    </div>
+                    <div class="ladder-section">
+                        <h4>Bracket Progression</h4>
+                        <div id="bracket-visualization"></div>
+                    </div>
+                    <div class="ladder-section">
+                        <h4>Survivors</h4>
+                        <div id="survivors-list"></div>
+                    </div>
+                </div>
+            </div>
+              <div class="game-controls">
+                <button id="startBtn" class="btn">Start Battle</button>
+                <button id="tournamentBtn" class="btn" style="background: linear-gradient(45deg, #9b59b6, #8e44ad);">🏟️ Start Tournament</button>
+                <button id="pauseBtn" class="btn">Pause</button>
+                <button id="resetBtn" class="btn danger">Reset Arena</button>
+                <button id="speedBtn" class="btn">Speed: 1x</button>
+                <button id="effectsBtn" class="btn" style="background: linear-gradient(45deg, #e74c3c, #c0392b);">⚡ GPU Effects: ON</button>
+            </div>
+            <div class="powerup-display" id="powerupDisplay"></div>
+        </div>
+    </div>    <script src="webgl-effects.js"></script>
+    <script src="snake-generator.js"></script>
+    <script src="tournament-system.js"></script>
+    <script src="learning-system.js"></script>
+    <script src="snake-ai.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>

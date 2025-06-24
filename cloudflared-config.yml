@@ -1,0 +1,49 @@
+# Cloudflared Tunnel Configuration for PyGent Factory
+# This configuration creates secure tunnels for the PyGent Factory backend
+
+tunnel: 2c34f6aa-7978-4a1a-8410-50af0047925e
+credentials-file: C:\Users\Ifightcats\.cloudflared\2c34f6aa-7978-4a1a-8410-50af0047925e.json
+
+# Ingress rules for routing traffic
+ingress:
+  # API endpoints
+  - hostname: api.timpayne.net
+    service: http://localhost:8000
+    originRequest:
+      # Enable WebSocket support
+      noTLSVerify: true
+      connectTimeout: 30s
+      tlsTimeout: 10s
+      tcpKeepAlive: 30s
+      keepAliveConnections: 10
+      keepAliveTimeout: 90s
+      httpHostHeader: api.timpayne.net
+      # WebSocket specific settings
+      upgradeWebsocket: true
+      
+  # WebSocket endpoints (if separate subdomain needed)
+  - hostname: ws.timpayne.net
+    service: http://localhost:8000
+    originRequest:
+      noTLSVerify: true
+      connectTimeout: 30s
+      tlsTimeout: 10s
+      tcpKeepAlive: 30s
+      keepAliveConnections: 10
+      keepAliveTimeout: 90s
+      httpHostHeader: ws.timpayne.net
+      upgradeWebsocket: true
+      
+  # Catch-all rule (required)
+  - service: http_status:404
+
+# Tunnel-level settings
+retries: 3
+grace-period: 30s
+
+# Logging
+loglevel: info
+logfile: logs/cloudflared.log
+
+# Metrics
+metrics: localhost:8080

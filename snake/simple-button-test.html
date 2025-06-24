@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Button Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #001122;
+            color: #00ffff;
+            font-family: Arial, sans-serif;
+        }
+        
+        .test-area {
+            background: rgba(0,0,0,0.5);
+            border: 2px solid #00ffff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        button {
+            padding: 15px 30px;
+            margin: 10px;
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: linear-gradient(45deg, #0099ff, #00ccff);
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+            background: linear-gradient(45deg, #004499, #0066cc);
+        }
+        
+        #output {
+            background: #000;
+            border: 1px solid #00ffff;
+            padding: 10px;
+            margin: 10px 0;
+            height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+        }
+        
+        canvas {
+            border: 2px solid #00ffff;
+            background: #000;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Simple Button Test</h1>
+    
+    <div class="test-area">
+        <h3>Basic Button Tests</h3>
+        <button onclick="test1()">Test 1: Simple Alert</button>
+        <button onclick="test2()">Test 2: Console Log</button>
+        <button onclick="test3()">Test 3: Canvas Draw</button>
+        <button onclick="test4()">Test 4: Load Game Classes</button>
+    </div>
+    
+    <div class="test-area">
+        <h3>Output Log</h3>
+        <div id="output"></div>
+    </div>
+    
+    <div class="test-area">
+        <h3>Canvas Test</h3>
+        <canvas id="test-canvas" width="400" height="200"></canvas>
+    </div>
+
+    <script>
+        // Logging function
+        function log(message) {
+            const output = document.getElementById('output');
+            const timestamp = new Date().toLocaleTimeString();
+            output.innerHTML += `<div style="color: #00ffff;">[${timestamp}] ${message}</div>`;
+            output.scrollTop = output.scrollHeight;
+            console.log(message);
+        }
+        
+        // Test functions
+        function test1() {
+            log('Test 1: Button clicked successfully!');
+            alert('Button test 1 works!');
+        }
+        
+        function test2() {
+            log('Test 2: Console logging works!');
+            console.log('This is a console test');
+        }
+        
+        function test3() {
+            log('Test 3: Drawing on canvas...');
+            
+            const canvas = document.getElementById('test-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.fillStyle = '#001122';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw something
+            ctx.fillStyle = '#00ffff';
+            ctx.fillRect(50, 50, 100, 50);
+            
+            ctx.fillStyle = '#ffff00';
+            ctx.font = '20px Arial';
+            ctx.fillText('Canvas Works!', 200, 80);
+            
+            log('Test 3: Canvas drawing complete!');
+        }
+        
+        function test4() {
+            log('Test 4: Testing game class loading...');
+            
+            try {
+                // Test if EliteSnakeGenerator exists
+                if (typeof EliteSnakeGenerator !== 'undefined') {
+                    log('✅ EliteSnakeGenerator class found');
+                    
+                    const generator = new EliteSnakeGenerator();
+                    log('✅ EliteSnakeGenerator instance created');
+                    
+                    const snake = generator.generateEliteSnake();
+                    log(`✅ Snake generated: ${snake.name} (${snake.species})`);
+                    
+                } else {
+                    log('❌ EliteSnakeGenerator class not found');
+                }
+                
+                // Test other classes
+                const classes = ['EliteVisualEffects', 'EliteBattleEngine', 'EliteEvolutionSystem', 'EliteTournamentSystem'];
+                classes.forEach(className => {
+                    if (typeof window[className] !== 'undefined') {
+                        log(`✅ ${className} class found`);
+                    } else {
+                        log(`❌ ${className} class not found`);
+                    }
+                });
+                
+            } catch (error) {
+                log(`❌ Test 4 error: ${error.message}`);
+            }
+        }
+        
+        // Page load test
+        document.addEventListener('DOMContentLoaded', () => {
+            log('🚀 Page loaded, DOM ready');
+        });
+        
+        window.addEventListener('load', () => {
+            log('🎯 All resources loaded');
+        });
+        
+        log('📜 Script initialized');
+    </script>
+    
+    <!-- Try to load game scripts -->
+    <script>
+        log('📦 Loading game scripts...');
+    </script>
+    <script src="elite-snake-generator.js" onload="log('✅ EliteSnakeGenerator loaded')" onerror="log('❌ EliteSnakeGenerator failed to load')"></script>
+    <script src="elite-visual-effects.js" onload="log('✅ EliteVisualEffects loaded')" onerror="log('❌ EliteVisualEffects failed to load')"></script>
+    <script src="elite-battle-engine.js" onload="log('✅ EliteBattleEngine loaded')" onerror="log('❌ EliteBattleEngine failed to load')"></script>
+    <script src="elite-evolution-system.js" onload="log('✅ EliteEvolutionSystem loaded')" onerror="log('❌ EliteEvolutionSystem failed to load')"></script>
+    <script src="elite-tournament-system.js" onload="log('✅ EliteTournamentSystem loaded')" onerror="log('❌ EliteTournamentSystem failed to load')"></script>
+</body>
+</html>

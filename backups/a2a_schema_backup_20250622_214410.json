@@ -1,0 +1,1496 @@
+{
+  "timestamp": "2025-06-22T21:44:09.981789",
+  "database_type": "sqlite",
+  "tables": {
+    "agents": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "name",
+          "type": "VARCHAR(255)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "type",
+          "type": "VARCHAR(100)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "capabilities",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "config",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "status",
+          "type": "VARCHAR(50)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "created_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "updated_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        }
+      ],
+      "create_sql": "CREATE TABLE agents (\n\tid VARCHAR(36) NOT NULL, \n\tname VARCHAR(255) NOT NULL, \n\ttype VARCHAR(100) NOT NULL, \n\tcapabilities JSON NOT NULL, \n\tconfig JSON NOT NULL, \n\tstatus VARCHAR(50) NOT NULL, \n\tcreated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tupdated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tPRIMARY KEY (id)\n)"
+    },
+    "documents": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "title",
+          "type": "VARCHAR(500)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "content",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "document_type",
+          "type": "VARCHAR(100)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "source_url",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "meta_data",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "embedding",
+          "type": "JSON",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "created_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "updated_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        }
+      ],
+      "create_sql": "CREATE TABLE documents (\n\tid VARCHAR(36) NOT NULL, \n\ttitle VARCHAR(500) NOT NULL, \n\tcontent TEXT NOT NULL, \n\tdocument_type VARCHAR(100) NOT NULL, \n\tsource_url TEXT, \n\tmeta_data JSON NOT NULL, \n\tembedding JSON, \n\tcreated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tupdated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tPRIMARY KEY (id)\n)"
+    },
+    "servers": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "name",
+          "type": "VARCHAR(255)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "command",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "capabilities",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "transport",
+          "type": "VARCHAR(50)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "config",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "status",
+          "type": "VARCHAR(50)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "created_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "updated_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        }
+      ],
+      "create_sql": "CREATE TABLE servers (\n\tid VARCHAR(36) NOT NULL, \n\tname VARCHAR(255) NOT NULL, \n\tcommand JSON NOT NULL, \n\tcapabilities JSON NOT NULL, \n\ttransport VARCHAR(50) NOT NULL, \n\tconfig JSON NOT NULL, \n\tstatus VARCHAR(50) NOT NULL, \n\tcreated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tupdated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tPRIMARY KEY (id), \n\tCONSTRAINT uq_servers_name UNIQUE (name), \n\tUNIQUE (name)\n)"
+    },
+    "test_cases": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "name",
+          "type": "VARCHAR(255)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "description",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "input_data",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "expected_output",
+          "type": "JSON",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "category",
+          "type": "VARCHAR(100)",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "difficulty",
+          "type": "VARCHAR(50)",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "created_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "updated_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        }
+      ],
+      "create_sql": "CREATE TABLE test_cases (\n\tid VARCHAR(36) NOT NULL, \n\tname VARCHAR(255) NOT NULL, \n\tdescription TEXT, \n\tinput_data JSON NOT NULL, \n\texpected_output JSON, \n\tcategory VARCHAR(100), \n\tdifficulty VARCHAR(50), \n\tcreated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tupdated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tPRIMARY KEY (id)\n)"
+    },
+    "agent_memory": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "agent_id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "memory_type",
+          "type": "VARCHAR(100)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "content",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "meta_data",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "embedding",
+          "type": "JSON",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "created_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "updated_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        }
+      ],
+      "create_sql": "CREATE TABLE agent_memory (\n\tid VARCHAR(36) NOT NULL, \n\tagent_id VARCHAR(36) NOT NULL, \n\tmemory_type VARCHAR(100) NOT NULL, \n\tcontent TEXT NOT NULL, \n\tmeta_data JSON NOT NULL, \n\tembedding JSON, \n\tcreated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tupdated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tPRIMARY KEY (id), \n\tFOREIGN KEY(agent_id) REFERENCES agents (id) ON DELETE CASCADE\n)"
+    },
+    "document_chunks": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "document_id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "chunk_index",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "content",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "embedding",
+          "type": "JSON",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "meta_data",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "created_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "updated_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        }
+      ],
+      "create_sql": "CREATE TABLE document_chunks (\n\tid VARCHAR(36) NOT NULL, \n\tdocument_id VARCHAR(36) NOT NULL, \n\tchunk_index INTEGER NOT NULL, \n\tcontent TEXT NOT NULL, \n\tembedding JSON, \n\tmeta_data JSON NOT NULL, \n\tcreated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tupdated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tPRIMARY KEY (id), \n\tFOREIGN KEY(document_id) REFERENCES documents (id) ON DELETE CASCADE\n)"
+    },
+    "tools": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "server_id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "name",
+          "type": "VARCHAR(255)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "description",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "parameters",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "created_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "updated_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        }
+      ],
+      "create_sql": "CREATE TABLE tools (\n\tid VARCHAR(36) NOT NULL, \n\tserver_id VARCHAR(36) NOT NULL, \n\tname VARCHAR(255) NOT NULL, \n\tdescription TEXT, \n\tparameters JSON NOT NULL, \n\tcreated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tupdated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tPRIMARY KEY (id), \n\tCONSTRAINT uq_tools_server_name UNIQUE (server_id, name), \n\tFOREIGN KEY(server_id) REFERENCES servers (id) ON DELETE CASCADE\n)"
+    },
+    "test_results": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "test_case_id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "agent_id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "actual_output",
+          "type": "JSON",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "score",
+          "type": "FLOAT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "execution_time_ms",
+          "type": "INTEGER",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "status",
+          "type": "VARCHAR(50)",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "error_message",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "created_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "updated_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        }
+      ],
+      "create_sql": "CREATE TABLE test_results (\n\tid VARCHAR(36) NOT NULL, \n\ttest_case_id VARCHAR(36) NOT NULL, \n\tagent_id VARCHAR(36) NOT NULL, \n\tactual_output JSON, \n\tscore FLOAT, \n\texecution_time_ms INTEGER, \n\tstatus VARCHAR(50), \n\terror_message TEXT, \n\tcreated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tupdated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tPRIMARY KEY (id), \n\tFOREIGN KEY(test_case_id) REFERENCES test_cases (id) ON DELETE CASCADE, \n\tFOREIGN KEY(agent_id) REFERENCES agents (id) ON DELETE CASCADE\n)"
+    },
+    "knowledge_graph": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "subject_entity",
+          "type": "VARCHAR(255)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "predicate",
+          "type": "VARCHAR(255)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "object_entity",
+          "type": "VARCHAR(255)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "confidence",
+          "type": "FLOAT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "source_document_id",
+          "type": "VARCHAR(36)",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "meta_data",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "created_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "updated_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        }
+      ],
+      "create_sql": "CREATE TABLE knowledge_graph (\n\tid VARCHAR(36) NOT NULL, \n\tsubject_entity VARCHAR(255) NOT NULL, \n\tpredicate VARCHAR(255) NOT NULL, \n\tobject_entity VARCHAR(255) NOT NULL, \n\tconfidence FLOAT, \n\tsource_document_id VARCHAR(36), \n\tmeta_data JSON NOT NULL, \n\tcreated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tupdated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tPRIMARY KEY (id), \n\tFOREIGN KEY(source_document_id) REFERENCES documents (id) ON DELETE SET NULL\n)"
+    },
+    "agent_sessions": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "agent_id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "session_type",
+          "type": "VARCHAR(100)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "start_time",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "end_time",
+          "type": "DATETIME",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "status",
+          "type": "VARCHAR(50)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "meta_data",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "created_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "updated_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        }
+      ],
+      "create_sql": "CREATE TABLE agent_sessions (\n\tid VARCHAR(36) NOT NULL, \n\tagent_id VARCHAR(36) NOT NULL, \n\tsession_type VARCHAR(100) NOT NULL, \n\tstart_time DATETIME NOT NULL, \n\tend_time DATETIME, \n\tstatus VARCHAR(50) NOT NULL, \n\tmeta_data JSON NOT NULL, \n\tcreated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tupdated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tPRIMARY KEY (id), \n\tFOREIGN KEY(agent_id) REFERENCES agents (id) ON DELETE CASCADE\n)"
+    },
+    "model_performance": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "model_name",
+          "type": "VARCHAR(255)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "model_size_gb",
+          "type": "FLOAT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "usefulness_score",
+          "type": "FLOAT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "speed_rating",
+          "type": "VARCHAR(50)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "speed_seconds",
+          "type": "FLOAT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "gpu_utilization",
+          "type": "FLOAT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "gpu_layers_offloaded",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "gpu_layers_total",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "context_window",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "parameters_billions",
+          "type": "FLOAT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "architecture",
+          "type": "VARCHAR(100)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "best_use_cases",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 13,
+          "name": "cost_per_token",
+          "type": "FLOAT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 14,
+          "name": "last_tested",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 15,
+          "name": "test_results",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 16,
+          "name": "user_ratings",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 17,
+          "name": "performance_metrics",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 18,
+          "name": "created_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        },
+        {
+          "cid": 19,
+          "name": "updated_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        }
+      ],
+      "create_sql": "CREATE TABLE model_performance (\n\tid VARCHAR(36) NOT NULL, \n\tmodel_name VARCHAR(255) NOT NULL, \n\tmodel_size_gb FLOAT NOT NULL, \n\tusefulness_score FLOAT NOT NULL, \n\tspeed_rating VARCHAR(50) NOT NULL, \n\tspeed_seconds FLOAT, \n\tgpu_utilization FLOAT NOT NULL, \n\tgpu_layers_offloaded INTEGER NOT NULL, \n\tgpu_layers_total INTEGER NOT NULL, \n\tcontext_window INTEGER NOT NULL, \n\tparameters_billions FLOAT NOT NULL, \n\tarchitecture VARCHAR(100) NOT NULL, \n\tbest_use_cases JSON NOT NULL, \n\tcost_per_token FLOAT, \n\tlast_tested DATETIME NOT NULL, \n\ttest_results JSON NOT NULL, \n\tuser_ratings JSON NOT NULL, \n\tperformance_metrics JSON NOT NULL, \n\tcreated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tupdated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tPRIMARY KEY (id), \n\tCONSTRAINT uq_model_performance_name UNIQUE (model_name), \n\tUNIQUE (model_name)\n)"
+    },
+    "users": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "username",
+          "type": "VARCHAR(255)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "email",
+          "type": "VARCHAR(255)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "password_hash",
+          "type": "VARCHAR(255)",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "role",
+          "type": "VARCHAR(50)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "is_active",
+          "type": "BOOLEAN",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "is_verified",
+          "type": "BOOLEAN",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "last_login",
+          "type": "DATETIME",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "oauth_providers",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "preferences",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "meta_data",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "created_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "updated_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        }
+      ],
+      "create_sql": "CREATE TABLE users (\n\tid VARCHAR(36) NOT NULL, \n\tusername VARCHAR(255) NOT NULL, \n\temail VARCHAR(255) NOT NULL, \n\tpassword_hash VARCHAR(255), \n\trole VARCHAR(50) NOT NULL, \n\tis_active BOOLEAN NOT NULL, \n\tis_verified BOOLEAN NOT NULL, \n\tlast_login DATETIME, \n\toauth_providers JSON NOT NULL, \n\tpreferences JSON NOT NULL, \n\tmeta_data JSON NOT NULL, \n\tcreated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tupdated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tPRIMARY KEY (id), \n\tCONSTRAINT uq_users_username UNIQUE (username), \n\tCONSTRAINT uq_users_email UNIQUE (email), \n\tUNIQUE (username), \n\tUNIQUE (email)\n)"
+    },
+    "oauth_tokens": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "user_id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "provider",
+          "type": "VARCHAR(100)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "access_token",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "refresh_token",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "token_type",
+          "type": "VARCHAR(50)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "expires_at",
+          "type": "DATETIME",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "scopes",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "provider_user_id",
+          "type": "VARCHAR(255)",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "provider_user_info",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "created_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "updated_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        }
+      ],
+      "create_sql": "CREATE TABLE oauth_tokens (\n\tid VARCHAR(36) NOT NULL, \n\tuser_id VARCHAR(36) NOT NULL, \n\tprovider VARCHAR(100) NOT NULL, \n\taccess_token TEXT NOT NULL, \n\trefresh_token TEXT, \n\ttoken_type VARCHAR(50) NOT NULL, \n\texpires_at DATETIME, \n\tscopes JSON NOT NULL, \n\tprovider_user_id VARCHAR(255), \n\tprovider_user_info JSON NOT NULL, \n\tcreated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tupdated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tPRIMARY KEY (id), \n\tCONSTRAINT uq_oauth_tokens_user_provider UNIQUE (user_id, provider), \n\tFOREIGN KEY(user_id) REFERENCES users (id) ON DELETE CASCADE\n)"
+    },
+    "documentation_files": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "user_id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "title",
+          "type": "VARCHAR(500)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "file_path",
+          "type": "VARCHAR(1000)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "content",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "category",
+          "type": "VARCHAR(100)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "meta_data",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "created_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "updated_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        }
+      ],
+      "create_sql": "CREATE TABLE documentation_files (\n\tid VARCHAR(36) NOT NULL, \n\tuser_id VARCHAR(36) NOT NULL, \n\ttitle VARCHAR(500) NOT NULL, \n\tfile_path VARCHAR(1000) NOT NULL, \n\tcontent TEXT NOT NULL, \n\tcategory VARCHAR(100) NOT NULL, \n\tmeta_data JSON NOT NULL, \n\tcreated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tupdated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tPRIMARY KEY (id), \n\tFOREIGN KEY(user_id) REFERENCES users (id) ON DELETE CASCADE\n)"
+    },
+    "research_sessions": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "user_id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "title",
+          "type": "VARCHAR(500)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "description",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "research_query",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "research_scope",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "agent_config",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "status",
+          "type": "VARCHAR(50)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "results_summary",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "created_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "updated_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        }
+      ],
+      "create_sql": "CREATE TABLE research_sessions (\n\tid VARCHAR(36) NOT NULL, \n\tuser_id VARCHAR(36) NOT NULL, \n\ttitle VARCHAR(500) NOT NULL, \n\tdescription TEXT, \n\tresearch_query TEXT NOT NULL, \n\tresearch_scope JSON NOT NULL, \n\tagent_config JSON NOT NULL, \n\tstatus VARCHAR(50) NOT NULL, \n\tresults_summary TEXT, \n\tcreated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tupdated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tPRIMARY KEY (id), \n\tFOREIGN KEY(user_id) REFERENCES users (id) ON DELETE CASCADE\n)"
+    },
+    "documentation_versions": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "documentation_file_id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "version_number",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "content",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "change_summary",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "created_by",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "created_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "updated_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        }
+      ],
+      "create_sql": "CREATE TABLE documentation_versions (\n\tid VARCHAR(36) NOT NULL, \n\tdocumentation_file_id VARCHAR(36) NOT NULL, \n\tversion_number INTEGER NOT NULL, \n\tcontent TEXT NOT NULL, \n\tchange_summary TEXT, \n\tcreated_by VARCHAR(36) NOT NULL, \n\tcreated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tupdated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tPRIMARY KEY (id), \n\tFOREIGN KEY(documentation_file_id) REFERENCES documentation_files (id) ON DELETE CASCADE, \n\tFOREIGN KEY(created_by) REFERENCES users (id)\n)"
+    },
+    "documentation_tags": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "documentation_file_id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "tag_name",
+          "type": "VARCHAR(100)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "created_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "updated_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        }
+      ],
+      "create_sql": "CREATE TABLE documentation_tags (\n\tid VARCHAR(36) NOT NULL, \n\tdocumentation_file_id VARCHAR(36) NOT NULL, \n\ttag_name VARCHAR(100) NOT NULL, \n\tcreated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tupdated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tPRIMARY KEY (id), \n\tFOREIGN KEY(documentation_file_id) REFERENCES documentation_files (id) ON DELETE CASCADE\n)"
+    },
+    "documentation_workflows": {
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "user_id",
+          "type": "VARCHAR(36)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "research_session_id",
+          "type": "VARCHAR(36)",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "workflow_type",
+          "type": "VARCHAR(100)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "title",
+          "type": "VARCHAR(500)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "description",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "parameters",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "status",
+          "type": "VARCHAR(50)",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "result_data",
+          "type": "JSON",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "created_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "updated_at",
+          "type": "DATETIME",
+          "notnull": 1,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "pk": 0
+        }
+      ],
+      "create_sql": "CREATE TABLE documentation_workflows (\n\tid VARCHAR(36) NOT NULL, \n\tuser_id VARCHAR(36) NOT NULL, \n\tresearch_session_id VARCHAR(36), \n\tworkflow_type VARCHAR(100) NOT NULL, \n\ttitle VARCHAR(500) NOT NULL, \n\tdescription TEXT, \n\tparameters JSON NOT NULL, \n\tstatus VARCHAR(50) NOT NULL, \n\tresult_data JSON NOT NULL, \n\tcreated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tupdated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, \n\tPRIMARY KEY (id), \n\tFOREIGN KEY(user_id) REFERENCES users (id) ON DELETE CASCADE, \n\tFOREIGN KEY(research_session_id) REFERENCES research_sessions (id) ON DELETE SET NULL\n)"
+    }
+  }
+}

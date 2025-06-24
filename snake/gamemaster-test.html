@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Master Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #001122;
+            color: #00ffff;
+            font-family: 'Courier New', monospace;
+        }
+        #debug-log {
+            background: #000;
+            border: 1px solid #00ffff;
+            padding: 10px;
+            height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        canvas {
+            border: 2px solid #00ffff;
+            background: #000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Game Master Debug Test</h1>
+    <div id="debug-log"></div>
+    <canvas id="game-canvas" width="800" height="600"></canvas>
+
+    <script>
+        // Override console.log to show in page
+        const debugLog = document.getElementById('debug-log');
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            debugLog.textContent += '[LOG] ' + args.join(' ') + '\n';
+            debugLog.scrollTop = debugLog.scrollHeight;
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            debugLog.textContent += '[ERROR] ' + args.join(' ') + '\n';
+            debugLog.scrollTop = debugLog.scrollHeight;
+        };
+        
+        console.log('🐍 Game Master test starting...');
+    </script>
+
+    <!-- Load all dependencies first -->
+    <script src="elite-snake-generator.js"></script>
+    <script src="elite-visual-effects.js"></script>
+    <script src="elite-battle-engine.js"></script>
+    <script src="elite-evolution-system.js"></script>
+    <script src="elite-tournament-system.js"></script>
+    
+    <!-- Load game master -->
+    <script src="elite-game-master-fixed.js"></script>
+    
+    <script>
+        console.log('📜 All scripts loaded, page ready');
+    </script>
+</body>
+</html>

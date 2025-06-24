@@ -1,0 +1,62 @@
+{
+  "timestamp": "20250614_210851",
+  "duration": 8.231919050216675,
+  "results": {
+    "backend_endpoints": {
+      "/api/agents": {
+        "status": 404,
+        "success": false,
+        "response_time": 2.050676
+      },
+      "/api/agents/dashboard/export": {
+        "status": 404,
+        "success": false,
+        "response_time": 2.039878
+      },
+      "/api/agents/types/available": {
+        "status": 404,
+        "success": false,
+        "response_time": 2.042791
+      },
+      "/api/agents/health/summary": {
+        "status": 404,
+        "success": false,
+        "response_time": 2.03601
+      }
+    },
+    "dashboard": {
+      "endpoint_available": true,
+      "test_approach": "API endpoint test",
+      "note": "Dashboard functionality available via API"
+    },
+    "providers": {
+      "openai": {
+        "initialization": false,
+        "error": "OpenAIProvider.__init__() missing 1 required positional argument: 'config'"
+      },
+      "openrouter": {
+        "initialization": false,
+        "error": "OpenRouterProvider.__init__() missing 1 required positional argument: 'config'"
+      }
+    },
+    "agent_factory": {
+      "initialization": true,
+      "available_types": [
+        "reasoning",
+        "search",
+        "general",
+        "evolution",
+        "coding",
+        "research",
+        "basic",
+        "nlp"
+      ],
+      "type_count": 8
+    },
+    "frontend": {
+      "accessible": true,
+      "status_code": 200,
+      "response_time": 0.006037
+    }
+  }
+}

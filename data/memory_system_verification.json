@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-06-06T00:37:53.675828",
+  "tests": {
+    "faiss": {
+      "status": "pass",
+      "version": "1.11.0"
+    },
+    "gpu_ops": {
+      "status": "pass",
+      "gpu_enabled": true,
+      "top_score": 0.7935971617698669
+    },
+    "vector_compat": {
+      "status": "pass",
+      "documents_added": 1,
+      "search_results": 1
+    },
+    "database_config": {
+      "status": "pass",
+      "url_configured": true
+    },
+    "embedding": {
+      "status": "pass",
+      "dimension": 1536,
+      "provider": "openai"
+    },
+    "integration": {
+      "status": "pass",
+      "pipeline_complete": true,
+      "search_results": 1,
+      "similarity_score": 0.0
+    }
+  },
+  "overall_status": "all_pass"
+}

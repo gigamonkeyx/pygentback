@@ -1,0 +1,74 @@
+{
+  "overall_success_rate": 100.0,
+  "overall_avg_response_time_ms": 24.96,
+  "total_throughput_rps": 3621.69,
+  "total_requests": 800,
+  "successful_requests": 800,
+  "performance_rating": "EXCELLENT",
+  "benchmark_results": [
+    {
+      "test_name": "Health Check Performance",
+      "success_rate": 100.0,
+      "avg_response_time_ms": 49.03,
+      "p95_response_time_ms": 88.95,
+      "requests_per_second": 385.36,
+      "total_requests": 200,
+      "errors": []
+    },
+    {
+      "test_name": "A2A Agent Discovery",
+      "success_rate": 100.0,
+      "avg_response_time_ms": 43.41,
+      "p95_response_time_ms": 93.08,
+      "requests_per_second": 335.38,
+      "total_requests": 150,
+      "errors": []
+    },
+    {
+      "test_name": "Document Processing Info",
+      "success_rate": 100.0,
+      "avg_response_time_ms": 12.99,
+      "p95_response_time_ms": 18.0,
+      "requests_per_second": 719.43,
+      "total_requests": 100,
+      "errors": []
+    },
+    {
+      "test_name": "Vector Search Info",
+      "success_rate": 100.0,
+      "avg_response_time_ms": 31.59,
+      "p95_response_time_ms": 215.61,
+      "requests_per_second": 308.06,
+      "total_requests": 100,
+      "errors": []
+    },
+    {
+      "test_name": "A2A MCP Server Info",
+      "success_rate": 100.0,
+      "avg_response_time_ms": 12.48,
+      "p95_response_time_ms": 16.95,
+      "requests_per_second": 740.75,
+      "total_requests": 100,
+      "errors": []
+    },
+    {
+      "test_name": "Simple A2A Agent Info",
+      "success_rate": 100.0,
+      "avg_response_time_ms": 12.27,
+      "p95_response_time_ms": 22.0,
+      "requests_per_second": 763.64,
+      "total_requests": 100,
+      "errors": []
+    },
+    {
+      "test_name": "A2A Message Sending",
+      "success_rate": 100.0,
+      "avg_response_time_ms": 12.97,
+      "p95_response_time_ms": 20.37,
+      "requests_per_second": 369.07,
+      "total_requests": 50,
+      "errors": []
+    }
+  ],
+  "timestamp": "2025-06-22T08:20:52.652560"
+}

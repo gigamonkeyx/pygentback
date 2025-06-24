@@ -1,0 +1,19 @@
+# PyGent Factory - GPU Requirements
+# GPU-accelerated components for enhanced performance
+
+# FAISS for GPU vector search
+faiss-gpu>=1.7.4
+
+# GPU monitoring
+GPUtil>=1.4.0
+
+# CUDA utilities (if needed)
+# cupy-cuda11x>=12.0.0  # Uncomment for CUDA 11.x
+# cupy-cuda12x>=12.0.0  # Uncomment for CUDA 12.x
+
+# PyTorch with CUDA support (optional)
+# torch>=2.1.0+cu118 --index-url https://download.pytorch.org/whl/cu118
+# torchvision>=0.16.0+cu118 --index-url https://download.pytorch.org/whl/cu118
+
+# TensorFlow with GPU support (optional)
+# tensorflow[and-cuda]>=2.15.0

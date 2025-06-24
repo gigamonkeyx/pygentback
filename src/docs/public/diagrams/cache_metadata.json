@@ -1,0 +1,50 @@
+{
+  "debug_index_diagram_1": {
+    "hash": "b1e0b2f340bd9ad57f57b143ceaa9659497b7b523ef63b7e0c6a4b83ba852236",
+    "generated_at": "2025-06-04T22:19:55.617915",
+    "source_file": "D:\\mcp\\pygent-factory\\src\\docs\\public\\diagrams\\debug_index_diagram_1.mmd",
+    "type": "standalone"
+  },
+  "index_diagram_1": {
+    "hash": "5946149940f42de6bd93b4d85ef342038946b01fae57edd2eb1fa41e7f8cc908",
+    "generated_at": "2025-06-04T22:20:01.865883",
+    "source_file": "D:\\mcp\\pygent-factory\\src\\docs\\index.md",
+    "type": "embedded"
+  },
+  "README_diagram_1": {
+    "hash": "b31c2915087a86dcd5207a9ecdc1e1efee098d536d7763deafcb0a1e73b7a1c5",
+    "generated_at": "2025-06-04T22:20:04.025693",
+    "source_file": "D:\\mcp\\pygent-factory\\src\\docs\\README.md",
+    "type": "embedded"
+  },
+  "architecture_diagram_1": {
+    "hash": "29a4a2db29ae14ad737c86c10c040e166869f3e42bcc10530df86dbfb4080987",
+    "generated_at": "2025-06-04T22:20:06.366861",
+    "source_file": "D:\\mcp\\pygent-factory\\src\\docs\\concepts\\architecture.md",
+    "type": "embedded"
+  },
+  "architecture_diagram_2": {
+    "hash": "f22fd26da99327443fda3797af7340fd2485a03a2417941c518379269f0c62b4",
+    "generated_at": "2025-06-04T22:20:08.528015",
+    "source_file": "D:\\mcp\\pygent-factory\\src\\docs\\concepts\\architecture.md",
+    "type": "embedded"
+  },
+  "architecture_diagram_3": {
+    "hash": "d0d3888950a195040a6367a14833ec060bd82bf485b26b1a48166dca329580d6",
+    "generated_at": "2025-06-04T22:20:10.681564",
+    "source_file": "D:\\mcp\\pygent-factory\\src\\docs\\concepts\\architecture.md",
+    "type": "embedded"
+  },
+  "mcp-protocol_diagram_1": {
+    "hash": "fa1589b6f38ebc62aa4d464bd025dab4e6c2f5480ab0bead9760071d29f3cd3a",
+    "generated_at": "2025-06-04T22:20:12.865116",
+    "source_file": "D:\\mcp\\pygent-factory\\src\\docs\\concepts\\mcp-protocol.md",
+    "type": "embedded"
+  },
+  "introduction_diagram_1": {
+    "hash": "22fcb72fda206870df73f0a3b6edbd3b84a741e3d54a53013c7d23e04552597e",
+    "generated_at": "2025-06-04T22:20:15.142185",
+    "source_file": "D:\\mcp\\pygent-factory\\src\\docs\\getting-started\\introduction.md",
+    "type": "embedded"
+  }
+}

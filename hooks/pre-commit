@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+"""
+Git Hook: Pre-commit Feature Registry Check
+
+This hook runs before each commit to ensure that:
+1. New features are properly documented
+2. Critical features have tests
+3. Feature registry is up to date
+
+To install this hook:
+1. Copy to .git/hooks/pre-commit
+2. Make executable: chmod +x .git/hooks/pre-commit
+
+Or run: python setup_git_hooks.py
+"""
+
+import sys
+import subprocess
+import os
+from pathlib import Path
+
+def main():
+    """Run pre-commit feature registry checks"""
+    
+    # Change to project root
+    project_root = Path(__file__).parent.parent
+    os.chdir(project_root)
+    
+    print("🔍 Running feature registry pre-commit checks...")
+    
+    try:
+        # Run the feature workflow integration
+        result = subprocess.run([
+            sys.executable, 
+            "feature_workflow_integration.py", 
+            "pre-commit"
+        ], capture_output=True, text=True)
+        
+        if result.returncode == 0:
+            print("✅ Feature registry checks passed")
+            return 0
+        else:
+            print("❌ Feature registry checks failed")
+            print(result.stdout)
+            print(result.stderr)
+            
+            # Ask user if they want to commit anyway
+            response = input("\nCommit anyway? (y/N): ").lower()
+            if response == 'y':
+                print("⚠️  Proceeding with commit despite warnings")
+                return 0
+            else:
+                print("🛑 Commit blocked. Fix issues and try again.")
+                return 1
+    
+    except Exception as e:
+        print(f"❌ Error running feature registry checks: {e}")
+        # Don't block commit if the check system fails
+        print("⚠️  Proceeding with commit (check system unavailable)")
+        return 0
+
+if __name__ == "__main__":
+    sys.exit(main())

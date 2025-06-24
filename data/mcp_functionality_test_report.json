@@ -1,0 +1,57 @@
+{
+  "timestamp": "2025-06-07 19:57:23",
+  "node_npm_status": {
+    "node": {
+      "status": "available",
+      "version": "v20.10.0"
+    },
+    "npm": {
+      "status": "error",
+      "error": "[WinError 2] The system cannot find the file specified"
+    },
+    "npx": {
+      "status": "error",
+      "error": "[WinError 2] The system cannot find the file specified"
+    }
+  },
+  "mcp_packages": {
+    "@modelcontextprotocol/server-filesystem": {
+      "status": "error",
+      "error": "[WinError 2] The system cannot find the file specified"
+    },
+    "@modelcontextprotocol/server-github": {
+      "status": "error",
+      "error": "[WinError 2] The system cannot find the file specified"
+    },
+    "@modelcontextprotocol/server-git": {
+      "status": "error",
+      "error": "[WinError 2] The system cannot find the file specified"
+    }
+  },
+  "server_tests": {
+    "filesystem-local": {
+      "status": "success",
+      "message": "Server started and responsive"
+    },
+    "context7": {
+      "status": "success",
+      "message": "Server started and responsive"
+    },
+    "github-mcp": {
+      "status": "success",
+      "message": "Server started and responsive"
+    },
+    "git-mcp": {
+      "status": "success",
+      "message": "Server started and responsive"
+    }
+  },
+  "summary": {
+    "total_servers_tested": 4,
+    "successful_servers": 4,
+    "failed_servers": 0,
+    "node_available": true,
+    "npm_available": false,
+    "npx_available": false
+  }
+}

@@ -1,0 +1,353 @@
+{
+  "timestamp": "2025-06-15T02:24:33.744953",
+  "statistics": {
+    "total_agents": 5,
+    "active_agents": 0,
+    "llm_agents": 3,
+    "lightweight_agents": 2,
+    "hybrid_agents": 0,
+    "total_requests_handled": 0,
+    "average_response_time": 0.0,
+    "system_health_score": 1.0,
+    "tot_usage_percentage": 0.0,
+    "framework_distribution": {
+      "llm_based": 2,
+      "lightweight": 1,
+      "research": 1,
+      "integration": 1
+    },
+    "capability_distribution": {
+      "advanced": 1,
+      "intermediate": 3,
+      "expert": 1
+    },
+    "uptime_hours": 0.0,
+    "available_agents": 5,
+    "agent_availability_rate": 1.0,
+    "avg_agent_utilization": 0.5,
+    "avg_agent_performance": 0.9,
+    "total_tasks_processed": 0,
+    "recent_success_rate": 1.0,
+    "capabilities": [],
+    "agent_types": [],
+    "active_health_checks": 0,
+    "last_updated": "2025-06-15T02:24:31.725092"
+  },
+  "agent_configurations": {
+    "reasoning_001": {
+      "agent_id": "reasoning_001",
+      "name": "ToT Reasoning Agent",
+      "agent_type": "reasoning",
+      "framework_type": "AgentFrameworkType.LLM_BASED",
+      "capability_level": "AgentCapabilityLevel.ADVANCED",
+      "llm_requirement": "LLMRequirement.REQUIRED",
+      "enabled_capabilities": [
+        "complex_reasoning",
+        "problem_solving",
+        "logical_analysis"
+      ],
+      "mcp_tools": [],
+      "model_name": "deepseek-r1:latest",
+      "uses_tot": true,
+      "memory_enabled": true,
+      "max_concurrent_tasks": 1,
+      "timeout_seconds": 300,
+      "custom_config": {},
+      "created_at": "2025-06-15 02:24:31.723091",
+      "last_updated": "2025-06-15 02:24:31.724089"
+    },
+    "coding_001": {
+      "agent_id": "coding_001",
+      "name": "Code Generation Agent",
+      "agent_type": "coding",
+      "framework_type": "AgentFrameworkType.LLM_BASED",
+      "capability_level": "AgentCapabilityLevel.INTERMEDIATE",
+      "llm_requirement": "LLMRequirement.REQUIRED",
+      "enabled_capabilities": [
+        "code_generation",
+        "debugging",
+        "optimization"
+      ],
+      "mcp_tools": [],
+      "model_name": "qwen2.5-coder:7b",
+      "uses_tot": false,
+      "memory_enabled": true,
+      "max_concurrent_tasks": 1,
+      "timeout_seconds": 300,
+      "custom_config": {},
+      "created_at": "2025-06-15 02:24:31.723091",
+      "last_updated": "2025-06-15 02:24:31.724089"
+    },
+    "monitor_001": {
+      "agent_id": "monitor_001",
+      "name": "System Monitor",
+      "agent_type": "monitoring",
+      "framework_type": "AgentFrameworkType.LIGHTWEIGHT",
+      "capability_level": "AgentCapabilityLevel.INTERMEDIATE",
+      "llm_requirement": "LLMRequirement.NOT_NEEDED",
+      "enabled_capabilities": [
+        "health_monitoring",
+        "alert_management"
+      ],
+      "mcp_tools": [],
+      "model_name": null,
+      "uses_tot": false,
+      "memory_enabled": true,
+      "max_concurrent_tasks": 1,
+      "timeout_seconds": 300,
+      "custom_config": {},
+      "created_at": "2025-06-15 02:24:31.723091",
+      "last_updated": "2025-06-15 02:24:31.724089"
+    },
+    "research_001": {
+      "agent_id": "research_001",
+      "name": "Academic Research Agent",
+      "agent_type": "research",
+      "framework_type": "AgentFrameworkType.RESEARCH",
+      "capability_level": "AgentCapabilityLevel.EXPERT",
+      "llm_requirement": "LLMRequirement.REQUIRED",
+      "enabled_capabilities": [
+        "literature_review",
+        "data_analysis",
+        "research_synthesis"
+      ],
+      "mcp_tools": [],
+      "model_name": "claude-3.5-sonnet",
+      "uses_tot": false,
+      "memory_enabled": true,
+      "max_concurrent_tasks": 1,
+      "timeout_seconds": 300,
+      "custom_config": {},
+      "created_at": "2025-06-15 02:24:31.723091",
+      "last_updated": "2025-06-15 02:24:31.724089"
+    },
+    "integration_001": {
+      "agent_id": "integration_001",
+      "name": "MCP Integration Agent",
+      "agent_type": "integration",
+      "framework_type": "AgentFrameworkType.INTEGRATION",
+      "capability_level": "AgentCapabilityLevel.INTERMEDIATE",
+      "llm_requirement": "LLMRequirement.NOT_NEEDED",
+      "enabled_capabilities": [
+        "service_orchestration",
+        "api_integration"
+      ],
+      "mcp_tools": [
+        "filesystem",
+        "brave_search",
+        "memory_bank"
+      ],
+      "model_name": null,
+      "uses_tot": false,
+      "memory_enabled": true,
+      "max_concurrent_tasks": 1,
+      "timeout_seconds": 300,
+      "custom_config": {},
+      "created_at": "2025-06-15 02:24:31.723091",
+      "last_updated": "2025-06-15 02:24:31.725092"
+    }
+  },
+  "agent_metrics": {},
+  "framework_profiles": {
+    "llm_based": {
+      "framework_type": "AgentFrameworkType.LLM_BASED",
+      "description": "Agents that rely on Large Language Models for reasoning and decision-making",
+      "best_use_cases": [
+        "Complex reasoning tasks",
+        "Natural language processing",
+        "Code generation and analysis",
+        "Creative and open-ended problems",
+        "Multi-step problem solving"
+      ],
+      "performance_characteristics": {
+        "response_time": "1-10 seconds (model dependent)",
+        "accuracy": "High for reasoning tasks",
+        "scalability": "Limited by model inference capacity",
+        "consistency": "May vary based on prompt and context"
+      },
+      "resource_requirements": {
+        "memory": "High (model weights + context)",
+        "cpu_gpu": "High (inference computation)",
+        "network": "Medium (API calls if cloud-based)",
+        "storage": "High for local models"
+      },
+      "llm_dependency": "LLMRequirement.REQUIRED",
+      "complexity_level": "High",
+      "scalability_factor": "Low-Medium",
+      "typical_response_time": "1-10s",
+      "example_agents": [
+        "reasoning_agent",
+        "coding_agent",
+        "research_agent"
+      ]
+    },
+    "lightweight": {
+      "framework_type": "AgentFrameworkType.LIGHTWEIGHT",
+      "description": "Simple, efficient agents for deterministic tasks without LLM dependency",
+      "best_use_cases": [
+        "System monitoring and alerts",
+        "Data validation and formatting",
+        "Simple rule-based decisions",
+        "File processing and organization",
+        "Status checks and health monitoring"
+      ],
+      "performance_characteristics": {
+        "response_time": "10-100 milliseconds",
+        "accuracy": "Very high for defined tasks",
+        "scalability": "Excellent horizontal scaling",
+        "consistency": "Perfect for deterministic tasks"
+      },
+      "resource_requirements": {
+        "memory": "Very low (MBs)",
+        "cpu_gpu": "Low (simple computation)",
+        "network": "Low (minimal external calls)",
+        "storage": "Minimal"
+      },
+      "llm_dependency": "LLMRequirement.NOT_NEEDED",
+      "complexity_level": "Low",
+      "scalability_factor": "Very High",
+      "typical_response_time": "10-100ms",
+      "example_agents": [
+        "monitoring_agent",
+        "health_checker",
+        "file_processor"
+      ]
+    },
+    "hybrid": {
+      "framework_type": "AgentFrameworkType.HYBRID",
+      "description": "Agents combining LLM capabilities with lightweight components for optimal performance",
+      "best_use_cases": [
+        "Intelligent system management",
+        "Adaptive user interfaces",
+        "Smart caching and optimization",
+        "Context-aware automation",
+        "Progressive task complexity"
+      ],
+      "performance_characteristics": {
+        "response_time": "100ms-5s (adaptive)",
+        "accuracy": "High with fallback reliability",
+        "scalability": "Good (lightweight components scale well)",
+        "consistency": "Balanced approach"
+      },
+      "resource_requirements": {
+        "memory": "Medium (selective LLM usage)",
+        "cpu_gpu": "Medium (optimization dependent)",
+        "network": "Medium (context-dependent)",
+        "storage": "Medium"
+      },
+      "llm_dependency": "LLMRequirement.OPTIONAL",
+      "complexity_level": "Medium",
+      "scalability_factor": "High",
+      "typical_response_time": "100ms-5s",
+      "example_agents": [
+        "adaptive_routing_agent",
+        "intelligent_cache_agent"
+      ]
+    },
+    "evolutionary": {
+      "framework_type": "AgentFrameworkType.EVOLUTIONARY",
+      "description": "Agents that improve through genetic algorithms and population-based optimization",
+      "best_use_cases": [
+        "Continuous optimization tasks",
+        "Parameter tuning",
+        "Adaptive system configuration",
+        "Performance optimization",
+        "Multi-objective optimization"
+      ],
+      "performance_characteristics": {
+        "response_time": "Variable (depends on generations)",
+        "accuracy": "Improves over time",
+        "scalability": "Excellent (parallel evolution)",
+        "consistency": "Converges to optimal solutions"
+      },
+      "resource_requirements": {
+        "memory": "Medium-High (population storage)",
+        "cpu_gpu": "High (fitness evaluation)",
+        "network": "Low-Medium (distributed evolution)",
+        "storage": "Medium (evolution history)"
+      },
+      "llm_dependency": "LLMRequirement.FALLBACK",
+      "complexity_level": "High",
+      "scalability_factor": "Medium-High",
+      "typical_response_time": "Variable",
+      "example_agents": [
+        "evolutionary_orchestrator",
+        "optimization_agent"
+      ]
+    },
+    "research": {
+      "framework_type": "AgentFrameworkType.RESEARCH",
+      "description": "Specialized agents for academic research and knowledge discovery",
+      "best_use_cases": [
+        "Literature reviews",
+        "Data analysis and insights",
+        "Academic paper processing",
+        "Research methodology",
+        "Knowledge synthesis"
+      ],
+      "performance_characteristics": {
+        "response_time": "Minutes to hours (research depth)",
+        "accuracy": "Very high (research quality)",
+        "scalability": "Medium (quality over quantity)",
+        "consistency": "High (methodology-driven)"
+      },
+      "resource_requirements": {
+        "memory": "High (large datasets)",
+        "cpu_gpu": "Medium-High (analysis computation)",
+        "network": "High (external data sources)",
+        "storage": "Very high (research data)"
+      },
+      "llm_dependency": "LLMRequirement.REQUIRED",
+      "complexity_level": "Very High",
+      "scalability_factor": "Low-Medium",
+      "typical_response_time": "Minutes-Hours",
+      "example_agents": [
+        "academic_research_agent",
+        "analysis_agent"
+      ]
+    },
+    "integration": {
+      "framework_type": "AgentFrameworkType.INTEGRATION",
+      "description": "Agents focused on system integration and coordination between services",
+      "best_use_cases": [
+        "Service orchestration",
+        "API integration",
+        "Data pipeline management",
+        "System coordination",
+        "Workflow automation"
+      ],
+      "performance_characteristics": {
+        "response_time": "100ms-2s (network dependent)",
+        "accuracy": "High (well-defined protocols)",
+        "scalability": "Very high (async operations)",
+        "consistency": "High (protocol-driven)"
+      },
+      "resource_requirements": {
+        "memory": "Low-Medium (connection pooling)",
+        "cpu_gpu": "Low (I/O bound)",
+        "network": "Very high (external services)",
+        "storage": "Low (stateless operations)"
+      },
+      "llm_dependency": "LLMRequirement.NOT_NEEDED",
+      "complexity_level": "Medium",
+      "scalability_factor": "Very High",
+      "typical_response_time": "100ms-2s",
+      "example_agents": [
+        "integration_agent",
+        "coordination_agent",
+        "mcp_server_agent"
+      ]
+    }
+  },
+  "recent_events": [
+    {
+      "event_id": "436d91ee-7cb7-4626-b08a-55a70fec7ffb",
+      "timestamp": "2025-06-15 02:24:31.723091",
+      "event_type": "dashboard_started",
+      "agent_id": null,
+      "message": "Agent Management Dashboard started",
+      "severity": "info",
+      "metadata": {}
+    }
+  ]
+}

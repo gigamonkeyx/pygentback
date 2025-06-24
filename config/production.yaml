@@ -1,0 +1,226 @@
+# PyGent Factory Production Configuration
+# Advanced AI Reasoning and Optimization System
+
+# System Configuration
+system:
+  name: "PyGent Factory AI System"
+  version: "1.0.0"
+  environment: "production"
+  debug: false
+  log_level: "INFO"
+
+# Hardware Configuration
+hardware:
+  gpu:
+    enabled: true
+    device_id: 0
+    memory_fraction: 0.8
+    use_cuda: true
+  cpu:
+    max_workers: 8
+    thread_pool_size: 16
+  memory:
+    max_cache_size_mb: 2048
+    gc_threshold: 0.8
+
+# Tree of Thought Configuration
+tot:
+  default_config:
+    generation_strategy: "propose"
+    evaluation_method: "value"
+    search_method: "bfs"
+    max_depth: 8
+    n_generate_sample: 3
+    n_evaluate_sample: 2
+    n_select_sample: 3
+    temperature: 0.7
+    timeout_seconds: 300
+  
+  models:
+    primary: null  # Force user to choose model
+    fallback: null  # No fallback - explicit choice required
+    embedding: "sentence-transformers/all-MiniLM-L6-v2"
+
+# s3 RAG Configuration
+s3_rag:
+  search_strategy: "adaptive"
+  max_search_iterations: 5
+  max_documents_per_iteration: 10
+  similarity_threshold: 0.7
+  
+  training:
+    episodes: 1000
+    batch_size: 32
+    learning_rate: 0.0003
+    discount_factor: 0.99
+    
+  reward:
+    gbr_weight: 1.0
+    relevance_weight: 0.5
+    diversity_weight: 0.3
+    efficiency_weight: 0.2
+
+# GPU Vector Search Configuration
+vector_search:
+  index_type: "ivf_flat"
+  dimension: 768
+  nlist: 100
+  nprobe: 10
+  use_gpu: true
+  use_float16: true
+  use_cuvs: true
+  
+  memory:
+    temp_memory_mb: 1024
+    indices_options: "INDICES_64_BIT"
+  
+  performance:
+    batch_size: 1000
+    max_vectors: 10000000
+
+# Unified Reasoning Pipeline Configuration
+unified_pipeline:
+  reasoning_mode: "adaptive"
+  default_complexity: "moderate"
+  
+  thresholds:
+    min_confidence: 0.6
+    min_relevance: 0.5
+    convergence: 0.01
+  
+  performance:
+    max_reasoning_time: 300.0
+    enable_caching: true
+    cache_ttl: 3600
+    parallel_evaluation: true
+    max_concurrent: 10
+
+# Recipe Evolution Configuration
+evolution:
+  population_size: 100
+  max_generations: 200
+  mutation_rate: 0.1
+  crossover_rate: 0.7
+  elitism_rate: 0.1
+  
+  strategy: "hybrid"
+  fitness_metric: "composite"
+  
+  convergence:
+    threshold: 0.01
+    max_stagnation: 20
+  
+  performance:
+    max_evolution_time: 7200.0  # 2 hours
+    parallel_evaluation: true
+    max_concurrent_evaluations: 20
+
+# Ollama Integration
+ollama:
+  base_url: "http://localhost:11434"
+  models:
+    primary: null  # Force user to choose model
+    fallback: null  # No fallback - explicit choice required
+    embedding: "nomic-embed-text"
+  
+  generation:
+    temperature: 0.7
+    top_p: 0.9
+    top_k: 40
+    repeat_penalty: 1.1
+    max_tokens: 2048
+    timeout: 60
+
+# MCP Server Configuration
+mcp:
+  servers:
+    scholarly:
+      command: "mcp-scholarly"
+      args: []
+      enabled: true
+    
+    filesystem:
+      command: "mcp-filesystem"
+      args: ["--root", "./data"]
+      enabled: true
+    
+    database:
+      command: "mcp-database"
+      args: ["--connection", "sqlite:///data/pygent.db"]
+      enabled: true
+
+# Monitoring and Logging
+monitoring:
+  metrics:
+    enabled: true
+    port: 8080
+    path: "/metrics"
+  
+  logging:
+    level: "INFO"
+    format: "json"
+    file: "logs/pygent-factory.log"
+    max_size_mb: 100
+    backup_count: 5
+  
+  performance:
+    track_latency: true
+    track_throughput: true
+    track_memory: true
+    track_gpu: true
+
+# Security Configuration
+security:
+  api:
+    rate_limit: 100  # requests per minute
+    max_request_size: "10MB"
+    timeout: 300
+  
+  data:
+    encryption_at_rest: false
+    secure_headers: true
+    cors_enabled: true
+
+# Storage Configuration
+storage:
+  data_dir: "./data"
+  cache_dir: "./cache"
+  logs_dir: "./logs"
+  models_dir: "./models"
+  
+  databases:
+    main: "sqlite:///data/main.db"
+    cache: "sqlite:///data/cache.db"
+    metrics: "sqlite:///data/metrics.db"
+
+# API Configuration
+api:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 4
+  
+  endpoints:
+    reasoning: "/api/v1/reason"
+    evolution: "/api/v1/evolve"
+    search: "/api/v1/search"
+    health: "/health"
+    metrics: "/metrics"
+
+# Development Configuration (overrides for dev environment)
+development:
+  system:
+    debug: true
+    log_level: "DEBUG"
+  
+  hardware:
+    gpu:
+      memory_fraction: 0.5
+  
+  tot:
+    default_config:
+      max_depth: 4
+      timeout_seconds: 60
+  
+  evolution:
+    population_size: 20
+    max_generations: 10

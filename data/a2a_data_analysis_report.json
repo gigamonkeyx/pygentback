@@ -1,0 +1,12 @@
+{
+  "timestamp": "2025-06-22T21:42:22.017356",
+  "a2a_agents_count": 0,
+  "a2a_tasks_count": 0,
+  "agents_with_a2a_fields": 0,
+  "tasks_with_a2a_fields": 0,
+  "potential_conflicts": [],
+  "data_quality_issues": [],
+  "migration_recommendations": [
+    "No A2A data found - migration not required, can proceed with schema cleanup"
+  ]
+}

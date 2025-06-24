@@ -1,0 +1,12 @@
+{
+  "timestamp": "211188.156",
+  "total_servers": 0,
+  "total_tools": 0,
+  "server_details": {},
+  "tool_categories": {},
+  "storage_issues": [],
+  "recommendations": [
+    "Register and start MCP servers with working tools",
+    "Ensure servers properly advertise tools capability"
+  ]
+}

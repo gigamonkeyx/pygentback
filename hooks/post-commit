@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+"""
+Git Hook: Post-commit Feature Registry Update
+
+This hook runs after each commit to:
+1. Update the feature registry
+2. Regenerate documentation
+3. Track feature evolution over time
+
+To install this hook:
+1. Copy to .git/hooks/post-commit
+2. Make executable: chmod +x .git/hooks/post-commit
+
+Or run: python setup_git_hooks.py
+"""
+
+import sys
+import subprocess
+import os
+from pathlib import Path
+
+def main():
+    """Run post-commit feature registry update"""
+    
+    # Change to project root
+    project_root = Path(__file__).parent.parent
+    os.chdir(project_root)
+    
+    print("📝 Updating feature registry after commit...")
+    
+    try:
+        # Run the feature workflow integration
+        result = subprocess.run([
+            sys.executable, 
+            "feature_workflow_integration.py", 
+            "post-commit"
+        ], capture_output=True, text=True)
+        
+        if result.returncode == 0:
+            print("✅ Feature registry updated successfully")
+        else:
+            print("⚠️  Feature registry update had issues:")
+            print(result.stdout)
+            print(result.stderr)
+    
+    except Exception as e:
+        print(f"⚠️  Error updating feature registry: {e}")
+
+if __name__ == "__main__":
+    main()

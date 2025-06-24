@@ -1,0 +1,42 @@
+{
+  "arxiv-server": {
+    "success": false,
+    "message": "WARNING: Ignoring invalid distribution ~orch (D:\\mcp\\pygent-factory\\venv\\Lib\\site-packages)\nERROR: Could not find a version that satisfies the requirement mcp-arxiv-server (from versions: none)\nERROR: No matching distribution found for mcp-arxiv-server\n",
+    "type": "python",
+    "install_command": [
+      "pip",
+      "install",
+      "mcp-arxiv-server"
+    ]
+  },
+  "scholar-server": {
+    "success": false,
+    "message": "WARNING: Ignoring invalid distribution ~orch (D:\\mcp\\pygent-factory\\venv\\Lib\\site-packages)\nERROR: Could not find a version that satisfies the requirement mcp-scholar-server (from versions: none)\nERROR: No matching distribution found for mcp-scholar-server\n",
+    "type": "python",
+    "install_command": [
+      "pip",
+      "install",
+      "mcp-scholar-server"
+    ]
+  },
+  "spacy-nlp": {
+    "success": false,
+    "message": "WARNING: Ignoring invalid distribution ~orch (D:\\mcp\\pygent-factory\\venv\\Lib\\site-packages)\nERROR: Could not find a version that satisfies the requirement mcp-spacy-server (from versions: none)\nERROR: No matching distribution found for mcp-spacy-server\n",
+    "type": "python",
+    "install_command": [
+      "pip",
+      "install",
+      "mcp-spacy-server"
+    ]
+  },
+  "streamlit-ui": {
+    "success": false,
+    "message": "WARNING: Ignoring invalid distribution ~orch (D:\\mcp\\pygent-factory\\venv\\Lib\\site-packages)\nERROR: Could not find a version that satisfies the requirement mcp-streamlit-server (from versions: none)\nERROR: No matching distribution found for mcp-streamlit-server\n",
+    "type": "python",
+    "install_command": [
+      "pip",
+      "install",
+      "mcp-streamlit-server"
+    ]
+  }
+}

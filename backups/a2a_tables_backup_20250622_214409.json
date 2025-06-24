@@ -1,0 +1,13 @@
+{
+  "timestamp": "2025-06-22T21:44:09.978788",
+  "tables": {
+    "a2a_agents": {
+      "exists": false,
+      "message": "Table does not exist"
+    },
+    "a2a_tasks": {
+      "exists": false,
+      "message": "Table does not exist"
+    }
+  }
+}

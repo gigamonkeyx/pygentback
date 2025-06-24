@@ -1,0 +1,200 @@
+{
+  "scientific_revolutions": {
+    "focus_areas": [
+      "art_architecture",
+      "literacy",
+      "global_perspectives"
+    ],
+    "primary_sources": [
+      "manuscripts",
+      "treatises",
+      "correspondence"
+    ],
+    "regions": [
+      "europe",
+      "islamic_world",
+      "china",
+      "india",
+      "americas"
+    ]
+  },
+  "enlightenment": {
+    "focus_areas": [
+      "human_rights",
+      "political_values",
+      "philosophy"
+    ],
+    "primary_sources": [
+      "philosophical_works",
+      "political_documents",
+      "letters"
+    ],
+    "regions": [
+      "europe",
+      "americas",
+      "africa",
+      "asia"
+    ]
+  },
+  "early_modern_exploration": {
+    "focus_areas": [
+      "cartography",
+      "flora_fauna",
+      "describing_otherness"
+    ],
+    "primary_sources": [
+      "maps",
+      "travel_accounts",
+      "natural_histories"
+    ],
+    "regions": [
+      "global"
+    ]
+  },
+  "tokugawa_japan": {
+    "focus_areas": [
+      "women",
+      "art",
+      "samurai_role_shift"
+    ],
+    "primary_sources": [
+      "official_documents",
+      "literature",
+      "art_works"
+    ],
+    "regions": [
+      "japan"
+    ]
+  },
+  "colonialism_southeast_asia": {
+    "focus_areas": [
+      "non_european_response",
+      "european_life_abroad"
+    ],
+    "primary_sources": [
+      "local_chronicles",
+      "colonial_records",
+      "personal_accounts"
+    ],
+    "regions": [
+      "indonesia",
+      "philippines",
+      "vietnam",
+      "thailand",
+      "malaysia"
+    ]
+  },
+  "ming_qing_dynasties": {
+    "focus_areas": [
+      "education",
+      "administration",
+      "culture"
+    ],
+    "primary_sources": [
+      "imperial_records",
+      "scholarly_works",
+      "examination_papers"
+    ],
+    "regions": [
+      "china"
+    ]
+  },
+  "haitian_revolution": {
+    "focus_areas": [
+      "diaspora_influences",
+      "global_impact"
+    ],
+    "primary_sources": [
+      "revolutionary_documents",
+      "personal_accounts",
+      "newspaper_reports"
+    ],
+    "regions": [
+      "haiti",
+      "france",
+      "usa",
+      "latin_america",
+      "africa"
+    ]
+  },
+  "opposition_to_imperialism": {
+    "focus_areas": [
+      "resistance_movements",
+      "intellectual_opposition"
+    ],
+    "primary_sources": [
+      "resistance_documents",
+      "speeches",
+      "manifestos"
+    ],
+    "regions": [
+      "china",
+      "africa",
+      "europe",
+      "latin_america",
+      "southeast_asia"
+    ]
+  },
+  "worlds_fairs_zoos": {
+    "focus_areas": [
+      "cultural_display",
+      "colonial_exhibition",
+      "public_reception"
+    ],
+    "primary_sources": [
+      "exhibition_catalogs",
+      "visitor_accounts",
+      "press_coverage"
+    ],
+    "regions": [
+      "global"
+    ]
+  },
+  "eugenics_global": {
+    "focus_areas": [
+      "scientific_racism",
+      "policy_implementation",
+      "resistance"
+    ],
+    "primary_sources": [
+      "scientific_papers",
+      "policy_documents",
+      "opposition_writings"
+    ],
+    "regions": [
+      "global"
+    ]
+  },
+  "globalization_dictatorships": {
+    "focus_areas": [
+      "economic_integration",
+      "authoritarian_responses"
+    ],
+    "primary_sources": [
+      "economic_reports",
+      "political_documents",
+      "resistance_literature"
+    ],
+    "regions": [
+      "global"
+    ]
+  },
+  "decolonization": {
+    "focus_areas": [
+      "independence_movements",
+      "cultural_revival",
+      "economic_transformation"
+    ],
+    "primary_sources": [
+      "independence_documents",
+      "speeches",
+      "cultural_works"
+    ],
+    "regions": [
+      "africa",
+      "asia",
+      "americas",
+      "oceania"
+    ]
+  }
+}

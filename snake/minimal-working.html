@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Working Example</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #001122;
+            color: #00ffff;
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .controls {
+            width: 250px;
+            background: rgba(0, 20, 40, 0.8);
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .main {
+            flex: 1;
+            text-align: center;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: linear-gradient(45deg, #0099ff, #00ccff);
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            background: linear-gradient(45deg, #ff6600, #ff9900);
+        }
+        
+        canvas {
+            border: 3px solid #00ffff;
+            border-radius: 10px;
+            background: #000;
+            margin: 20px 0;
+        }
+        
+        .status {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #00ffff;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 14px;
+            height: 150px;
+            overflow-y: auto;
+        }
+        
+        h1 {
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <h1>🐍 Minimal Snake Arena Test</h1>
+    
+    <div class="container">
+        <div class="controls">
+            <h3>🎮 Controls</h3>
+            <button id="test-btn">🧪 Test Button</button>
+            <button id="draw-btn">🎨 Draw Test</button>
+            <button id="generate-btn">🐍 Generate Snake</button>
+            <button id="battle-btn">⚔️ Start Battle</button>
+            
+            <h3>📊 Status</h3>
+            <div id="status" class="status">Ready...</div>
+        </div>
+        
+        <div class="main">
+            <canvas id="game-canvas" width="800" height="500"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Simple logging
+        function log(message) {
+            const status = document.getElementById('status');
+            const time = new Date().toLocaleTimeString();
+            status.innerHTML += `<div style="color: #00ffff;">[${time}] ${message}</div>`;
+            status.scrollTop = status.scrollHeight;
+            console.log(message);
+        }
+        
+        // Get canvas
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Initialize canvas
+        function initCanvas() {
+            ctx.fillStyle = '#001122';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw grid
+            ctx.strokeStyle = 'rgba(0, 255, 255, 0.2)';
+            ctx.lineWidth = 1;
+            
+            for (let x = 0; x < canvas.width; x += 40) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            
+            for (let y = 0; y < canvas.height; y += 40) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+            
+            // Center text
+            ctx.fillStyle = '#00ffff';
+            ctx.font = '24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('🐍 Snake Arena Ready', canvas.width / 2, canvas.height / 2);
+            
+            log('Canvas initialized');
+        }
+        
+        // Simple snake generator
+        function generateSimpleSnake() {
+            const names = ['Viper', 'Cobra', 'Python', 'Mamba', 'Anaconda', 'Rattler'];
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+            
+            return {
+                name: names[Math.floor(Math.random() * names.length)],
+                color: colors[Math.floor(Math.random() * colors.length)],
+                size: Math.random() * 20 + 10,
+                speed: Math.random() * 5 + 2,
+                x: Math.random() * (canvas.width - 100) + 50,
+                y: Math.random() * (canvas.height - 100) + 50
+            };
+        }
+        
+        // Draw snake
+        function drawSnake(snake) {
+            ctx.fillStyle = snake.color;
+            ctx.beginPath();
+            ctx.arc(snake.x, snake.y, snake.size, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(snake.name, snake.x, snake.y - snake.size - 5);
+        }
+        
+        // Button handlers
+        document.getElementById('test-btn').addEventListener('click', function() {
+            log('Test button clicked!');
+            this.style.background = 'linear-gradient(45deg, #00ff00, #00cc00)';
+            setTimeout(() => {
+                this.style.background = '';
+            }, 500);
+        });
+        
+        document.getElementById('draw-btn').addEventListener('click', function() {
+            log('Drawing test pattern...');
+            initCanvas();
+            
+            // Draw some colorful circles
+            for (let i = 0; i < 10; i++) {
+                ctx.fillStyle = `hsl(${i * 36}, 70%, 50%)`;
+                ctx.beginPath();
+                ctx.arc(
+                    Math.random() * canvas.width,
+                    Math.random() * canvas.height,
+                    Math.random() * 30 + 10,
+                    0, Math.PI * 2
+                );
+                ctx.fill();
+            }
+            
+            log('Test pattern drawn');
+        });
+        
+        document.getElementById('generate-btn').addEventListener('click', function() {
+            log('Generating snake...');
+            
+            const snake = generateSimpleSnake();
+            log(`Generated: ${snake.name} (${snake.color})`);
+            
+            // Clear and redraw
+            initCanvas();
+            drawSnake(snake);
+            
+            // Store for battle
+            window.lastSnake = snake;
+        });
+        
+        document.getElementById('battle-btn').addEventListener('click', function() {
+            log('Starting battle...');
+            
+            // Generate two snakes
+            const snake1 = generateSimpleSnake();
+            const snake2 = generateSimpleSnake();
+            
+            // Make sure they don't overlap
+            snake2.x = canvas.width - snake2.x;
+            snake2.y = canvas.height - snake2.y;
+            
+            log(`Battle: ${snake1.name} vs ${snake2.name}`);
+            
+            // Clear and draw both
+            initCanvas();
+            drawSnake(snake1);
+            drawSnake(snake2);
+            
+            // Draw VS text
+            ctx.fillStyle = '#ffff00';
+            ctx.font = 'bold 36px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('VS', canvas.width / 2, canvas.height / 2);
+            
+            log('Battle visualization complete');
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            log('DOM loaded');
+            initCanvas();
+        });
+        
+        log('Script loaded');
+    </script>
+</body>
+</html>

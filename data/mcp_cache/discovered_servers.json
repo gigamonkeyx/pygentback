@@ -1,0 +1,490 @@
+{
+  "filesystem": {
+    "name": "filesystem",
+    "description": "File system operations and management",
+    "server_type": "filesystem",
+    "install_command": [
+      "npx",
+      "-y",
+      "@modelcontextprotocol/server-filesystem"
+    ],
+    "capabilities": [
+      "file-read",
+      "file-write",
+      "directory-list"
+    ],
+    "tools": [
+      "read_file",
+      "write_file",
+      "list_directory",
+      "create_directory"
+    ],
+    "category": "development",
+    "author": "Model Context Protocol",
+    "verified": true  },
+  "cloudflare-docs": {
+    "name": "cloudflare-docs", 
+    "description": "Get up to date reference information on Cloudflare",
+    "server_type": "remote",
+    "install_command": [
+      "npx",
+      "mcp-remote", 
+      "https://docs.mcp.cloudflare.com/sse"
+    ],
+    "capabilities": [
+      "cloudflare-docs",
+      "api-reference", 
+      "documentation-search"
+    ],
+    "tools": [
+      "search_docs",
+      "get_api_reference"
+    ],
+    "category": "cloud",
+    "author": "Cloudflare",
+    "verified": true
+  },
+  "cloudflare-bindings": {
+    "name": "cloudflare-bindings",
+    "description": "Build Workers applications with storage, AI, and compute primitives", 
+    "server_type": "remote",
+    "install_command": [
+      "npx",
+      "mcp-remote",
+      "https://bindings.mcp.cloudflare.com/sse"
+    ],
+    "capabilities": [
+      "workers-bindings",
+      "storage-primitives", 
+      "ai-compute"
+    ],
+    "tools": [
+      "create_worker",
+      "manage_bindings",
+      "deploy_application"
+    ],
+    "category": "cloud", 
+    "author": "Cloudflare",
+    "verified": true
+  },
+  "cloudflare-radar": {
+    "name": "cloudflare-radar",
+    "description": "Global Internet traffic insights, trends, URL scans, and other utilities",
+    "server_type": "remote", 
+    "install_command": [
+      "npx",
+      "mcp-remote",
+      "https://radar.mcp.cloudflare.com/sse"
+    ],
+    "capabilities": [
+      "internet-traffic-insights",
+      "url-scanning", 
+      "security-analytics"
+    ],
+    "tools": [
+      "scan_url",
+      "get_traffic_insights",
+      "analyze_threats"
+    ],
+    "category": "cloud",
+    "author": "Cloudflare", 
+    "verified": true
+  },
+  "cloudflare-browser": {
+    "name": "cloudflare-browser",
+    "description": "Fetch web pages, convert them to markdown and take screenshots",
+    "server_type": "remote",
+    "install_command": [
+      "npx", 
+      "mcp-remote",
+      "https://browser.mcp.cloudflare.com/sse"
+    ],
+    "capabilities": [
+      "web-scraping",
+      "markdown-conversion",
+      "screenshot-capture"
+    ],
+    "tools": [
+      "fetch_page",
+      "convert_to_markdown", 
+      "take_screenshot"
+    ],
+    "category": "web",
+    "author": "Cloudflare",
+    "verified": true
+  },
+  "brave-search": {
+    "name": "brave-search",
+    "description": "Web search using Brave Search API",
+    "server_type": "web_search",
+    "install_command": [
+      "npx",
+      "-y",
+      "@modelcontextprotocol/server-brave-search"
+    ],
+    "capabilities": [
+      "web-search",
+      "search-results"
+    ],
+    "tools": [
+      "brave_web_search"
+    ],
+    "category": "nlp",
+    "author": "Model Context Protocol",
+    "verified": true
+  },
+  "postgres": {
+    "name": "postgres",
+    "description": "PostgreSQL database operations",
+    "server_type": "database",
+    "install_command": [
+      "npx",
+      "-y",
+      "@modelcontextprotocol/server-postgres"
+    ],
+    "capabilities": [
+      "sql-execution",
+      "schema-management"
+    ],
+    "tools": [
+      "query",
+      "list_tables",
+      "describe_table"
+    ],
+    "category": "database",
+    "author": "Model Context Protocol",
+    "verified": true
+  },
+  "github": {
+    "name": "github",
+    "description": "GitHub repository operations",
+    "server_type": "version_control",
+    "install_command": [
+      "npx",
+      "-y",
+      "@modelcontextprotocol/server-github"
+    ],
+    "capabilities": [
+      "repository-operations",
+      "commit-management"
+    ],
+    "tools": [
+      "create_repository",
+      "list_files",
+      "get_file",
+      "create_issue"
+    ],
+    "category": "development",
+    "author": "Model Context Protocol",
+    "verified": true
+  },
+  "arxiv-server": {
+    "name": "arxiv-server",
+    "description": "ArXiv paper search and retrieval",
+    "server_type": "web_search",
+    "install_command": [
+      "pip",
+      "install",
+      "mcp-arxiv-server"
+    ],
+    "capabilities": [
+      "paper-search",
+      "metadata-extraction",
+      "pdf-download"
+    ],
+    "tools": [
+      "search_papers",
+      "get_metadata",
+      "download_pdf"
+    ],
+    "category": "academic_research",
+    "author": "Community",
+    "verified": false
+  },
+  "scholar-server": {
+    "name": "scholar-server",
+    "description": "Google Scholar academic search",
+    "server_type": "web_search",
+    "install_command": [
+      "pip",
+      "install",
+      "mcp-scholar-server"
+    ],
+    "capabilities": [
+      "academic-search",
+      "citation-metrics"
+    ],
+    "tools": [
+      "search_scholar",
+      "get_citations"
+    ],
+    "category": "academic_research",
+    "author": "Community",
+    "verified": false
+  },
+  "vscode-server": {
+    "name": "vscode-server",
+    "description": "VS Code integration for code editing",
+    "server_type": "development",
+    "install_command": [
+      "npm",
+      "install",
+      "-g",
+      "mcp-vscode-server"
+    ],
+    "capabilities": [
+      "code-editing",
+      "debugging"
+    ],
+    "tools": [
+      "edit_file",
+      "debug_code"
+    ],
+    "category": "coding",
+    "author": "Community",
+    "verified": false
+  },
+  "spacy-nlp": {
+    "name": "spacy-nlp",
+    "description": "Advanced NLP processing with spaCy",
+    "server_type": "nlp",
+    "install_command": [
+      "pip",
+      "install",
+      "mcp-spacy-server"
+    ],
+    "capabilities": [
+      "tokenization",
+      "ner",
+      "sentiment"
+    ],
+    "tools": [
+      "tokenize",
+      "extract_entities"
+    ],
+    "category": "nlp",
+    "author": "Community",
+    "verified": false
+  },
+  "streamlit-ui": {
+    "name": "streamlit-ui",
+    "description": "Interactive web UI generation",
+    "server_type": "web_ui",
+    "install_command": [
+      "pip",
+      "install",
+      "mcp-streamlit-server"
+    ],
+    "capabilities": [
+      "ui-generation",
+      "dashboard-creation"
+    ],
+    "tools": [
+      "create_app",
+      "add_widget"
+    ],
+    "category": "web_ui",
+    "author": "Community",
+    "verified": false
+  },
+  "figma-mcp": {
+    "name": "figma-mcp",
+    "description": "ModelContextProtocol server for Figma",
+    "server_type": "custom",
+    "install_command": [
+      "npm",
+      "install",
+      "-g",
+      "figma-mcp"
+    ],
+    "capabilities": [
+      "unknown"
+    ],
+    "tools": [
+      "unknown"
+    ],
+    "category": "npm",
+    "author": "",
+    "verified": false
+  },
+  "mayar-mcp": {
+    "name": "mayar-mcp",
+    "description": "Mayar API ModelContextProtocol Server",
+    "server_type": "custom",
+    "install_command": [
+      "npm",
+      "install",
+      "-g",
+      "mayar-mcp"
+    ],
+    "capabilities": [
+      "unknown"
+    ],
+    "tools": [
+      "unknown"
+    ],
+    "category": "npm",
+    "author": "",
+    "verified": false
+  },
+  "ref-tools-mcp": {
+    "name": "ref-tools-mcp",
+    "description": "ModelContextProtocol server for Ref",
+    "server_type": "custom",
+    "install_command": [
+      "npm",
+      "install",
+      "-g",
+      "ref-tools-mcp"
+    ],
+    "capabilities": [
+      "unknown"
+    ],
+    "tools": [
+      "unknown"
+    ],
+    "category": "npm",
+    "author": "",
+    "verified": false
+  },
+  "puppeteer-mcp-server": {
+    "name": "puppeteer-mcp-server",
+    "description": "Experimental MCP server for browser automation using Puppeteer (inspired by @modelcontextprotocol/server-puppeteer)",
+    "server_type": "custom",
+    "install_command": [
+      "npm",
+      "install",
+      "-g",
+      "puppeteer-mcp-server"
+    ],
+    "capabilities": [
+      "unknown"
+    ],
+    "tools": [
+      "unknown"
+    ],
+    "category": "npm",
+    "author": "",
+    "verified": false
+  },
+  "valjs-mcp-alpha": {
+    "name": "valjs-mcp-alpha",
+    "description": "ModelContextProtocol server that bridges to Val Town MCP tools",
+    "server_type": "custom",
+    "install_command": [
+      "npm",
+      "install",
+      "-g",
+      "valjs-mcp-alpha"
+    ],
+    "capabilities": [
+      "unknown"
+    ],
+    "tools": [
+      "unknown"
+    ],
+    "category": "npm",
+    "author": "",
+    "verified": false
+  },
+  "mcp-server": {
+    "name": "mcp-server",
+    "description": "mcp server",
+    "server_type": "custom",
+    "install_command": [
+      "npm",
+      "install",
+      "-g",
+      "mcp-server"
+    ],
+    "capabilities": [
+      "unknown"
+    ],
+    "tools": [
+      "unknown"
+    ],
+    "category": "npm",
+    "author": "",
+    "verified": false
+  },
+  "@upstash/context7-mcp": {
+    "name": "@upstash/context7-mcp",
+    "description": "MCP server for Context7",
+    "server_type": "custom",
+    "install_command": [
+      "npm",
+      "install",
+      "-g",
+      "@upstash/context7-mcp"
+    ],
+    "capabilities": [
+      "unknown"
+    ],
+    "tools": [
+      "unknown"
+    ],
+    "category": "npm",
+    "author": "",
+    "verified": false
+  },
+  "@notionhq/notion-mcp-server": {
+    "name": "@notionhq/notion-mcp-server",
+    "description": "Official MCP server for Notion API",
+    "server_type": "custom",
+    "install_command": [
+      "npm",
+      "install",
+      "-g",
+      "@notionhq/notion-mcp-server"
+    ],
+    "capabilities": [
+      "unknown"
+    ],
+    "tools": [
+      "unknown"
+    ],
+    "category": "npm",
+    "author": "",
+    "verified": false
+  },
+  "@amap/amap-maps-mcp-server": {
+    "name": "@amap/amap-maps-mcp-server",
+    "description": "MCP server for using the AMap Maps API",
+    "server_type": "custom",
+    "install_command": [
+      "npm",
+      "install",
+      "-g",
+      "@amap/amap-maps-mcp-server"
+    ],
+    "capabilities": [
+      "unknown"
+    ],
+    "tools": [
+      "unknown"
+    ],
+    "category": "npm",
+    "author": "",
+    "verified": false
+  },
+  "@modelcontextprotocol/server-filesystem": {
+    "name": "@modelcontextprotocol/server-filesystem",
+    "description": "MCP server for filesystem access",
+    "server_type": "custom",
+    "install_command": [
+      "npm",
+      "install",
+      "-g",
+      "@modelcontextprotocol/server-filesystem"
+    ],
+    "capabilities": [
+      "unknown"
+    ],
+    "tools": [
+      "unknown"
+    ],
+    "category": "npm",
+    "author": "",
+    "verified": false
+  }
+}

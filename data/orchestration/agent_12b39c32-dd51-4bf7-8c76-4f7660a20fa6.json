@@ -1,0 +1,14 @@
+{
+  "agent_id": "12b39c32-dd51-4bf7-8c76-4f7660a20fa6",
+  "name": "Search Agent 1",
+  "agent_type": "search",
+  "capabilities": [
+    "web_search",
+    "information_retrieval"
+  ],
+  "status": "idle",
+  "created_at": "2025-06-22T06:22:32.526351",
+  "last_active": "2025-06-22T06:22:32.526351",
+  "task_count": 0,
+  "success_rate": 1.0
+}

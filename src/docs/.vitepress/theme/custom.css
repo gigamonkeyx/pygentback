@@ -1,0 +1,319 @@
+/**
+ * PyGent Factory Documentation Custom Styles
+ * Modern, accessible design system with enterprise-grade aesthetics
+ */
+
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Sans+Pro:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* CSS Custom Properties */
+:root {
+  /* Color Palette */
+  --vp-c-brand-1: #2563eb;
+  --vp-c-brand-2: #1d4ed8;
+  --vp-c-brand-3: #1e40af;
+  --vp-c-brand-soft: rgba(37, 99, 235, 0.14);
+  
+  /* Secondary Colors */
+  --vp-c-purple-1: #7c3aed;
+  --vp-c-purple-2: #6d28d9;
+  --vp-c-purple-soft: rgba(124, 58, 237, 0.14);
+  
+  /* Success/Error Colors */
+  --vp-c-green-1: #059669;
+  --vp-c-green-2: #047857;
+  --vp-c-green-soft: rgba(5, 150, 105, 0.14);
+  
+  --vp-c-yellow-1: #d97706;
+  --vp-c-yellow-2: #b45309;
+  --vp-c-yellow-soft: rgba(217, 119, 6, 0.14);
+  
+  --vp-c-red-1: #dc2626;
+  --vp-c-red-2: #b91c1c;
+  --vp-c-red-soft: rgba(220, 38, 38, 0.14);
+  
+  /* Typography */
+  --vp-font-family-base: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --vp-font-family-mono: 'JetBrains Mono', 'Fira Code', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  
+  /* Custom spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  
+  /* Border radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Dark theme adjustments */
+.dark {
+  --vp-c-brand-1: #3b82f6;
+  --vp-c-brand-2: #2563eb;
+  --vp-c-brand-3: #1d4ed8;
+}
+
+/* Typography improvements */
+.vp-doc h1 {
+  font-family: 'Inter', var(--vp-font-family-base);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.vp-doc h2,
+.vp-doc h3,
+.vp-doc h4 {
+  font-family: 'Inter', var(--vp-font-family-base);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.vp-doc p,
+.vp-doc li {
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+/* Code blocks */
+.vp-doc div[class*='language-'] {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  margin: var(--space-lg) 0;
+}
+
+.vp-doc div[class*='language-'] pre {
+  font-family: var(--vp-font-family-mono);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Inline code */
+.vp-doc :not(pre) > code {
+  background-color: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: var(--radius-sm);
+  padding: 0.2em 0.4em;
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+/* Custom components */
+.feature-card {
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  margin: var(--space-md) 0;
+  transition: all 0.2s ease;
+}
+
+.feature-card:hover {
+  border-color: var(--vp-c-brand-1);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.feature-card h3 {
+  color: var(--vp-c-brand-1);
+  margin-top: 0;
+  margin-bottom: var(--space-sm);
+}
+
+.feature-card p {
+  margin-bottom: 0;
+  color: var(--vp-c-text-2);
+}
+
+/* Interactive demo container */
+.interactive-demo {
+  background: var(--vp-c-bg-soft);
+  border: 2px dashed var(--vp-c-divider);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  margin: var(--space-lg) 0;
+  text-align: center;
+}
+
+.interactive-demo h4 {
+  color: var(--vp-c-brand-1);
+  margin-bottom: var(--space-md);
+}
+
+/* Architecture diagram container */
+.architecture-diagram {
+  background: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  margin: var(--space-lg) 0;
+  overflow-x: auto;
+}
+
+.architecture-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Code example with tabs */
+.code-example {
+  margin: var(--space-lg) 0;
+}
+
+.code-example-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--vp-c-divider);
+  margin-bottom: 0;
+}
+
+.code-example-tab {
+  padding: var(--space-sm) var(--space-md);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-family: var(--vp-font-family-mono);
+  font-size: 14px;
+  color: var(--vp-c-text-2);
+  transition: all 0.2s ease;
+}
+
+.code-example-tab.active {
+  color: var(--vp-c-brand-1);
+  border-bottom-color: var(--vp-c-brand-1);
+}
+
+.code-example-tab:hover {
+  color: var(--vp-c-text-1);
+}
+
+/* Alert boxes */
+.alert {
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  margin: var(--space-lg) 0;
+  border-left: 4px solid;
+}
+
+.alert.info {
+  background: var(--vp-c-brand-soft);
+  border-left-color: var(--vp-c-brand-1);
+}
+
+.alert.warning {
+  background: var(--vp-c-yellow-soft);
+  border-left-color: var(--vp-c-yellow-1);
+}
+
+.alert.danger {
+  background: var(--vp-c-red-soft);
+  border-left-color: var(--vp-c-red-1);
+}
+
+.alert.success {
+  background: var(--vp-c-green-soft);
+  border-left-color: var(--vp-c-green-1);
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .vp-doc h1 {
+    font-size: 2rem;
+  }
+  
+  .vp-doc h2 {
+    font-size: 1.5rem;
+  }
+  
+  .feature-card {
+    padding: var(--space-md);
+  }
+  
+  .code-example-tabs {
+    overflow-x: auto;
+  }
+}
+
+/* Navigation improvements */
+.VPNavBar .title {
+  font-family: 'Inter', var(--vp-font-family-base);
+  font-weight: 700;
+}
+
+/* Sidebar improvements */
+.VPSidebar .group .title {
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+}
+
+/* Footer improvements */
+.VPFooter {
+  border-top: 1px solid var(--vp-c-divider);
+  padding-top: var(--space-lg);
+}
+
+/* Search improvements */
+.VPLocalSearchBox {
+  border-radius: var(--radius-lg);
+}
+
+/* Table improvements */
+.vp-doc table {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.vp-doc th {
+  background: var(--vp-c-bg-soft);
+  font-weight: 600;
+}
+
+/* Link improvements */
+.vp-doc a {
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.vp-doc a:hover {
+  border-bottom-color: var(--vp-c-brand-1);
+}
+
+/* Badge styles */
+.badge {
+  display: inline-block;
+  padding: 0.2em 0.6em;
+  font-size: 0.75em;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge.new {
+  background: var(--vp-c-green-soft);
+  color: var(--vp-c-green-1);
+}
+
+.badge.beta {
+  background: var(--vp-c-yellow-soft);
+  color: var(--vp-c-yellow-1);
+}
+
+.badge.deprecated {
+  background: var(--vp-c-red-soft);
+  color: var(--vp-c-red-1);
+}

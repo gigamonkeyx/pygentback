@@ -1,0 +1,134 @@
+services:
+  # Main PyGent Factory API service
+  pygent-api:
+    build:
+      context: .
+      target: production
+    container_name: pygent-factory-api
+    ports:
+      - "8080:8000"  # Main API
+      - "8006:8006"  # A2A MCP Server
+    environment:
+      - PYGENT_ENV=production
+      - PYGENT_LOG_LEVEL=INFO
+      - PYGENT_GPU_ENABLED=false
+      - PYGENT_API_PORT=8000
+      - PYGENT_MAX_WORKERS=4
+      - A2A_ENABLED=true
+      - A2A_BASE_URL=http://localhost:8000
+      - A2A_MCP_PORT=8006
+      - A2A_DISCOVERY_ENABLED=true
+      - A2A_SECURITY_ENABLED=true
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/pygent_factory
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./cache:/app/cache
+      - ./config:/app/config
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - pygent_network
+
+  # PostgreSQL Database with pgvector extension
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: pygent_postgres
+    environment:
+      POSTGRES_DB: pygent_factory
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "54321:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    command: >
+      postgres 
+      -c shared_preload_libraries=vector
+      -c log_statement=all
+      -c log_destination=stderr
+      -c logging_collector=on
+      -c max_connections=200
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d pygent_factory"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis for caching (optional)
+  redis:
+    image: redis:7-alpine
+    container_name: pygent_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ChromaDB for vector storage
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: pygent_chromadb
+    ports:
+      - "8001:8000"
+    volumes:
+      - chromadb_data:/chroma/chroma
+    environment:
+      - CHROMA_SERVER_HOST=0.0.0.0
+      - CHROMA_SERVER_HTTP_PORT=8000
+      - PERSIST_DIRECTORY=/chroma/chroma
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # PyGent Factory Frontend UI
+  frontend:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    container_name: pygent-frontend
+    ports:
+      - "3000:80"
+    environment:
+      - VITE_API_URL=http://localhost:8080
+      - VITE_WS_URL=ws://localhost:8080
+    depends_on:
+      - pygent-api
+    networks:
+      - pygent_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  chromadb_data:
+    driver: local
+
+networks:
+  pygent_network:
+    driver: bridge

@@ -1,0 +1,47 @@
+{
+  "document_id": "5794498be1ec8adcef7b1a0c3ac48a8b",
+  "source_url": "https://archive.org/download/upfromslaveryaut00wash/upfromslaveryaut00wash.pdf",
+  "download_metadata": {
+    "url": "https://archive.org/download/upfromslaveryaut00wash/upfromslaveryaut00wash.pdf",
+    "download_timestamp": "2025-06-21T23:55:42.661801",
+    "content_length": 11233957,
+    "content_type": "application/pdf",
+    "status_code": 200,
+    "headers": {
+      "Server": "nginx",
+      "Date": "Sat, 21 Jun 2025 23:55:35 GMT",
+      "Content-Type": "application/pdf",
+      "Content-Length": "11233957",
+      "Last-Modified": "Sat, 23 Dec 2023 01:09:51 GMT",
+      "Connection": "keep-alive",
+      "ETag": "\"6586335f-ab6aa5\"",
+      "Accept-Ranges": "bytes"
+    }
+  },
+  "extraction_metadata": {
+    "methods_used": [
+      "standard"
+    ],
+    "extraction_timestamp": "2025-06-21T23:59:28.218519",
+    "total_pages": 354,
+    "text_quality": {
+      "quality": "medium",
+      "score": 0.7796637956912277,
+      "char_count": 433070,
+      "word_count": 79119,
+      "alpha_ratio": 0.7797423049391553,
+      "artifact_ratio": 3.925462396379338e-05
+    },
+    "file_path": "D:\\mcp\\pygent-factory\\data\\documents\\5794498be1ec8adcef7b1a0c3ac48a8b.pdf"
+  },
+  "vector_metadata": {
+    "error": "Vector storage failed: object NoneType can't be used in 'await' expression"
+  },
+  "processing_timestamp": "2025-06-22T00:01:06.088049",
+  "original_metadata": {
+    "title": "Up from Slavery: An Autobiography",
+    "author": "Booker T. Washington",
+    "source_type": "primary",
+    "era": "Reconstruction"
+  }
+}

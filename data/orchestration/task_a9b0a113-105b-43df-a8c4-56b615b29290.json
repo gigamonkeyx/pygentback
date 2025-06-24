@@ -1,0 +1,19 @@
+{
+  "task_id": "a9b0a113-105b-43df-a8c4-56b615b29290",
+  "task_type": "reasoning",
+  "description": "Solve a logical reasoning problem",
+  "status": "completed",
+  "priority": 3,
+  "assigned_agent": "0e736aee-1fbf-4988-9b5c-eaa754599fb9",
+  "created_at": "2025-06-22T06:22:38.680975",
+  "started_at": "2025-06-22T06:22:38.710315",
+  "completed_at": "2025-06-22T06:22:38.818479",
+  "result": {
+    "task_id": "a9b0a113-105b-43df-a8c4-56b615b29290",
+    "agent_id": "0e736aee-1fbf-4988-9b5c-eaa754599fb9",
+    "result": "Completed reasoning task: Solve a logical reasoning problem",
+    "execution_time": 0.1,
+    "success": true
+  },
+  "error_message": null
+}

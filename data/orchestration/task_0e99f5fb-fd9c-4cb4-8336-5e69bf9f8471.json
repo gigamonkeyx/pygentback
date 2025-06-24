@@ -1,0 +1,19 @@
+{
+  "task_id": "0e99f5fb-fd9c-4cb4-8336-5e69bf9f8471",
+  "task_type": "general",
+  "description": "Normal priority task",
+  "status": "completed",
+  "priority": 2,
+  "assigned_agent": "0e736aee-1fbf-4988-9b5c-eaa754599fb9",
+  "created_at": "2025-06-22T06:23:04.187913",
+  "started_at": "2025-06-22T06:23:04.233629",
+  "completed_at": "2025-06-22T06:23:04.341695",
+  "result": {
+    "task_id": "0e99f5fb-fd9c-4cb4-8336-5e69bf9f8471",
+    "agent_id": "0e736aee-1fbf-4988-9b5c-eaa754599fb9",
+    "result": "Completed general task: Normal priority task",
+    "execution_time": 0.1,
+    "success": true
+  },
+  "error_message": null
+}

@@ -1,0 +1,63 @@
+    async def get_collection_stats(self, collection: str) -> Dict[str, Any]:
+        """Get statistics for a collection"""
+        try:
+            if collection not in self.collections:
+                return {
+                    "error": f"Collection '{collection}' not found",
+                    "exists": False
+                }
+            
+            # Get basic collection info
+            collection_info = self.collections[collection]
+            doc_storage = self.documents.get(collection, {})
+            index = self.indexes.get(collection)
+            
+            # Calculate statistics
+            document_count = len(doc_storage)
+            embedding_dimension = collection_info.get("dimension", 0)
+            
+            # Get index statistics if available
+            index_stats = {}
+            if index:
+                index_stats = {
+                    "index_type": collection_info.get("index_type", "unknown"),
+                    "is_trained": getattr(index, 'is_trained', True),
+                    "ntotal": getattr(index, 'ntotal', 0)
+                }
+            
+            # Get document metadata statistics
+            metadata_fields = set()
+            document_types = set()
+            sources = set()
+            
+            for doc in doc_storage.values():
+                if doc.metadata:
+                    metadata_fields.update(doc.metadata.keys())
+                if doc.document_type:
+                    document_types.add(doc.document_type)
+                if doc.source:
+                    sources.add(doc.source)
+            
+            return {
+                "exists": True,
+                "document_count": document_count,
+                "embedding_dimension": embedding_dimension,
+                "distance_metric": collection_info.get("distance_metric", "cosine"),
+                "created_at": collection_info.get("created_at"),
+                "last_updated": datetime.utcnow().isoformat(),
+                "index_stats": index_stats,
+                "metadata_fields": list(metadata_fields),
+                "document_types": list(sources),
+                "collection_config": {
+                    "index_type": collection_info.get("index_type", self.index_type),
+                    "nlist": collection_info.get("nlist", self.nlist),
+                    "nprobe": collection_info.get("nprobe", self.nprobe)
+                }
+            }
+            
+        except Exception as e:
+            logger.error(f"Failed to get collection stats for FAISS collection '{collection}': {str(e)}")
+            return {
+                "error": str(e),
+                "exists": False
+            }

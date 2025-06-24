@@ -1,0 +1,244 @@
+groups:
+  - name: a2a_system_alerts
+    rules:
+      # High-level system health alerts
+      - alert: A2ASystemDown
+        expr: up{job="a2a-server"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: a2a-system
+        annotations:
+          summary: "A2A system is down"
+          description: "A2A system has been down for more than 1 minute"
+          runbook_url: "https://docs.timpayne.net/a2a/runbooks/system-down"
+
+      - alert: A2ASystemHealthLow
+        expr: a2a_system_health < 0.7
+        for: 5m
+        labels:
+          severity: warning
+          service: a2a-system
+        annotations:
+          summary: "A2A system health is degraded"
+          description: "System health score is {{ $value }} (below 0.7 threshold)"
+          runbook_url: "https://docs.timpayne.net/a2a/runbooks/health-degraded"
+
+      - alert: A2ASystemHealthCritical
+        expr: a2a_system_health < 0.5
+        for: 2m
+        labels:
+          severity: critical
+          service: a2a-system
+        annotations:
+          summary: "A2A system health is critical"
+          description: "System health score is {{ $value }} (below 0.5 critical threshold)"
+          runbook_url: "https://docs.timpayne.net/a2a/runbooks/health-critical"
+
+  - name: a2a_performance_alerts
+    rules:
+      # Performance-related alerts
+      - alert: A2AHighResponseTime
+        expr: histogram_quantile(0.95, rate(a2a_request_duration_seconds_bucket[5m])) > 1.0
+        for: 5m
+        labels:
+          severity: warning
+          service: a2a-system
+        annotations:
+          summary: "A2A high response time detected"
+          description: "95th percentile response time is {{ $value }}s (above 1s threshold)"
+          runbook_url: "https://docs.timpayne.net/a2a/runbooks/high-response-time"
+
+      - alert: A2ACriticalResponseTime
+        expr: histogram_quantile(0.95, rate(a2a_request_duration_seconds_bucket[5m])) > 5.0
+        for: 2m
+        labels:
+          severity: critical
+          service: a2a-system
+        annotations:
+          summary: "A2A critical response time detected"
+          description: "95th percentile response time is {{ $value }}s (above 5s critical threshold)"
+          runbook_url: "https://docs.timpayne.net/a2a/runbooks/critical-response-time"
+
+      - alert: A2AHighErrorRate
+        expr: rate(a2a_errors_total[5m]) > 0.1
+        for: 3m
+        labels:
+          severity: warning
+          service: a2a-system
+        annotations:
+          summary: "A2A high error rate detected"
+          description: "Error rate is {{ $value }} errors/sec (above 0.1/sec threshold)"
+          runbook_url: "https://docs.timpayne.net/a2a/runbooks/high-error-rate"
+
+      - alert: A2ACriticalErrorRate
+        expr: rate(a2a_errors_total[5m]) > 1.0
+        for: 1m
+        labels:
+          severity: critical
+          service: a2a-system
+        annotations:
+          summary: "A2A critical error rate detected"
+          description: "Error rate is {{ $value }} errors/sec (above 1.0/sec critical threshold)"
+          runbook_url: "https://docs.timpayne.net/a2a/runbooks/critical-error-rate"
+
+  - name: a2a_agent_alerts
+    rules:
+      # Agent-related alerts
+      - alert: A2ANoAgentsAvailable
+        expr: count(a2a_agent_availability) == 0
+        for: 2m
+        labels:
+          severity: critical
+          service: a2a-system
+        annotations:
+          summary: "No A2A agents available"
+          description: "No agents are currently registered and available"
+          runbook_url: "https://docs.timpayne.net/a2a/runbooks/no-agents"
+
+      - alert: A2AAgentUnavailable
+        expr: a2a_agent_availability < 0.8
+        for: 5m
+        labels:
+          severity: warning
+          service: a2a-system
+          agent_id: "{{ $labels.agent_id }}"
+        annotations:
+          summary: "A2A agent availability low"
+          description: "Agent {{ $labels.agent_id }} availability is {{ $value }} (below 0.8 threshold)"
+          runbook_url: "https://docs.timpayne.net/a2a/runbooks/agent-unavailable"
+
+      - alert: A2AAgentCritical
+        expr: a2a_agent_availability < 0.5
+        for: 2m
+        labels:
+          severity: critical
+          service: a2a-system
+          agent_id: "{{ $labels.agent_id }}"
+        annotations:
+          summary: "A2A agent critically unavailable"
+          description: "Agent {{ $labels.agent_id }} availability is {{ $value }} (below 0.5 critical threshold)"
+          runbook_url: "https://docs.timpayne.net/a2a/runbooks/agent-critical"
+
+  - name: a2a_task_alerts
+    rules:
+      # Task processing alerts
+      - alert: A2AHighTaskFailureRate
+        expr: rate(a2a_tasks_total{status="failed"}[5m]) / rate(a2a_tasks_total[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          service: a2a-system
+        annotations:
+          summary: "A2A high task failure rate"
+          description: "Task failure rate is {{ $value | humanizePercentage }} (above 10% threshold)"
+          runbook_url: "https://docs.timpayne.net/a2a/runbooks/high-task-failure"
+
+      - alert: A2ACriticalTaskFailureRate
+        expr: rate(a2a_tasks_total{status="failed"}[5m]) / rate(a2a_tasks_total[5m]) > 0.25
+        for: 2m
+        labels:
+          severity: critical
+          service: a2a-system
+        annotations:
+          summary: "A2A critical task failure rate"
+          description: "Task failure rate is {{ $value | humanizePercentage }} (above 25% critical threshold)"
+          runbook_url: "https://docs.timpayne.net/a2a/runbooks/critical-task-failure"
+
+      - alert: A2ATaskBacklog
+        expr: sum(a2a_active_tasks) > 100
+        for: 10m
+        labels:
+          severity: warning
+          service: a2a-system
+        annotations:
+          summary: "A2A task backlog detected"
+          description: "{{ $value }} active tasks (above 100 threshold)"
+          runbook_url: "https://docs.timpayne.net/a2a/runbooks/task-backlog"
+
+      - alert: A2ACriticalTaskBacklog
+        expr: sum(a2a_active_tasks) > 500
+        for: 5m
+        labels:
+          severity: critical
+          service: a2a-system
+        annotations:
+          summary: "A2A critical task backlog"
+          description: "{{ $value }} active tasks (above 500 critical threshold)"
+          runbook_url: "https://docs.timpayne.net/a2a/runbooks/critical-task-backlog"
+
+  - name: a2a_resource_alerts
+    rules:
+      # Resource usage alerts
+      - alert: A2AHighCPUUsage
+        expr: a2a_cpu_usage_percent > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: a2a-system
+          component: "{{ $labels.component }}"
+        annotations:
+          summary: "A2A high CPU usage"
+          description: "CPU usage is {{ $value }}% on {{ $labels.component }} (above 80% threshold)"
+          runbook_url: "https://docs.timpayne.net/a2a/runbooks/high-cpu"
+
+      - alert: A2ACriticalCPUUsage
+        expr: a2a_cpu_usage_percent > 95
+        for: 2m
+        labels:
+          severity: critical
+          service: a2a-system
+          component: "{{ $labels.component }}"
+        annotations:
+          summary: "A2A critical CPU usage"
+          description: "CPU usage is {{ $value }}% on {{ $labels.component }} (above 95% critical threshold)"
+          runbook_url: "https://docs.timpayne.net/a2a/runbooks/critical-cpu"
+
+      - alert: A2AHighMemoryUsage
+        expr: a2a_memory_usage_bytes / (8 * 1024 * 1024 * 1024) > 0.8
+        for: 5m
+        labels:
+          severity: warning
+          service: a2a-system
+          component: "{{ $labels.component }}"
+        annotations:
+          summary: "A2A high memory usage"
+          description: "Memory usage is {{ $value | humanizePercentage }} on {{ $labels.component }} (above 80% threshold)"
+          runbook_url: "https://docs.timpayne.net/a2a/runbooks/high-memory"
+
+      - alert: A2ACriticalMemoryUsage
+        expr: a2a_memory_usage_bytes / (8 * 1024 * 1024 * 1024) > 0.95
+        for: 2m
+        labels:
+          severity: critical
+          service: a2a-system
+          component: "{{ $labels.component }}"
+        annotations:
+          summary: "A2A critical memory usage"
+          description: "Memory usage is {{ $value | humanizePercentage }} on {{ $labels.component }} (above 95% critical threshold)"
+          runbook_url: "https://docs.timpayne.net/a2a/runbooks/critical-memory"
+
+  - name: a2a_business_alerts
+    rules:
+      # Business-level alerts
+      - alert: A2ALowThroughput
+        expr: rate(a2a_requests_total[5m]) < 1.0
+        for: 10m
+        labels:
+          severity: warning
+          service: a2a-system
+        annotations:
+          summary: "A2A low throughput detected"
+          description: "Request rate is {{ $value }} req/sec (below 1.0/sec threshold)"
+          runbook_url: "https://docs.timpayne.net/a2a/runbooks/low-throughput"
+
+      - alert: A2ANoActivity
+        expr: rate(a2a_requests_total[15m]) == 0
+        for: 15m
+        labels:
+          severity: warning
+          service: a2a-system
+        annotations:
+          summary: "A2A no activity detected"
+          description: "No requests received in the last 15 minutes"
+          runbook_url: "https://docs.timpayne.net/a2a/runbooks/no-activity"

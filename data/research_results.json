@@ -1,0 +1,111 @@
+{
+  "scientific_revolutions": {
+    "topic_config": {
+      "focus_areas": [
+        "art_architecture",
+        "literacy",
+        "global_perspectives"
+      ],
+      "primary_sources": [
+        "manuscripts",
+        "treatises",
+        "correspondence"
+      ],
+      "regions": [
+        "europe",
+        "islamic_world",
+        "china",
+        "india",
+        "americas"
+      ]
+    },
+    "total_papers": 1,
+    "open_access_count": 0,
+    "recent_papers": 0,
+    "search_query": "scientific revolution history",
+    "sample_papers": [
+      {
+        "title": "Unknown Title",
+        "authors": [],
+        "abstract": "No abstract available",
+        "published_date": "Unknown",
+        "source": "Google Scholar",
+        "url": "",
+        "citations": 251,
+        "is_open_access": false
+      }
+    ]
+  },
+  "enlightenment": {
+    "topic_config": {
+      "focus_areas": [
+        "human_rights",
+        "political_values",
+        "philosophy"
+      ],
+      "primary_sources": [
+        "philosophical_works",
+        "political_documents",
+        "letters"
+      ],
+      "regions": [
+        "europe",
+        "americas",
+        "africa",
+        "asia"
+      ]
+    },
+    "total_papers": 1,
+    "open_access_count": 0,
+    "recent_papers": 0,
+    "search_query": "enlightenment philosophy history",
+    "sample_papers": [
+      {
+        "title": "Unknown Title",
+        "authors": [],
+        "abstract": "No abstract available",
+        "published_date": "Unknown",
+        "source": "Google Scholar",
+        "url": "",
+        "citations": 121,
+        "is_open_access": false
+      }
+    ]
+  },
+  "decolonization": {
+    "topic_config": {
+      "focus_areas": [
+        "independence_movements",
+        "cultural_revival",
+        "economic_transformation"
+      ],
+      "primary_sources": [
+        "independence_documents",
+        "speeches",
+        "cultural_works"
+      ],
+      "regions": [
+        "africa",
+        "asia",
+        "americas",
+        "oceania"
+      ]
+    },
+    "total_papers": 1,
+    "open_access_count": 0,
+    "recent_papers": 0,
+    "search_query": "decolonization independence movements",
+    "sample_papers": [
+      {
+        "title": "Unknown Title",
+        "authors": [],
+        "abstract": "No abstract available",
+        "published_date": "Unknown",
+        "source": "Google Scholar",
+        "url": "",
+        "citations": 145,
+        "is_open_access": false
+      }
+    ]
+  }
+}

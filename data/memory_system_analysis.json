@@ -1,0 +1,66 @@
+{
+  "timestamp": "2025-06-06T00:33:53.796784",
+  "gpu_tests": {
+    "pytorch_cuda": {
+      "available": true,
+      "version": "12.1",
+      "device_count": 1,
+      "device_name": "NVIDIA GeForce RTX 3080"
+    },
+    "cupy": {
+      "available": true,
+      "version": "13.4.1",
+      "cuda_version": 12080
+    },
+    "faiss": {
+      "available": false
+    }
+  },
+  "memory_tests": {
+    "error": "attempted relative import beyond top-level package",
+    "database": false
+  },
+  "vector_tests": {
+    "error": "'NoneType' object has no attribute 'Index'"
+  },
+  "embedding_tests": {
+    "generation": true,
+    "dimension": 1536,
+    "batch": true
+  },
+  "issues": [
+    {
+      "category": "gpu",
+      "description": "FAISS not installed",
+      "severity": "error",
+      "timestamp": "2025-06-06T00:33:58.099234"
+    },
+    {
+      "category": "memory",
+      "description": "Memory system test failed: attempted relative import beyond top-level package",
+      "severity": "error",
+      "timestamp": "2025-06-06T00:33:58.101234"
+    },
+    {
+      "category": "vector",
+      "description": "Vector storage test failed: 'NoneType' object has no attribute 'Index'",
+      "severity": "error",
+      "timestamp": "2025-06-06T00:33:59.101261"
+    },
+    {
+      "category": "database",
+      "description": "Database connectivity test failed: No module named 'config.database'",
+      "severity": "error",
+      "timestamp": "2025-06-06T00:34:12.009242"
+    }
+  ],
+  "recommendations": [
+    "Install FAISS-GPU for GPU-accelerated vector search",
+    "Fix memory system initialization issues",
+    "Fix vector storage system",
+    "Enable GPU acceleration in memory and vector systems",
+    "Implement vector store interface compatibility fixes",
+    "Add GPU memory monitoring and optimization",
+    "Implement embedding caching for better performance"
+  ]
+}

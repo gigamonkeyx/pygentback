@@ -1,0 +1,68 @@
+# A2A Multi-Agent System Production Dockerfile
+FROM python:3.11-slim
+
+# Set metadata
+LABEL maintainer="PyGent Factory Team"
+LABEL version="1.0.0"
+LABEL description="A2A Multi-Agent System with Google A2A Protocol"
+
+# Set working directory
+WORKDIR /app
+
+# Create non-root user for security
+RUN groupadd -r a2a && useradd -r -g a2a a2a
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    libpq-dev \
+    curl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+# Copy requirements
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install additional A2A dependencies
+RUN pip install --no-cache-dir \
+    fastapi \
+    uvicorn[standard] \
+    aiohttp \
+    asyncpg \
+    redis
+
+# Copy source code with proper ownership
+COPY --chown=a2a:a2a src/ ./src/
+COPY --chown=a2a:a2a start_a2a_server.py .
+COPY --chown=a2a:a2a a2a_live_demo.py .
+
+# Create directories with proper permissions
+RUN mkdir -p /app/logs /app/data /app/config \
+    && chown -R a2a:a2a /app
+
+# Set environment variables for production
+ENV PYTHONPATH=/app/src
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV A2A_ENV=production
+ENV A2A_LOG_LEVEL=INFO
+ENV A2A_MAX_WORKERS=4
+ENV A2A_TIMEOUT=30
+
+# Health check with improved configuration
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:8080/health || exit 1
+
+# Switch to non-root user
+USER a2a
+
+# Expose port
+EXPOSE 8080
+
+# Run the A2A server with production settings
+CMD ["python", "-u", "start_a2a_server.py"]

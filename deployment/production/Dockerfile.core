@@ -1,0 +1,57 @@
+# Production Dockerfile for PyGent Factory Core Service
+# Real Agent Implementation - Zero Mock Code
+
+FROM python:3.11-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    git \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create non-root user for security
+RUN useradd --create-home --shell /bin/bash pygent && \
+    chown -R pygent:pygent /app
+USER pygent
+
+# Copy requirements first for better caching
+COPY --chown=pygent:pygent requirements.txt .
+COPY --chown=pygent:pygent requirements-prod.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir --user -r requirements.txt && \
+    pip install --no-cache-dir --user -r requirements-prod.txt
+
+# Copy application code
+COPY --chown=pygent:pygent src/ ./src/
+COPY --chown=pygent:pygent config/ ./config/
+COPY --chown=pygent:pygent deployment/production/entrypoint.sh ./
+
+# Make entrypoint executable
+RUN chmod +x entrypoint.sh
+
+# Create logs directory
+RUN mkdir -p logs
+
+# Set environment variables
+ENV PYTHONPATH=/app/src
+ENV PATH=/home/pygent/.local/bin:$PATH
+ENV PYTHONUNBUFFERED=1
+ENV REAL_AGENTS_ENABLED=true
+ENV MOCK_IMPLEMENTATIONS_DISABLED=true
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+# Expose port
+EXPOSE 8000
+
+# Run the application
+ENTRYPOINT ["./entrypoint.sh"]
+CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]

@@ -1,0 +1,32 @@
+{
+  "test_timestamp": "2025-06-06T07:13:53.915881",
+  "database_url": "sqlite:///./pygent_factory.db",
+  "tables_tested": [
+    "mcp_servers",
+    "mcp_tools",
+    "mcp_resources",
+    "mcp_prompts",
+    "mcp_tool_calls"
+  ],
+  "test_results": {
+    "servers_created": 1,
+    "tools_created": 2,
+    "resources_created": 2,
+    "prompts_created": 1,
+    "tool_calls_logged": 1,
+    "relationships_working": true,
+    "usage_tracking_working": true
+  },
+  "schema_validation": {
+    "tool_input_schema": "\u2705 JSON schema stored and retrieved",
+    "server_capabilities": "\u2705 Capabilities JSON stored and retrieved",
+    "tool_annotations": "\u2705 Annotations stored and retrieved",
+    "tool_call_analytics": "\u2705 Performance and effectiveness tracking working"
+  },
+  "next_steps": [
+    "Integrate tool discovery service with MCP server registration",
+    "Implement real tool discovery via MCP tools/list calls",
+    "Add tool change notification handling",
+    "Expose tool metadata APIs for agents and orchestrator"
+  ]
+}

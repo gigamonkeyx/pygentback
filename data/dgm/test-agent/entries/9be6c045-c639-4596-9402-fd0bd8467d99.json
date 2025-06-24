@@ -1,0 +1,85 @@
+{
+  "id": "9be6c045-c639-4596-9402-fd0bd8467d99",
+  "agent_id": "test-agent",
+  "improvement_candidate": {
+    "id": "9be6c045-c639-4596-9402-fd0bd8467d99",
+    "agent_id": "test-agent",
+    "improvement_type": "parameter_tuning",
+    "description": "Parameter tuning to address: ",
+    "code_changes": {
+      "src/agents/test-agent/config.py": "# Auto-generated configuration improvement\n# Generated at: 2025-06-09T02:12:29.213187\n\n# No specific parameters to tune\n"
+    },
+    "expected_improvement": 0.15,
+    "risk_level": 0.0,
+    "status": "applied",
+    "created_at": "2025-06-09 02:12:29.214187",
+    "updated_at": "2025-06-09 02:12:29.214187"
+  },
+  "validation_result": {
+    "candidate_id": "9be6c045-c639-4596-9402-fd0bd8467d99",
+    "success": true,
+    "performance_before": [
+      {
+        "name": "response_time",
+        "value": 0.5,
+        "unit": "seconds",
+        "timestamp": "2025-06-09 02:12:29.214187",
+        "context": null
+      },
+      {
+        "name": "accuracy",
+        "value": 0.85,
+        "unit": "percentage",
+        "timestamp": "2025-06-09 02:12:29.214187",
+        "context": null
+      },
+      {
+        "name": "memory_usage",
+        "value": 128.0,
+        "unit": "MB",
+        "timestamp": "2025-06-09 02:12:29.214187",
+        "context": null
+      }
+    ],
+    "performance_after": [
+      {
+        "name": "response_time",
+        "value": 0.4347826086956522,
+        "unit": "seconds",
+        "timestamp": "2025-06-09 02:12:29.318183",
+        "context": null
+      },
+      {
+        "name": "accuracy",
+        "value": 0.9774999999999999,
+        "unit": "percentage",
+        "timestamp": "2025-06-09 02:12:29.318183",
+        "context": null
+      },
+      {
+        "name": "memory_usage",
+        "value": 108.80000000000001,
+        "unit": "MB",
+        "timestamp": "2025-06-09 02:12:29.318183",
+        "context": null
+      }
+    ],
+    "improvement_score": 0.14347826086956514,
+    "safety_score": 1.0,
+    "test_results": {
+      "success": true,
+      "tests_passed": 10,
+      "tests_failed": 0,
+      "coverage": 0.95,
+      "execution_time": 0.1
+    },
+    "validation_time": 0.103996,
+    "timestamp": "2025-06-09 02:12:29.318183"
+  },
+  "applied": true,
+  "application_timestamp": "2025-06-09 02:12:29.426183",
+  "rollback_info": {
+    "backup_path": "data\\dgm\\test-agent\\backups\\9be6c045-c639-4596-9402-fd0bd8467d99_backup.json",
+    "backup_timestamp": "2025-06-09T02:12:29.426183"
+  }
+}

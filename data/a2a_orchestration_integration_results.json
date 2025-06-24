@@ -1,0 +1,42 @@
+{
+  "total_tests": 5,
+  "passed_tests": 4,
+  "success_rate": 80.0,
+  "test_results": [
+    {
+      "test": "Orchestration Health",
+      "success": true,
+      "details": "Orchestration healthy, A2A agents: 0",
+      "duration_ms": 2.0,
+      "timestamp": "2025-06-22T08:12:29.852368"
+    },
+    {
+      "test": "A2A Server Health",
+      "success": true,
+      "details": "A2A server healthy, uptime: 333.8s",
+      "duration_ms": 1.0,
+      "timestamp": "2025-06-22T08:12:29.854368"
+    },
+    {
+      "test": "A2A Agent Discovery",
+      "success": true,
+      "details": "Discovered 1 A2A agents: PyGent Factory A2A Agent",
+      "duration_ms": 1.0,
+      "timestamp": "2025-06-22T08:12:29.856370"
+    },
+    {
+      "test": "A2A Message Sending",
+      "success": false,
+      "details": "HTTP 500: {\"detail\":\"A2A message failed: 500 - {\\\"detail\\\":\\\"404: Agent not found\\\"}\"}",
+      "duration_ms": 5.0,
+      "timestamp": "2025-06-22T08:12:29.861368"
+    },
+    {
+      "test": "Orchestration Capabilities",
+      "success": true,
+      "details": "A2A integration capability present, 6 total capabilities",
+      "duration_ms": 1.0,
+      "timestamp": "2025-06-22T08:12:29.863368"
+    }
+  ]
+}

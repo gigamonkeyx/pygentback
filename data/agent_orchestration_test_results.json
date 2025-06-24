@@ -1,0 +1,80 @@
+{
+  "total_tests": 9,
+  "passed_tests": 9,
+  "success_rate": 100.0,
+  "test_results": [
+    {
+      "test": "Server Health",
+      "success": true,
+      "details": "Status: healthy, Uptime: 75.38s, Agents: 3",
+      "duration_ms": 2051.08,
+      "timestamp": "2025-06-22T06:25:19.046858"
+    },
+    {
+      "test": "Root Endpoint",
+      "success": true,
+      "details": "Service: Agent Orchestration MCP Server, Capabilities: 5, Endpoints: 6",
+      "duration_ms": 2057.84,
+      "timestamp": "2025-06-22T06:25:21.104702"
+    },
+    {
+      "test": "Agent Creation",
+      "success": true,
+      "details": "Created 3 agents successfully",
+      "duration_ms": 6146.2,
+      "timestamp": "2025-06-22T06:25:27.251907"
+    },
+    {
+      "test": "List Agents",
+      "success": true,
+      "details": "Listed 6 agents with complete information",
+      "duration_ms": 2047.13,
+      "timestamp": "2025-06-22T06:25:29.300031"
+    },
+    {
+      "test": "Task Submission",
+      "success": true,
+      "details": "Submitted 3 tasks successfully",
+      "duration_ms": 6145.75,
+      "timestamp": "2025-06-22T06:25:35.445780"
+    },
+    {
+      "test": "Task Execution",
+      "success": true,
+      "details": "All 3 tasks completed within 10s",
+      "duration_ms": 6147.61,
+      "timestamp": "2025-06-22T06:25:41.594391"
+    },
+    {
+      "test": "Task Listing",
+      "success": true,
+      "details": "Listed 4 tasks with statuses: ['completed']",
+      "duration_ms": 2040.21,
+      "timestamp": "2025-06-22T06:25:43.634596"
+    },
+    {
+      "test": "Priority Scheduling",
+      "success": true,
+      "details": "Priority scheduling working: 3 tasks with different priorities processed",
+      "duration_ms": 14274.34,
+      "timestamp": "2025-06-22T06:25:57.908940"
+    },
+    {
+      "test": "Performance Monitoring",
+      "success": true,
+      "details": "Performance monitoring active: 116.29s uptime, 100.0% success rate, 7 tasks completed",
+      "duration_ms": 2042.39,
+      "timestamp": "2025-06-22T06:25:59.952325"
+    }
+  ],
+  "created_agents": [
+    "93d53a18-c86a-428b-bf53-8c93022eda7d",
+    "33d9dc4f-5cb9-4006-90e3-79d5c250f73d",
+    "c018668e-55dd-4069-9167-84c54d6fea81"
+  ],
+  "submitted_tasks": [
+    "82073b41-9730-4314-80e9-15de4f72f14f",
+    "f4e22381-a4d6-4cdb-80c9-be329e37bf85",
+    "7c009362-af23-412f-9e65-812bf9271456"
+  ]
+}

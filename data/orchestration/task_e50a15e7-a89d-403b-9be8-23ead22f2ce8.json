@@ -1,0 +1,19 @@
+{
+  "task_id": "e50a15e7-a89d-403b-9be8-23ead22f2ce8",
+  "task_type": "search",
+  "description": "Search for information about AI",
+  "status": "completed",
+  "priority": 2,
+  "assigned_agent": "12b39c32-dd51-4bf7-8c76-4f7660a20fa6",
+  "created_at": "2025-06-22T06:22:40.736163",
+  "started_at": "2025-06-22T06:22:40.782739",
+  "completed_at": "2025-06-22T06:22:40.891331",
+  "result": {
+    "task_id": "e50a15e7-a89d-403b-9be8-23ead22f2ce8",
+    "agent_id": "12b39c32-dd51-4bf7-8c76-4f7660a20fa6",
+    "result": "Completed search task: Search for information about AI",
+    "execution_time": 0.1,
+    "success": true
+  },
+  "error_message": null
+}

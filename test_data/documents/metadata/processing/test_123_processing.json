@@ -1,0 +1,15 @@
+{
+  "document_id": "test_123",
+  "processing_timestamp": "2025-06-20T10:00:00Z",
+  "extraction_method": "text",
+  "extraction_success": true,
+  "quality_score": 0.85,
+  "processing_time_seconds": null,
+  "text_length": null,
+  "word_count": null,
+  "page_count": null,
+  "ocr_confidence": null,
+  "language_detected": null,
+  "error_message": null,
+  "fallback_methods_tried": []
+}

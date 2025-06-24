@@ -1,0 +1,331 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: a2a-system
+  labels:
+    name: a2a-system
+    environment: production
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: a2a-config
+  namespace: a2a-system
+data:
+  A2A_ENV: "production"
+  A2A_HOST: "0.0.0.0"
+  A2A_PORT: "8080"
+  A2A_LOG_LEVEL: "INFO"
+  A2A_MAX_WORKERS: "8"
+  A2A_TIMEOUT: "60"
+  A2A_MAX_REQUESTS: "1000"
+  A2A_RATE_LIMIT: "100"
+  A2A_RATE_LIMIT_WINDOW: "60"
+  A2A_MAX_AGENTS: "10"
+  A2A_TASK_TIMEOUT: "300"
+  A2A_MAX_CONCURRENT_TASKS: "50"
+  A2A_METRICS_ENABLED: "true"
+  A2A_ENABLE_STREAMING: "true"
+  A2A_ENABLE_STATE_HISTORY: "true"
+  A2A_ENABLE_METRICS: "true"
+  A2A_CORS_ORIGINS: '["https://api.timpayne.net", "https://timpayne.net"]'
+  A2A_ALLOWED_HOSTS: '["api.timpayne.net", "*.timpayne.net"]'
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: a2a-secrets
+  namespace: a2a-system
+type: Opaque
+data:
+  # Base64 encoded secrets - replace with actual values
+  POSTGRES_PASSWORD: cG9zdGdyZXNfcGFzc3dvcmQ=  # postgres_password
+  REDIS_PASSWORD: cmVkaXNfcGFzc3dvcmQ=  # redis_password
+  A2A_SECRET_KEY: YTJhX3NlY3JldF9rZXk=  # a2a_secret_key
+  A2A_ADMIN_API_KEY: YWRtaW5fYXBpX2tleQ==  # admin_api_key
+  A2A_SYSTEM_API_KEY: c3lzdGVtX2FwaV9rZXk=  # system_api_key
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: a2a-service
+  namespace: a2a-system
+  labels:
+    app: a2a-server
+spec:
+  selector:
+    app: a2a-server
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+    - name: metrics
+      port: 9090
+      targetPort: 9090
+      protocol: TCP
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: a2a-service-external
+  namespace: a2a-system
+  labels:
+    app: a2a-server
+spec:
+  selector:
+    app: a2a-server
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: a2a-server
+  namespace: a2a-system
+  labels:
+    app: a2a-server
+    version: v1.0.0
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: a2a-server
+  template:
+    metadata:
+      labels:
+        app: a2a-server
+        version: v1.0.0
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: a2a-service-account
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+      - name: a2a-server
+        image: pygent-factory/a2a-server:v1.0.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        - containerPort: 9090
+          name: metrics
+          protocol: TCP
+        env:
+        - name: DATABASE_URL
+          value: "postgresql+asyncpg://postgres:$(POSTGRES_PASSWORD)@postgres-service:5432/pygent_factory"
+        - name: REDIS_URL
+          value: "redis://:$(REDIS_PASSWORD)@redis-service:6379/0"
+        envFrom:
+        - configMapRef:
+            name: a2a-config
+        - secretRef:
+            name: a2a-secrets
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        volumeMounts:
+        - name: logs
+          mountPath: /app/logs
+        - name: data
+          mountPath: /app/data
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: logs
+        emptyDir: {}
+      - name: data
+        persistentVolumeClaim:
+          claimName: a2a-data-pvc
+      nodeSelector:
+        kubernetes.io/os: linux
+      tolerations:
+      - key: "node.kubernetes.io/not-ready"
+        operator: "Exists"
+        effect: "NoExecute"
+        tolerationSeconds: 300
+      - key: "node.kubernetes.io/unreachable"
+        operator: "Exists"
+        effect: "NoExecute"
+        tolerationSeconds: 300
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: a2a-service-account
+  namespace: a2a-system
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: a2a-system
+  name: a2a-role
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "endpoints"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "replicasets"]
+  verbs: ["get", "list", "watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: a2a-role-binding
+  namespace: a2a-system
+subjects:
+- kind: ServiceAccount
+  name: a2a-service-account
+  namespace: a2a-system
+roleRef:
+  kind: Role
+  name: a2a-role
+  apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: a2a-data-pvc
+  namespace: a2a-system
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: fast-ssd
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: a2a-ingress
+  namespace: a2a-system
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "60"
+spec:
+  tls:
+  - hosts:
+    - api.timpayne.net
+    secretName: a2a-tls-secret
+  rules:
+  - host: api.timpayne.net
+    http:
+      paths:
+      - path: /a2a
+        pathType: Prefix
+        backend:
+          service:
+            name: a2a-service
+            port:
+              number: 8080
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: a2a-pdb
+  namespace: a2a-system
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: a2a-server
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: a2a-hpa
+  namespace: a2a-system
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: a2a-server
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 15
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
