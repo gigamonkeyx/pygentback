@@ -22,8 +22,6 @@ mcp>=1.9.0
 # A2A-DGM Integration Dependencies
 sse-starlette==1.6.5
 pydantic[email]>=2.11.0
-httpx>=0.28.0
-python-multipart>=0.0.9
 
 # AI & ML
 openai>=1.82.0
@@ -46,7 +44,6 @@ mypy>=1.15.0
 pytest>=8.3.0
 pytest-asyncio>=0.21.0
 pytest-cov>=4.1.0
-httpx>=0.28.0
 pre-commit>=4.2.0
 
 # Utilities
@@ -54,11 +51,12 @@ python-dotenv>=1.1.0
 rich>=14.0.0
 typer>=0.16.0
 structlog>=23.0.0
+httpx>=0.28.0
 
 # Security
 python-jose[cryptography]>=3.3.0
 passlib[bcrypt]>=1.7.0
-python-multipart>=0.0.20
+python-multipart>=0.0.9
 
 # Optional: Redis
 redis>=5.0.0
