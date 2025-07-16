@@ -6,7 +6,7 @@ Handles application lifecycle, dependency injection, and route configuration.
 """
 
 import asyncio
-import logging
+# Removed standard logging import - using UTF-8 logger
 from contextlib import asynccontextmanager
 from typing import Dict, Any
 
@@ -25,11 +25,9 @@ from ..protocols.registry import ProtocolRegistry
 from ..rag.retrieval_system import RetrievalSystem
 from ..search.embedding_service import EmbeddingService
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
+# Configure UTF-8 logging
+from ..utils.utf8_logger import get_pygent_logger, configure_utf8_logging
+configure_utf8_logging()
 logger = logging.getLogger(__name__)
 
 # Global application state
@@ -296,6 +294,7 @@ from .routes import (
     research,
     evolution
 )
+from .monitoring_endpoints import monitoring_router
 
 app.include_router(health.router, prefix="/health", tags=["health"])
 app.include_router(agents.router, prefix="/agents", tags=["agents"])
@@ -306,6 +305,8 @@ app.include_router(models.router, prefix="/models", tags=["models"])
 app.include_router(workflows.router, prefix="/workflows", tags=["workflows"])
 app.include_router(research.router, prefix="/research", tags=["research"])
 app.include_router(evolution.router, prefix="/evolution", tags=["evolution"])
+# Docker 4.43 Integration: Add monitoring endpoints
+app.include_router(monitoring_router, tags=["monitoring"])
 
 # Global exception handler
 @app.exception_handler(Exception)

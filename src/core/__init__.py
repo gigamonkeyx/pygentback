@@ -46,6 +46,16 @@ from .research_workflow import ResearchWorkflow
 # Import model manager
 from .model_manager import ModelManager
 
+# Phase 4 Integration: Import simulation and behavior detection modules
+try:
+    from .sim_env import SimulationEnvironment, create_simulation_environment
+    from .emergent_behavior_detector import Docker443EmergentBehaviorDetector
+    from .graceful_shutdown import GracefulShutdownManager
+    PHASE4_MODULES_AVAILABLE = True
+except ImportError as e:
+    # Phase 4 modules not available - continue without them
+    PHASE4_MODULES_AVAILABLE = False
+
 __all__ = [
     # Agent system
     "BaseAgent", "Agent", "AgentMessage", "AgentCapability", "AgentConfig", "AgentStatus", "MessageType",
@@ -64,5 +74,15 @@ __all__ = [
     "GPUConfig", "GPUOptimizer", "OllamaIntegration", "OllamaManager", "OpenRouterIntegration",
     
     # Workflow and models
-    "ResearchWorkflow", "ModelManager"
+    "ResearchWorkflow", "ModelManager",
+
+    # Phase 4 modules (if available)
+    "PHASE4_MODULES_AVAILABLE"
 ]
+
+# Conditionally add Phase 4 modules to __all__ if available
+if PHASE4_MODULES_AVAILABLE:
+    __all__.extend([
+        "SimulationEnvironment", "create_simulation_environment",
+        "Docker443EmergentBehaviorDetector", "GracefulShutdownManager"
+    ])

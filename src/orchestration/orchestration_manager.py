@@ -172,6 +172,9 @@ class OrchestrationManager:
             # Start Phase 2 components
             await self.transaction_coordinator.start()
             await self.emergent_behavior_detector.start()
+
+            # Phase 4 Integration: Connect to agent factory simulation environment
+            await self._integrate_phase4_components()
             
             # Start Phase 3 components
             await self.meta_learning_engine.start()
@@ -1179,3 +1182,74 @@ class OrchestrationManager:
         }
         
         return json.dumps(config_data, indent=2, default=str)
+
+    async def _integrate_phase4_components(self) -> None:
+        """Integrate Phase 4 simulation environment and behavior detection"""
+        try:
+            logger.info("Integrating Phase 4 components with orchestration...")
+
+            # Check if agent factory has Phase 4 components
+            if hasattr(self.agent_registry, 'agent_factory'):
+                agent_factory = self.agent_registry.agent_factory
+
+                if hasattr(agent_factory, 'simulation_env') and agent_factory.simulation_env:
+                    # Connect simulation environment to orchestration
+                    self.simulation_env = agent_factory.simulation_env
+                    logger.info("Connected to agent factory simulation environment")
+
+                    # Enhance emergent behavior detector with simulation data
+                    if hasattr(agent_factory, 'behavior_detector') and agent_factory.behavior_detector:
+                        # Create bridge between orchestration and behavior detection
+                        self.behavior_detector_bridge = agent_factory.behavior_detector
+                        logger.info("Connected to emergent behavior detector")
+
+                        # Set up periodic behavior monitoring
+                        asyncio.create_task(self._monitor_emergent_behaviors())
+
+            logger.info("Phase 4 integration completed successfully")
+
+        except Exception as e:
+            logger.error(f"Failed to integrate Phase 4 components: {e}")
+            # Continue without Phase 4 integration
+
+    async def _monitor_emergent_behaviors(self) -> None:
+        """Monitor emergent behaviors from the simulation environment"""
+        try:
+            while self.is_running:
+                if hasattr(self, 'behavior_detector_bridge'):
+                    # Get behavior analysis from detector
+                    behavior_summary = await self.behavior_detector_bridge.analyze_emergent_behaviors()
+
+                    if behavior_summary.get('emergent_patterns'):
+                        logger.info(f"Detected emergent behaviors: {behavior_summary['emergent_patterns']}")
+
+                        # Integrate with orchestration decisions
+                        await self._adapt_orchestration_to_behaviors(behavior_summary)
+
+                # Check every 30 seconds
+                await asyncio.sleep(30)
+
+        except Exception as e:
+            logger.error(f"Error in emergent behavior monitoring: {e}")
+
+    async def _adapt_orchestration_to_behaviors(self, behavior_summary: Dict[str, Any]) -> None:
+        """Adapt orchestration strategies based on emergent behaviors"""
+        try:
+            # Example adaptations based on emergent patterns
+            patterns = behavior_summary.get('emergent_patterns', [])
+
+            for pattern in patterns:
+                if pattern.get('type') == 'resource_optimization':
+                    # Adjust resource allocation strategies
+                    logger.info("Adapting resource allocation based on emergent optimization patterns")
+
+                elif pattern.get('type') == 'collaborative_efficiency':
+                    # Enhance collaboration strategies
+                    logger.info("Enhancing collaboration strategies based on emergent patterns")
+
+                elif pattern.get('type') == 'adaptive_learning':
+                    # Update learning parameters
+                    logger.info("Updating learning parameters based on emergent adaptation")
+
+        except Exception as e:
+            logger.error(f"Error adapting orchestration to behaviors: {e}")

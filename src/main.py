@@ -7,7 +7,6 @@ caching, and comprehensive system initialization.
 """
 
 import asyncio
-import logging
 import os
 import sys
 from pathlib import Path
@@ -15,23 +14,18 @@ from pathlib import Path
 # Add src to path for imports
 sys.path.append(str(Path(__file__).parent))
 
+# Import UTF-8 logging infrastructure
+from utils.utf8_logger import get_pygent_logger, configure_utf8_logging
+
 from api.gateway import api_gateway, APIGatewayConfig
 from database.production_manager import db_manager
 from cache.integration_layer import integrated_cache
 from core.gpu_optimization import gpu_optimizer
 from core.ollama_gpu_integration import ollama_gpu_manager
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler(),
-        logging.FileHandler('logs/pygent_factory.log', mode='a')
-    ]
-)
-
-logger = logging.getLogger(__name__)
+# Configure UTF-8 logging
+configure_utf8_logging()
+logger = get_pygent_logger("pygent_factory_main")
 
 
 class PyGentFactoryApp:

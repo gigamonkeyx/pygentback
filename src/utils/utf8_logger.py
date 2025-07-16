@@ -159,6 +159,27 @@ class PyGentLogger:
     def get_logger(self) -> logging.Logger:
         """Get configured logger instance"""
         return self.logger
+
+    # Standard logging methods for compatibility
+    def debug(self, message: str, *args, **kwargs):
+        """Log debug message"""
+        self.logger.debug(message, *args, **kwargs)
+
+    def info(self, message: str, *args, **kwargs):
+        """Log info message"""
+        self.logger.info(message, *args, **kwargs)
+
+    def warning(self, message: str, *args, **kwargs):
+        """Log warning message"""
+        self.logger.warning(message, *args, **kwargs)
+
+    def error(self, message: str, *args, **kwargs):
+        """Log error message"""
+        self.logger.error(message, *args, **kwargs)
+
+    def critical(self, message: str, *args, **kwargs):
+        """Log critical message"""
+        self.logger.critical(message, *args, **kwargs)
     
     def log_observer_event(self, event_type: str, message: str, level: str = "INFO"):
         """Log observer supervision events with protocol compliance"""

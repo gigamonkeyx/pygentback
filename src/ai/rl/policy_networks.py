@@ -5,15 +5,15 @@ Implements neural networks for policy and value function approximation
 in reinforcement learning agents.
 """
 
-import logging
 import numpy as np
 from typing import List, Dict, Any, Optional, Tuple, Union
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 import random
 
-# Set up logger first
-logger = logging.getLogger(__name__)
+# Set up UTF-8 logger
+from ...utils.utf8_logger import get_pygent_logger
+logger = get_pygent_logger("ai_rl_policy_networks")
 
 try:
     import torch

@@ -25,12 +25,20 @@ try:
 except ImportError:
     # Fallback for testing
     from dataclasses import dataclass
-    
+
+    @dataclass
+    class NetworkConfig:
+        """Fallback NetworkConfig for when imports fail"""
+        hidden_sizes: List[int] = field(default_factory=lambda: [64, 32])
+        activation: str = "relu"
+        dropout_rate: float = 0.1
+        learning_rate: float = 0.001
+
     @dataclass
     class RecipeEnvironment:
         def reset(self): return None
         async def step(self, action): return None, 0.0, False, {}
-    
+
     @dataclass
     class RecipeArchitecture:
         nodes: List[Any] = field(default_factory=list)

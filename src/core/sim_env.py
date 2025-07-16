@@ -21,11 +21,33 @@ import uuid
 import random
 import numpy as np
 
-# Verified existing imports
-from .agent_factory import AgentFactory
-from src.mcp.auto_discovery import MCPAutoDiscovery
-from src.cache.redis_manager import RedisManager
-from src.config.settings import Settings
+# Verified existing imports - Fixed for standalone import
+try:
+    from .agent_factory import AgentFactory
+except ImportError:
+    # Fallback for standalone import
+    import sys
+    from pathlib import Path
+    sys.path.append(str(Path(__file__).parent.parent))
+    from core.agent_factory import AgentFactory
+
+try:
+    from src.mcp.auto_discovery import MCPAutoDiscovery
+    from src.cache.redis_manager import RedisManager
+    from src.config.settings import Settings
+except ImportError:
+    # Fallback implementations for standalone testing
+    class MCPAutoDiscovery:
+        def __init__(self): pass
+        async def discover_servers(self): return []
+
+    class RedisManager:
+        def __init__(self): pass
+        async def get(self, key): return None
+        async def set(self, key, value): pass
+
+    class Settings:
+        def __init__(self): pass
 
 logger = logging.getLogger(__name__)
 

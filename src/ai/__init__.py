@@ -13,8 +13,8 @@ from .rl import *
 try:
     from .reasoning import *
 except ImportError as e:
-    import logging
-    logger = logging.getLogger(__name__)
+    from ..utils.utf8_logger import get_pygent_logger
+    logger = get_pygent_logger("ai_module")
     logger.warning(f"Failed to import reasoning module: {e}")
     # Provide fallback or stub implementations if needed
 

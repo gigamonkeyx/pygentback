@@ -5,14 +5,18 @@ This is a simplified version that skips complex initialization
 to get the basic API and WebSocket endpoints running quickly.
 """
 
-import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
-# Configure basic logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+# Configure UTF-8 logging
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent))
+from utils.utf8_logger import get_pygent_logger, configure_utf8_logging
+
+configure_utf8_logging()
+logger = get_pygent_logger("api_minimal")
 
 def create_minimal_app() -> FastAPI:
     """Create a minimal FastAPI app for development"""

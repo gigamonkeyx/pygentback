@@ -12,9 +12,9 @@ from .embedding import (
     OpenAIEmbeddingProvider, SentenceTransformerProvider,
     get_embedding_service
 )
-from .logging import (
-    setup_logging, get_logger, LoggerConfig,
-    StructuredLogger, PerformanceLogger
+from .utf8_logger import (
+    get_logger, get_pygent_logger, configure_utf8_logging,
+    UTF8StreamHandler, UTF8FileHandler, RIPEROmegaFormatter
 )
 from .performance import (
     PerformanceMonitor, Timer, ProfilerContext,
@@ -43,12 +43,13 @@ __all__ = [
     "SentenceTransformerProvider",
     "get_embedding_service",
     
-    # Logging utilities
-    "setup_logging",
+    # UTF-8 Logging utilities
     "get_logger",
-    "LoggerConfig",
-    "StructuredLogger",
-    "PerformanceLogger",
+    "get_pygent_logger",
+    "configure_utf8_logging",
+    "UTF8StreamHandler",
+    "UTF8FileHandler",
+    "RIPEROmegaFormatter",
     
     # Performance utilities
     "PerformanceMonitor",

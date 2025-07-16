@@ -5,7 +5,6 @@ Integrates GPU-accelerated vector search with ToT reasoning to enable
 semantic similarity search over thought states and solution paths.
 """
 
-import logging
 import numpy as np
 from typing import List, Dict, Any, Optional, Tuple
 from dataclasses import dataclass
@@ -18,6 +17,10 @@ from pathlib import Path
 search_path = Path(__file__).parent.parent.parent.parent.parent / "search"
 sys.path.insert(0, str(search_path))
 
+# Set up UTF-8 logger
+from .....utils.utf8_logger import get_pygent_logger
+logger = get_pygent_logger("ai_reasoning_vector_search")
+
 try:
     from gpu_search import create_vector_index, VectorSearchConfig, IndexType, SearchResult
 except ImportError:
@@ -28,7 +31,7 @@ except ImportError:
     def create_vector_index(*args, **kwargs):
         raise NotImplementedError("Vector search not available")
 
-logger = logging.getLogger(__name__)
+# Logger already defined above with UTF-8 support
 
 
 @dataclass
