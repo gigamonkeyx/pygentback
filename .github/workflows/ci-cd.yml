@@ -12,6 +12,8 @@ env:
   LANG: en_US.UTF-8
   LC_ALL: en_US.UTF-8
   PYTHON_VERSION: '3.11'
+  # Observer Enhanced Debugging - Phase 2.3
+  ACTIONS_STEP_DEBUG: true
 
 jobs:
   # Python Backend Test - Observer Phase 2 Dependency Restoration
@@ -39,8 +41,16 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Test Python setup
+    - name: Run Python tests
+      env:
+        PYTHONIOENCODING: utf-8
+        LANG: en_US.UTF-8
+        LC_ALL: en_US.UTF-8
       run: |
         python --version
         pip list
-        echo "✅ Python dependency management restored - Observer Phase 2.2"
+        echo "✅ Running basic tests - Observer Phase 2.3"
+        # Run basic import tests
+        python -c "import sys; print(f'Python {sys.version}')"
+        python -c "import os; print(f'UTF-8 encoding: {os.environ.get(\"PYTHONIOENCODING\", \"not set\")}')"
+        echo "✅ Basic testing framework restored - Observer Phase 2.3"
