@@ -1,0 +1,31 @@
+{
+  "name": "pygent-factory",
+  "version": "2.1.0",
+  "description": "Enterprise AI Agent Development Platform",
+  "private": true,
+  "workspaces": [
+    "ui"
+  ],
+  "scripts": {
+    "install": "echo 'Installing dependencies...'",
+    "build": "echo 'Building project...'",
+    "test": "echo 'Running tests...'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gigamonkeyx/pygentback.git"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "mcp",
+    "enterprise",
+    "automation"
+  ],
+  "author": "PyGent Factory Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}
