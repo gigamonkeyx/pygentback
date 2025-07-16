@@ -101,13 +101,13 @@ jobs:
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
+      if: ${{ secrets.CODECOV_TOKEN != '' }}
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: ./coverage.xml
         flags: backend
         name: backend-coverage
       continue-on-error: true
-      if: ${{ secrets.CODECOV_TOKEN != '' }}
 
   # Frontend Tests
   test-frontend:
@@ -219,6 +219,7 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
+        cache-dependency-path: 'ui/package-lock.json'
 
     - name: Install dependencies
       run: |
