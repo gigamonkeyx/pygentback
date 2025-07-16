@@ -6,6 +6,12 @@ on:
   pull_request:
     branches: [ master, main ]
 
+env:
+  # UTF-8 Environment Configuration - Observer Phase 2 Restoration
+  PYTHONIOENCODING: utf-8
+  LANG: en_US.UTF-8
+  LC_ALL: en_US.UTF-8
+
 jobs:
   # Minimal Documentation Test - Observer Cycle Breaking
   minimal-docs-test:
