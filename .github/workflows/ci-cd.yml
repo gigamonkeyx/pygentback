@@ -11,14 +11,36 @@ env:
   PYTHONIOENCODING: utf-8
   LANG: en_US.UTF-8
   LC_ALL: en_US.UTF-8
+  PYTHON_VERSION: '3.11'
 
 jobs:
-  # Minimal Test Job - Observer Cycle Breaking
-  minimal-test:
+  # Python Backend Test - Observer Phase 2 Dependency Restoration
+  test-backend:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
-    - name: Test minimal workflow
-      run: echo "✅ Minimal workflow startup successful - Observer cycle broken"
+
+    - name: Set up Python ${{ env.PYTHON_VERSION }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Cache pip dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Test Python setup
+      run: |
+        python --version
+        pip list
+        echo "✅ Python dependency management restored - Observer Phase 2.2"
