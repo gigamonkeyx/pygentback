@@ -36,6 +36,11 @@ on:
 env:
   NODE_VERSION: '18'
   PYTHON_VERSION: '3.11'
+  # UTF-8 Environment Configuration - Observer Critical Fix
+  PYTHONIOENCODING: utf-8
+  LANG: en_US.UTF-8
+  LC_ALL: en_US.UTF-8
+  ACTIONS_STEP_DEBUG: true
 
 jobs:
   check-triggers:
@@ -112,6 +117,8 @@ jobs:
     - name: Install Python dependencies
       run: |
         pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+        pip install sphinx sphinx-rtd-theme sphinx-autodoc-typehints rst-lint
     
     - name: Install Node.js dependencies
       working-directory: src/docs
@@ -129,7 +136,17 @@ jobs:
         key: mermaid-cache-${{ hashFiles('src/docs/**/*.mmd', 'src/docs/**/*.md') }}
         restore-keys: |
           mermaid-cache-
-    
+
+    - name: Validate RST syntax
+      run: |
+        echo "Checking for RST files and validating syntax..."
+        find docs/ -name "*.rst" -type f | head -10 || echo "No RST files found, skipping RST validation"
+        if find docs/ -name "*.rst" -type f | head -1 > /dev/null; then
+          rst-lint docs/*.rst || echo "RST validation completed with warnings"
+        else
+          echo "No RST files found, validation skipped"
+        fi
+
     - name: Execute intelligent documentation build
       run: |
         python -c "

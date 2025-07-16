@@ -1,0 +1,117 @@
+# Docker ignore file to reduce build context size
+
+# Large model files
+models/
+*.bin
+*.safetensors
+*.gguf
+*.pt
+*.pth
+*.onnx
+
+# Cache directories
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.cache/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+*.log
+
+# Git
+.git/
+.gitignore
+
+# Docker files
+Dockerfile*
+docker-compose*.yml
+*.dockerignore
+
+# Large data files
+data/
+datasets/
+*.csv
+*.json
+*.parquet
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Node modules (if any)
+node_modules/
+**/node_modules/
+
+# MCP server directories
+mcp-server-*/
+
+# Large archives
+*.zip
+*.tar
+*.tar.gz
+*.rar
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Jupyter notebooks
+*.ipynb_checkpoints/
+
+# Documentation build
+docs/_build/
+site/
+
+# Phase 5 Integration - Observer Optimization
+3d_studio_workspace/outputs/
+3d_studio_workspace/threestudio/
+tests/
+test_*
+*_test.py
+*.md
+README*
+CHANGELOG*
+LICENSE*
+
+# Frontend build artifacts
+ui/dist/
+ui/build/
+ui/.next/
+ui/coverage/
+.npm/
+package-lock.json
+
+# Development and testing files
+observer_pre_inspection_validation.py
+test_monitoring_import.py
+*_validation.py
+*_test.py
+*_demo.py
