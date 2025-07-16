@@ -10,12 +10,12 @@ on:
       debug_enabled:
         description: 'Enable debug logging'
         required: false
-        default: 'false'
+        default: false
         type: boolean
       skip_tests:
         description: 'Skip test execution (for debugging)'
         required: false
-        default: 'false'
+        default: false
         type: boolean
 
 env:
@@ -173,7 +173,7 @@ jobs:
         flags: backend
         name: backend-coverage
       continue-on-error: true
-      if: ${{ secrets.CODECOV_TOKEN != '' }}
+      if: secrets.CODECOV_TOKEN != ''
 
   # Frontend Tests
   test-frontend:
