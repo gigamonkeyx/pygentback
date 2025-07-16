@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  threestudio:
+    build: .
+    image: threestudio:latest
+    container_name: threestudio-3d
+    
+    # GPU access
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    
+    # Environment variables
+    environment:
+      - PYTHONWARNINGS=ignore::FutureWarning,ignore::UserWarning,ignore::DeprecationWarning
+      - CUDA_VISIBLE_DEVICES=0
+      - HF_HOME=/workspace/cache/huggingface
+      - TRANSFORMERS_CACHE=/workspace/cache/huggingface
+      - HF_DATASETS_CACHE=/workspace/cache/huggingface
+      - TORCH_HOME=/workspace/cache/torch
+    
+    # Volume mounts
+    volumes:
+      - ./threestudio:/workspace/threestudio:ro  # Source code (read-only)
+      - ./outputs:/workspace/outputs              # Generated 3D models
+      - ./cache:/workspace/cache                  # Model cache
+      - ./configs:/workspace/configs:ro           # Configuration files
+    
+    # Port mapping for web interfaces
+    ports:
+      - "7860:7860"  # Gradio interface
+      - "6006:6006"  # TensorBoard
+    
+    # Working directory
+    working_dir: /workspace
+    
+    # Keep container running
+    tty: true
+    stdin_open: true
+    
+    # Restart policy
+    restart: unless-stopped
+
+  # Optional: TensorBoard service
+  tensorboard:
+    image: tensorflow/tensorflow:latest-gpu
+    container_name: threestudio-tensorboard
+    command: tensorboard --logdir=/logs --host=0.0.0.0 --port=6006
+    ports:
+      - "6007:6006"
+    volumes:
+      - ./outputs:/logs:ro
+    restart: unless-stopped

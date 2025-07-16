@@ -1,0 +1,153 @@
+# Development overrides for Docker Compose
+# This file is automatically loaded by docker-compose
+
+version: '3.8'
+
+services:
+  pygent-factory:
+    # Override target for development
+    build:
+      target: development
+      args:
+        BUILD_TYPE: dev
+    
+    # Development environment variables
+    environment:
+      - PYGENT_DEBUG=true
+      - PYGENT_LOG_LEVEL=DEBUG
+      - PYGENT_RELOAD=true
+      - PYGENT_DEV_MODE=true
+    
+    # Additional development ports
+    ports:
+      - "8888:8888"    # Jupyter Lab
+      - "5678:5678"    # Debugpy
+      - "8080:8080"    # Alternative port
+    
+    # Development volumes
+    volumes:
+      # Live code reloading
+      - type: bind
+        source: ./src
+        target: /app/src
+        consistency: cached
+      
+      # Jupyter notebooks
+      - type: bind
+        source: ./notebooks
+        target: /app/notebooks
+        consistency: cached
+      
+      # Development configs
+      - type: bind
+        source: ./configs
+        target: /app/configs
+        consistency: cached
+      
+      # Development scripts
+      - type: bind
+        source: ./scripts
+        target: /app/scripts
+        consistency: cached
+    
+    # Override command for development
+    command: >
+      sh -c "
+        echo 'Starting development environment...' &&
+        python -m debugpy --listen 0.0.0.0:5678 --wait-for-client -m src.main &
+        jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password=''
+      "
+    
+    # Development dependencies
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      jupyter:
+        condition: service_started
+
+  # Standalone Jupyter service for development
+  jupyter:
+    build:
+      context: .
+      dockerfile: Dockerfile.gpu
+      target: development
+    container_name: pygent-jupyter
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=
+      - JUPYTER_PASSWORD=
+    ports:
+      - "8889:8888"
+    volumes:
+      - ./notebooks:/app/notebooks
+      - ./src:/app/src:ro
+      - ./data:/app/data
+      - jupyter-data:/root/.jupyter
+    networks:
+      - pygent-network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities: [gpu, compute, utility]
+    runtime: nvidia
+    command: >
+      jupyter lab 
+      --ip=0.0.0.0 
+      --port=8888 
+      --no-browser 
+      --allow-root 
+      --NotebookApp.token='' 
+      --NotebookApp.password=''
+
+  # GPU monitoring service
+  gpu-monitor:
+    image: nvidia/dcgm-exporter:3.1.8-3.1.5-ubuntu22.04
+    container_name: pygent-gpu-monitor
+    environment:
+      - DCGM_EXPORTER_LISTEN=:9400
+      - DCGM_EXPORTER_KUBERNETES=false
+    ports:
+      - "9400:9400"
+    networks:
+      - pygent-network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities: [gpu, compute, utility]
+    runtime: nvidia
+    restart: unless-stopped
+
+  # Development database with additional tools
+  postgres:
+    environment:
+      # Development-specific settings
+      - POSTGRES_LOG_STATEMENT=all
+      - POSTGRES_LOG_MIN_DURATION_STATEMENT=0
+    ports:
+      - "54321:5432"  # Different port to avoid conflicts
+    volumes:
+      # Add development SQL scripts
+      - ./sql/dev:/docker-entrypoint-initdb.d/dev:ro
+
+  # Redis with development configuration
+  redis:
+    command: >
+      redis-server 
+      --appendonly yes 
+      --maxmemory 512mb 
+      --maxmemory-policy allkeys-lru
+      --save 60 1000
+      --loglevel verbose
+
+# Additional development volumes
+volumes:
+  jupyter-data:
+    driver: local

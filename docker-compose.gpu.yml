@@ -1,0 +1,260 @@
+# syntax=docker/dockerfile:1.10
+# Docker Compose configuration optimized for GPU workloads with advanced features
+# Leverages latest Docker Compose v2.x features and BuildKit optimizations
+
+version: '3.8'
+
+services:
+  # Main PyGent Factory service with GPU support
+  pygent-factory:
+    build:
+      context: .
+      dockerfile: Dockerfile.gpu
+      target: production
+      # Advanced BuildKit cache configuration
+      cache_from:
+        - type=registry,ref=pygent-factory:buildcache
+        - type=local,src=/tmp/.buildx-cache
+      cache_to:
+        - type=registry,ref=pygent-factory:buildcache,mode=max
+        - type=local,dest=/tmp/.buildx-cache,mode=max
+      # Multi-platform build support
+      platforms:
+        - linux/amd64
+        - linux/arm64
+      # Build arguments with GPU optimization
+      args:
+        BUILDKIT_INLINE_CACHE: 1
+        CUDA_VERSION: "12.9"
+        PYTHON_VERSION: "3.11"
+        TORCH_CUDA_ARCH_LIST: "8.6"  # RTX 3080 architecture
+        BUILD_TYPE: "gpu"
+        ENABLE_OPTIMIZATIONS: "true"
+      # Build secrets for private registries/APIs
+      secrets:
+        - huggingface_token
+        - openai_api_key
+        - github_token
+      # Additional build contexts
+      additional_contexts:
+        models: ./models
+        configs: ./configs
+        scripts: ./scripts
+    
+    image: pygent-factory:gpu-latest
+    container_name: pygent-factory-gpu
+    
+    # GPU configuration - RTX 3080 optimized
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']  # Use first GPU
+              capabilities: [gpu, compute, utility]
+    
+    # Runtime configuration
+    runtime: nvidia
+    environment:
+      # NVIDIA Container Runtime
+      - NVIDIA_VISIBLE_DEVICES=0
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility,graphics
+      - NVIDIA_REQUIRE_CUDA=cuda>=12.0
+      
+      # CUDA optimization
+      - CUDA_VISIBLE_DEVICES=0
+      - CUDA_DEVICE_ORDER=PCI_BUS_ID
+      - CUDA_CACHE_PATH=/app/.cuda-cache
+      
+      # PyTorch GPU optimizations
+      - TORCH_CUDA_ARCH_LIST=8.6
+      - TORCH_ALLOW_TF32_CUBLAS_OVERRIDE=1
+      - TORCH_CUDNN_V8_API_ENABLED=1
+      
+      # Memory optimization
+      - PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512
+      - CUDA_LAUNCH_BLOCKING=0
+      
+      # Performance tuning
+      - OMP_NUM_THREADS=8
+      - MKL_NUM_THREADS=8
+      - NUMBA_CACHE_DIR=/app/.numba-cache
+      
+      # Application configuration
+      - PYGENT_GPU_ENABLED=true
+      - PYGENT_BATCH_SIZE=32
+      - PYGENT_PRECISION=fp16
+      - PYGENT_COMPILE_MODE=max-autotune
+    
+    # Volume mounts with performance optimization
+    volumes:
+      # Application code (bind mount for development)
+      - type: bind
+        source: .
+        target: /app
+        consistency: cached
+      
+      # GPU cache volumes (named volumes for persistence)
+      - cuda-cache:/app/.cuda-cache
+      - numba-cache:/app/.numba-cache
+      - torch-cache:/root/.cache/torch
+      - huggingface-cache:/root/.cache/huggingface
+      
+      # Model storage (high-performance volume)
+      - type: volume
+        source: model-storage
+        target: /app/models
+        volume:
+          driver: local
+          driver_opts:
+            type: none
+            o: bind
+            device: D:/docker-data/models
+      
+      # Temporary processing (tmpfs for speed)
+      - type: tmpfs
+        target: /tmp/processing
+        tmpfs:
+          size: 4G
+          mode: 1777
+    
+    # Network configuration
+    networks:
+      - pygent-network
+    
+    # Port mapping
+    ports:
+      - "8000:8000"    # Main API
+      - "8001:8001"    # WebSocket
+      - "8002:8002"    # Metrics/monitoring
+      - "6006:6006"    # TensorBoard
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    
+    # Resource limits
+    mem_limit: 16g
+    memswap_limit: 16g
+    shm_size: 2g
+    
+    # Restart policy
+    restart: unless-stopped
+    
+    # Dependencies
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  # PostgreSQL database with performance tuning
+  postgres:
+    image: postgres:16-alpine
+    container_name: pygent-postgres
+    environment:
+      POSTGRES_DB: pygent_factory
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      # Performance tuning
+      POSTGRES_SHARED_BUFFERS: 256MB
+      POSTGRES_EFFECTIVE_CACHE_SIZE: 1GB
+      POSTGRES_MAINTENANCE_WORK_MEM: 64MB
+      POSTGRES_CHECKPOINT_COMPLETION_TARGET: 0.9
+      POSTGRES_WAL_BUFFERS: 16MB
+      POSTGRES_DEFAULT_STATISTICS_TARGET: 100
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./sql/init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - pygent-network
+    ports:
+      - "54321:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Redis for caching and job queues
+  redis:
+    image: redis:7-alpine
+    container_name: pygent-redis
+    command: redis-server --appendonly yes --maxmemory 1gb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis-data:/data
+    networks:
+      - pygent-network
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  # Monitoring with Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: pygent-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    networks:
+      - pygent-network
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+
+# Network configuration
+networks:
+  pygent-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# Volume definitions
+volumes:
+  postgres-data:
+    driver: local
+  redis-data:
+    driver: local
+  prometheus-data:
+    driver: local
+  cuda-cache:
+    driver: local
+  numba-cache:
+    driver: local
+  torch-cache:
+    driver: local
+  huggingface-cache:
+    driver: local
+  model-storage:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: D:/docker-data/models
+
+# Secrets configuration
+secrets:
+  huggingface_token:
+    file: ./secrets/huggingface_token.txt
+  openai_api_key:
+    file: ./secrets/openai_api_key.txt
+  github_token:
+    file: ./secrets/github_token.txt

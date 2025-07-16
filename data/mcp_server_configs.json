@@ -166,7 +166,7 @@
     },{
       "id": "python-mcp",
       "name": "Python Code Server",
-      "command": ["D:\\mcp\\pygent-factory\\.venv\\Scripts\\python.exe", "d:\\mcp\\pygent-factory\\mcp_server_python.py"],
+      "command": ["D:\\mcp\\pygent-factory\\.venv\\Scripts\\python.exe", "D:\\mcp\\pygent-factory\\tools\\mcp_server_python.py"],
       "capabilities": ["python-execution", "code-analysis", "package-management", "debugging", "code-formatting", "performance-profiling", "documentation-generation", "test-generation"],
       "transport": "stdio",
       "config": {

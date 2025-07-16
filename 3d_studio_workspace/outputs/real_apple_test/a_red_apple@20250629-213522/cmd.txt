@@ -1,0 +1,2 @@
+python /workspace/launch.py --config /workspace/configs/dreamfusion-sd.yaml --train --gpu 0 system.prompt_processor.prompt=a red apple trainer.max_steps=100 name=real_apple_test
+Namespace(config='/workspace/configs/dreamfusion-sd.yaml', gpu='0', train=True, validate=False, test=False, export=False, gradio=False, verbose=False, typecheck=False)

@@ -432,7 +432,15 @@ def setup_routes(app: FastAPI) -> None:
         print(">>> A2A ROUTER INCLUDED IN APP <<<")
     else:
         print(">>> A2A ROUTER NOT AVAILABLE - SKIPPING <<<")
-    
+
+    # Supervisor Agent router
+    try:
+        from .routes.supervisor import router as supervisor_router
+        app.include_router(supervisor_router, prefix="/api/v1", tags=["Supervisor Agent"])
+        print(">>> SUPERVISOR ROUTER INCLUDED IN APP <<<")
+    except ImportError as e:
+        print(f">>> SUPERVISOR ROUTER NOT AVAILABLE: {e} <<<")
+
     # Documentation router - add both prefixes for compatibility
     app.include_router(documentation_router, prefix="/api/documentation", tags=["API Documentation"])
     

@@ -1,0 +1,9 @@
+Creating a full-fledged React TypeScript application from scratch is beyond the scope of this platform as it would require a significant amount of time and space to explain all the necessary details. However, I can provide you with some basic structure for each file that you requested. 
+
+1. App.tsx:
+```typescript
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Layout from './components/Layout';
+import Dashboard from './pages/Dashboard';
+import Agents from './pages<｜begin▁of▁sentence｜>Agents.tsx

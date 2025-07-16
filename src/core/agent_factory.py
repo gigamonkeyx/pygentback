@@ -23,8 +23,8 @@ from src.ai.providers.provider_registry import get_provider_registry
 
 # A2A Protocol imports
 try:
-    from a2a_protocol.agent_card_generator import A2AAgentCardGenerator, AgentCard
-    from a2a_protocol.well_known_handler import well_known_handler
+    from src.a2a_protocol.agent_card_generator import A2AAgentCardGenerator, AgentCard
+    from src.a2a_protocol.well_known_handler import well_known_handler
     A2A_AVAILABLE = True
 except ImportError:
     A2A_AVAILABLE = False
@@ -33,7 +33,7 @@ except ImportError:
 
 # A2A Short-lived optimization imports
 try:
-    from a2a_protocol.short_lived_optimization import (
+    from src.a2a_protocol.short_lived_optimization import (
         short_lived_optimizer, OptimizationConfig, ResourceLimits
     )
     SHORT_LIVED_OPTIMIZATION_AVAILABLE = True
@@ -43,7 +43,7 @@ except ImportError:
 
 # A2A Discovery imports
 try:
-    from a2a_protocol.discovery import agent_discovery, A2ADiscoveryClient, DiscoveredAgent
+    from src.a2a_protocol.discovery import agent_discovery, A2ADiscoveryClient, DiscoveredAgent
     DISCOVERY_AVAILABLE = True
 except ImportError:
     DISCOVERY_AVAILABLE = False
@@ -51,7 +51,7 @@ except ImportError:
 
 # A2A MCP Server imports
 try:
-    from servers.a2a_mcp_server import A2AMCPServer
+    from src.servers.a2a_mcp_server import A2AMCPServer
     A2A_MCP_SERVER_AVAILABLE = True
 except ImportError:
     A2A_MCP_SERVER_AVAILABLE = False
@@ -59,7 +59,7 @@ except ImportError:
 
 # A2A Standard imports
 try:
-    from a2a_standard import AgentCard, AgentProvider, AgentCapabilities, AgentSkill
+    from src.a2a_standard import AgentCard, AgentProvider, AgentCapabilities, AgentSkill
     A2A_STANDARD_AVAILABLE = True
 except ImportError:
     A2A_STANDARD_AVAILABLE = False

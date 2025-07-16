@@ -385,6 +385,22 @@ class MCPServerManager:
             "available": registration.status == MCPServerStatus.RUNNING
         }
     
+    async def get_tool_info(self, tool_name: str) -> Optional[Dict[str, Any]]:
+        """Get tool information - alias for get_tool()"""
+        return await self.get_tool(tool_name)
+
+    async def is_server_available(self, server_name: str) -> bool:
+        """Check if a server is available and running"""
+        try:
+            # Try to find server by name
+            registrations = await self.registry.list_servers()
+            for reg in registrations:
+                if reg.config.name == server_name or reg.config.id == server_name:
+                    return reg.status == MCPServerStatus.RUNNING
+            return False
+        except Exception:
+            return False
+
     async def call_tool(self, tool_name: str, arguments: Dict[str, Any]) -> Any:
         """
         Call a tool on an MCP server.

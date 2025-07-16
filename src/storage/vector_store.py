@@ -258,11 +258,11 @@ class PostgreSQLVectorStore(VectorStore):
             # Create modular PostgreSQL store
             config = {
                 "type": "postgresql",
-                "host": "localhost",  # These should come from db_manager config
-                "port": 5432,
+                "host": "localhost",  # Docker container host
+                "port": 54321,       # Docker container port
                 "database": "pygent_factory",
                 "username": "postgres",
-                "password": "",
+                "password": "postgres",  # Docker container password
                 "schema": "vectors",
                 "default_collection": self.collection_name
             }

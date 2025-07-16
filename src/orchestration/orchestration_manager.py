@@ -1072,7 +1072,7 @@ class OrchestrationManager:
             server_id="filesystem_server",
             server_type=MCPServerType.FILESYSTEM,
             name="Filesystem MCP Server",
-            endpoint="npx -y @modelcontextprotocol/server-filesystem D:/mcp/pygent-factory/src",
+            endpoint="npx -y @modelcontextprotocol/server-filesystem D:/mcp/pygent-factory",
             capabilities={"file_read", "file_write", "directory_list", "file_search"}
         )
         await self.register_mcp_server(filesystem_server)

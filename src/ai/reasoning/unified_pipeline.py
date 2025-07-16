@@ -52,6 +52,7 @@ class UnifiedConfig:
     default_complexity: TaskComplexity = TaskComplexity.MODERATE
     
     # ToT configuration
+    enable_tot: bool = False  # Default ToT to OFF for stability
     tot_config: Optional[ToTConfig] = None
     enable_vector_search: bool = True
     
@@ -178,12 +179,13 @@ class UnifiedReasoningPipeline:
     def _initialize_components(self):
         """Initialize reasoning components"""
         try:
-            # Initialize ToT engine
-            self.tot_engine = ToTEngine(
-                self.config.tot_config,
-                enable_vector_search=self.config.enable_vector_search
-            )
-            logger.info("ToT engine initialized")
+            # Initialize ToT engine only if enabled
+            if self.config.enable_tot:
+                self.tot_engine = ToTEngine(self.config.tot_config)
+                logger.info("ToT engine initialized")
+            else:
+                self.tot_engine = None
+                logger.info("ToT engine disabled by configuration")
             
             # Initialize vector search integration
             if self.config.enable_vector_search:
@@ -332,11 +334,15 @@ class UnifiedReasoningPipeline:
         else:
             return TaskComplexity.RESEARCH
     
-    async def _execute_tot_reasoning(self, query: str, result: UnifiedResult, 
+    async def _execute_tot_reasoning(self, query: str, result: UnifiedResult,
                                    context: Optional[Dict[str, Any]]):
         """Execute pure ToT reasoning"""
-        if not self.tot_engine:
-            raise RuntimeError("ToT engine not available")
+        if not self.config.enable_tot or not self.tot_engine:
+            result.response = "Tree of Thought reasoning is disabled. Please enable ToT in configuration or use a different reasoning mode."
+            result.confidence_score = 0.0
+            result.reasoning_path = ["ToT disabled"]
+            logger.warning("ToT reasoning requested but ToT is disabled")
+            return
         
         reasoning_start = time.time()
         
@@ -413,9 +419,16 @@ class UnifiedReasoningPipeline:
     async def _execute_tot_enhanced_rag(self, query: str, result: UnifiedResult,
                                       context: Optional[Dict[str, Any]]):
         """Execute ToT reasoning enhanced with RAG retrieval"""
+        # Check if ToT is enabled
+        if not self.config.enable_tot or not self.tot_engine:
+            # Fall back to RAG-only if ToT is disabled
+            await self._execute_rag_retrieval(query, result, context)
+            logger.info("ToT disabled, falling back to RAG-only reasoning")
+            return
+
         # First, retrieve relevant documents
         await self._execute_rag_retrieval(query, result, context)
-        
+
         # Then, use ToT to reason about the retrieved information
         if result.rag_documents:
             # Create enhanced context with retrieved documents
@@ -452,18 +465,19 @@ class UnifiedReasoningPipeline:
         # Execute s3 RAG first for high-quality retrieval
         await self._execute_s3_rag(query, result, context)
         
-        # Then enhance with ToT reasoning if needed
-        if result.confidence_score < self.config.min_confidence_threshold:
+        # Then enhance with ToT reasoning if needed and enabled
+        if (result.confidence_score < self.config.min_confidence_threshold and
+            self.config.enable_tot and self.tot_engine):
             # Use ToT to improve the reasoning
             enhanced_query = f"Improve this analysis: {result.response}\n\nOriginal query: {query}"
-            
+
             reasoning_start = time.time()
             task_context = {
                 'propose_prompt': f"Improve the analysis: {enhanced_query}\nCurrent: {{current_thought}}\nNext step:",
                 'value_prompt': "Rate this improvement: {thought_content}\nScore (0.0-1.0):",
                 'solution_prompt': "Is this a better analysis: {thought_content}\nAnswer:"
             }
-            
+
             tot_result = await self.tot_engine.solve(enhanced_query, task_context)
             result.tot_result = tot_result
             result.reasoning_time += time.time() - reasoning_start

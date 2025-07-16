@@ -1,5 +1,5 @@
 services:
-  # Main PyGent Factory API service
+  # Main PyGent Factory API service with Docker 4.43 enhancements
   pygent-api:
     build:
       context: .
@@ -8,6 +8,9 @@ services:
     ports:
       - "8080:8000"  # Main API
       - "8006:8006"  # A2A MCP Server
+      - "8090:8090"  # World Simulation Monitoring
+      - "8091:8091"  # Docker 4.43 Model Runner
+      - "8092:8092"  # Observer Supervision
     environment:
       - PYGENT_ENV=production
       - PYGENT_LOG_LEVEL=INFO
@@ -21,6 +24,20 @@ services:
       - A2A_SECURITY_ENABLED=true
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/pygent_factory
       - REDIS_URL=redis://redis:6379/0
+      - WORLD_SIM_ENABLED=true
+      - WORLD_SIM_MONITORING_PORT=8090
+      - WORLD_SIM_MAX_AGENTS=50
+      - WORLD_SIM_EVOLUTION_GENERATIONS=10
+      - WORLD_SIM_RESOURCE_DECAY_RATE=0.05
+      - WORLD_SIM_FITNESS_THRESHOLD=0.05
+      # Docker 4.43 Integration
+      - DOCKER443_ENABLED=true
+      - DOCKER443_MODEL_RUNNER_PORT=8091
+      - DOCKER443_OBSERVER_PORT=8092
+      - DOCKER443_SECURITY_SCAN_ENABLED=true
+      - DOCKER443_CVE_SCAN_ENABLED=true
+      - DOCKER443_GORDON_THREADING=true
+      - PHASE4_ENABLED=true
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
@@ -121,6 +138,174 @@ services:
       timeout: 10s
       retries: 3
 
+  # Docker 4.43 Test Environment Service
+  pygent-test:
+    build:
+      context: .
+      target: test
+      dockerfile: Dockerfile.test
+    container_name: pygent-factory-test
+    ports:
+      - "8081:8000"  # Test API
+      - "8091:8090"  # Test Monitoring
+      - "8007:8006"  # Test MCP Server
+    environment:
+      - PYGENT_ENV=test
+      - PYGENT_LOG_LEVEL=DEBUG
+      - PYGENT_GPU_ENABLED=false
+      - PYGENT_API_PORT=8000
+      - PYGENT_MAX_WORKERS=2
+      - DOCKER443_INTEGRATION=true
+      - DOCKER443_VERSION=4.43.0
+      - GORDON_THREADING_ENABLED=true
+      - GORDON_THREAD_POOL_SIZE=10
+      - CVE_SCANNING_ENABLED=true
+      - CVE_CRITICAL_TOLERANCE=0
+      - RIPERΩ_PROTOCOL_ENABLED=true
+      - RIPERΩ_MODE_LOCKING=true
+      - OBSERVER_SUPERVISION=true
+      - DATABASE_URL=postgresql://postgres:postgres@postgres-test:5432/pygent_factory_test
+      - REDIS_URL=redis://redis-test:6379/1
+      - TEST_COVERAGE_TARGET=80
+      - PERFORMANCE_BENCHMARKS_ENABLED=true
+    volumes:
+      - ./tests:/app/tests
+      - ./test_data:/app/test_data
+      - ./test_logs:/app/test_logs
+      - ./test_coverage:/app/test_coverage
+    restart: "no"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/test/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    depends_on:
+      - postgres-test
+      - redis-test
+    networks:
+      - pygent_test_network
+    profiles:
+      - test
+
+  # Test Database
+  postgres-test:
+    image: pgvector/pgvector:pg16
+    container_name: pygent_postgres_test
+    environment:
+      POSTGRES_DB: pygent_factory_test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "54322:5432"
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+      - ./scripts/init-test-db.sql:/docker-entrypoint-initdb.d/init-test-db.sql
+    command: >
+      postgres
+      -c shared_preload_libraries=vector
+      -c log_statement=all
+      -c log_destination=stderr
+      -c logging_collector=on
+      -c max_connections=100
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d pygent_factory_test"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - pygent_test_network
+    profiles:
+      - test
+
+  # Test Redis
+  redis-test:
+    image: redis:7-alpine
+    container_name: pygent_redis_test
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_test_data:/data
+    command: redis-server --appendonly yes --databases 16
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - pygent_test_network
+    profiles:
+      - test
+
+  # Monitoring and Metrics Service
+  pygent-monitoring:
+    build:
+      context: ./monitoring
+      dockerfile: Dockerfile
+    container_name: pygent-monitoring
+    ports:
+      - "8092:8080"  # Monitoring Dashboard
+      - "8093:9090"  # Prometheus Metrics
+      - "8094:3000"  # Grafana Dashboard
+    environment:
+      - MONITORING_ENV=production
+      - PROMETHEUS_ENABLED=true
+      - GRAFANA_ENABLED=true
+      - DOCKER443_MONITORING=true
+      - RIPERΩ_MONITORING=true
+      - PERFORMANCE_MONITORING=true
+      - ALERT_WEBHOOK_URL=http://pygent-api:8000/alerts
+    volumes:
+      - ./monitoring/config:/app/config
+      - ./monitoring/data:/app/data
+      - monitoring_data:/var/lib/monitoring
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      - pygent-api
+    networks:
+      - pygent_network
+      - pygent_monitoring_network
+
+  # Observer Supervision Service
+  pygent-observer:
+    build:
+      context: ./observer
+      dockerfile: Dockerfile
+    container_name: pygent-observer
+    ports:
+      - "8095:8080"  # Observer API
+      - "8096:8081"  # Observer Dashboard
+    environment:
+      - OBSERVER_ENV=production
+      - RIPERΩ_SUPERVISION=true
+      - SECURITY_VALIDATION=true
+      - PERFORMANCE_MONITORING=true
+      - AUTO_APPROVAL_THRESHOLD=0.9
+      - CRITICAL_ALERT_THRESHOLD=0.95
+      - OBSERVER_LOG_LEVEL=INFO
+    volumes:
+      - ./observer/config:/app/config
+      - ./observer/logs:/app/logs
+      - observer_data:/var/lib/observer
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/observer/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      - pygent-api
+      - pygent-monitoring
+    networks:
+      - pygent_network
+      - pygent_observer_network
+
 volumes:
   postgres_data:
     driver: local
@@ -128,7 +313,145 @@ volumes:
     driver: local
   chromadb_data:
     driver: local
+  postgres_test_data:
+    driver: local
+  redis_test_data:
+    driver: local
+  monitoring_data:
+    driver: local
+  observer_data:
+    driver: local
+  docker443-certs:
+    driver: local
+  docker443-data:
+    driver: local
 
 networks:
   pygent_network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+  pygent_test_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
+  pygent_monitoring_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.22.0.0/16
+  pygent_observer_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.23.0.0/16
+
+# Docker 4.43 Configuration Extensions
+x-docker443-config: &docker443-config
+  ulimits:
+    memlock:
+      soft: -1
+      hard: -1
+    nofile:
+      soft: 65536
+      hard: 65536
+  security_opt:
+    - seccomp:unconfined
+    - apparmor:unconfined
+  cap_add:
+    - SYS_PTRACE
+  cap_drop:
+    - ALL
+  read_only: false
+  tmpfs:
+    - /tmp:rw,noexec,nosuid,size=100m
+
+# Resource Limits Configuration
+x-resource-limits: &resource-limits
+  deploy:
+    resources:
+      limits:
+        cpus: '2.0'
+        memory: 2G
+      reservations:
+        cpus: '0.5'
+        memory: 512M
+
+# Health Check Configuration
+x-health-check: &health-check
+  healthcheck:
+    interval: 30s
+    timeout: 10s
+    retries: 3
+    start_period: 40s
+
+  # Docker 4.43 Model Runner Service
+  docker443-model-runner:
+    image: docker:4.43-dind
+    container_name: pygent-docker443-model-runner
+    privileged: true
+    ports:
+      - "8091:8091"  # Model Runner API
+      - "2376:2376"  # Docker daemon
+    environment:
+      - DOCKER_TLS_CERTDIR=/certs
+      - DOCKER443_MODEL_CATALOG_ENABLED=true
+      - DOCKER443_SECURITY_SCAN_ENABLED=true
+      - DOCKER443_CVE_DATABASE_URL=https://cve.mitre.org/data/downloads/allitems.xml
+      - DOCKER443_GORDON_THREADING=true
+      - DOCKER443_PERFORMANCE_MONITORING=true
+    volumes:
+      - docker443-certs:/certs/client
+      - docker443-data:/var/lib/docker
+      - ./docker443-config:/app/config
+    networks:
+      - pygent_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "docker", "version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Observer Supervision Service
+  observer-supervisor:
+    build:
+      context: .
+      dockerfile: Dockerfile.observer
+    container_name: pygent-observer-supervisor
+    ports:
+      - "8092:8092"  # Observer API
+    environment:
+      - OBSERVER_ENABLED=true
+      - OBSERVER_SUPERVISION_MODE=active
+      - OBSERVER_VALIDATION_THRESHOLD=0.8
+      - OBSERVER_APPROVAL_REQUIRED=true
+      - RIPERΩ_PROTOCOL_ENABLED=true
+      - RIPERΩ_MODE_LOCKING=true
+    volumes:
+      - ./observer-logs:/app/logs
+      - ./observer-config:/app/config
+    networks:
+      - pygent_network
+    restart: unless-stopped
+    depends_on:
+      - pygent-api
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8092/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+# Logging Configuration
+x-logging: &logging
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+# Docker 4.43 configurations are applied inline to each service above

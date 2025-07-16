@@ -1,5 +1,17 @@
 {
   "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "D:/mcp/pygent-factory"]
+    },
+    "postgresql": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres", "postgresql://postgres:postgres@localhost:54321/pygent_factory"]
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
+    },
     "cloudflare-browser": {
       "command": "npx",
       "args": ["mcp-remote", "https://browser.mcp.cloudflare.com/sse"]

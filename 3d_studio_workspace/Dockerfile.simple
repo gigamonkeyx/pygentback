@@ -1,0 +1,46 @@
+# 🎨 Simple ThreeStudio Docker Container - Test Version
+FROM pytorch/pytorch:2.5.1-cuda12.1-cudnn9-devel
+
+# Set environment variables to reduce warnings
+ENV PYTHONUNBUFFERED=1
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PYTHONWARNINGS="ignore::FutureWarning,ignore::UserWarning,ignore::DeprecationWarning"
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    build-essential \
+    cmake \
+    ninja-build \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /workspace
+
+# Install basic Python packages first
+RUN pip install --no-cache-dir \
+    ninja \
+    packaging \
+    wheel \
+    setuptools \
+    numpy \
+    triton \
+    mediapipe
+
+# Copy threestudio source
+COPY threestudio/ /workspace/
+
+# Install ThreeStudio requirements
+RUN pip install --no-cache-dir -r /workspace/requirements.txt
+
+# Create startup script
+RUN echo '#!/bin/bash\nexport PYTHONWARNINGS="ignore::FutureWarning,ignore::UserWarning,ignore::DeprecationWarning"\npython "$@"' > /workspace/run_clean.sh && \
+    chmod +x /workspace/run_clean.sh
+
+# Expose port
+EXPOSE 7860
+
+# Default command
+CMD ["/workspace/run_clean.sh", "launch.py", "--help"]

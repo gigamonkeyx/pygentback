@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐉 Flying Dragon Animation - PyGent Factory</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(135deg, #87CEEB 0%, #98D8E8 50%, #FFB6C1 100%);
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .sky {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #87CEEB 0%, #98D8E8 30%, #FFB6C1 70%, #FFA07A 100%);
+        }
+
+        .clouds {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50px;
+            animation: float 20s infinite linear;
+        }
+
+        .cloud:before {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50px;
+        }
+
+        .cloud1 {
+            width: 100px;
+            height: 40px;
+            top: 20%;
+            left: -100px;
+            animation-duration: 25s;
+        }
+
+        .cloud1:before {
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            left: 10px;
+        }
+
+        .cloud2 {
+            width: 80px;
+            height: 30px;
+            top: 40%;
+            left: -80px;
+            animation-duration: 30s;
+            animation-delay: -10s;
+        }
+
+        .cloud2:before {
+            width: 40px;
+            height: 40px;
+            top: -20px;
+            left: 15px;
+        }
+
+        .cloud3 {
+            width: 120px;
+            height: 50px;
+            top: 60%;
+            left: -120px;
+            animation-duration: 35s;
+            animation-delay: -20s;
+        }
+
+        .cloud3:before {
+            width: 60px;
+            height: 60px;
+            top: -30px;
+            left: 20px;
+        }
+
+        @keyframes float {
+            0% { transform: translateX(-100px); }
+            100% { transform: translateX(calc(100vw + 100px)); }
+        }
+
+        .dragon {
+            position: absolute;
+            width: 150px;
+            height: 100px;
+            top: 50%;
+            left: -150px;
+            transform: translateY(-50%);
+            animation: fly 12s infinite linear;
+            z-index: 10;
+        }
+
+        .dragon-body {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .dragon-head {
+            position: absolute;
+            width: 60px;
+            height: 40px;
+            background: #8B4513;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            top: 20px;
+            left: 80px;
+            z-index: 3;
+        }
+
+        .dragon-eye {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #FF0000;
+            border-radius: 50%;
+            top: 12px;
+            left: 40px;
+            animation: blink 3s infinite;
+        }
+
+        .dragon-body-main {
+            position: absolute;
+            width: 80px;
+            height: 50px;
+            background: #228B22;
+            border-radius: 50%;
+            top: 25px;
+            left: 20px;
+            z-index: 2;
+        }
+
+        .dragon-tail {
+            position: absolute;
+            width: 40px;
+            height: 20px;
+            background: #228B22;
+            border-radius: 50%;
+            top: 40px;
+            left: 0px;
+            transform-origin: right center;
+            animation: wag 1.5s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        .dragon-wing {
+            position: absolute;
+            width: 70px;
+            height: 40px;
+            background: #32CD32;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            top: 10px;
+            left: 30px;
+            transform-origin: bottom center;
+            animation: flap 0.5s infinite ease-in-out alternate;
+            z-index: 1;
+        }
+
+        .dragon-wing2 {
+            top: 15px;
+            left: 25px;
+            width: 60px;
+            height: 35px;
+            animation-delay: 0.25s;
+            opacity: 0.8;
+        }
+
+        @keyframes fly {
+            0% { 
+                transform: translateY(-50%) translateX(-150px) rotate(0deg);
+            }
+            25% { 
+                transform: translateY(-60%) translateX(25vw) rotate(5deg);
+            }
+            50% { 
+                transform: translateY(-40%) translateX(50vw) rotate(-3deg);
+            }
+            75% { 
+                transform: translateY(-55%) translateX(75vw) rotate(2deg);
+            }
+            100% { 
+                transform: translateY(-50%) translateX(calc(100vw + 150px)) rotate(0deg);
+            }
+        }
+
+        @keyframes flap {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            100% { transform: rotateX(-20deg) rotateY(10deg); }
+        }
+
+        @keyframes wag {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(15deg); }
+        }
+
+        @keyframes blink {
+            0%, 90%, 100% { opacity: 1; }
+            95% { opacity: 0; }
+        }
+
+        .sparkles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #FFD700;
+            border-radius: 50%;
+            animation: sparkle 2s infinite ease-in-out;
+        }
+
+        .sparkle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .sparkle:nth-child(2) { top: 40%; left: 30%; animation-delay: 0.5s; }
+        .sparkle:nth-child(3) { top: 60%; left: 50%; animation-delay: 1s; }
+        .sparkle:nth-child(4) { top: 30%; left: 70%; animation-delay: 1.5s; }
+        .sparkle:nth-child(5) { top: 80%; left: 20%; animation-delay: 0.3s; }
+        .sparkle:nth-child(6) { top: 10%; left: 80%; animation-delay: 0.8s; }
+
+        @keyframes sparkle {
+            0%, 100% { 
+                opacity: 0; 
+                transform: scale(0.5); 
+            }
+            50% { 
+                opacity: 1; 
+                transform: scale(1.5); 
+            }
+        }
+
+        .title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #4B0082;
+            font-size: 2.5em;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            z-index: 100;
+            animation: glow 3s infinite ease-in-out;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+            50% { text-shadow: 2px 2px 20px rgba(255,215,0,0.8); }
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #4B0082;
+            font-size: 1.2em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            z-index: 100;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 1.8em;
+            }
+            .dragon {
+                width: 100px;
+                height: 70px;
+            }
+            .dragon-head {
+                width: 40px;
+                height: 30px;
+                left: 55px;
+            }
+            .dragon-body-main {
+                width: 60px;
+                height: 35px;
+                left: 15px;
+            }
+            .dragon-wing {
+                width: 50px;
+                height: 30px;
+                left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sky">
+        <div class="title">🐉 Flying Dragon - PyGent Factory 🐉</div>
+        
+        <div class="clouds">
+            <div class="cloud cloud1"></div>
+            <div class="cloud cloud2"></div>
+            <div class="cloud cloud3"></div>
+        </div>
+
+        <div class="dragon">
+            <div class="dragon-body">
+                <div class="dragon-wing dragon-wing2"></div>
+                <div class="dragon-wing"></div>
+                <div class="dragon-body-main"></div>
+                <div class="dragon-head">
+                    <div class="dragon-eye"></div>
+                </div>
+                <div class="dragon-tail"></div>
+            </div>
+        </div>
+
+        <div class="sparkles">
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+        </div>
+
+        <div class="footer">
+            ✨ Created by PyGent Factory AI System ✨<br>
+            🤖 3 Research Agents • 🔥 Ollama + OpenRouter • 🛠️ 9 MCP Servers
+        </div>
+    </div>
+</body>
+</html>

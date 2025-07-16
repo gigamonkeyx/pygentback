@@ -101,7 +101,7 @@ scipy>=1.14.0
 statsmodels>=0.14.0
 
 # Code Analysis
-ast-tools>=0.2.0
+# ast-tools>=0.2.0
 astpretty>=3.0.0
 astunparse>=1.6.0
 rope>=1.13.0
@@ -116,7 +116,7 @@ arxiv>=2.1.0
 scholarly>=1.7.0
 selenium>=4.15.0
 webdriver-manager>=4.0.0
-bibtexparser>=2.0.0
+# bibtexparser>=2.0.0
 pylatex>=1.4.0
 
 # Additional Utilities

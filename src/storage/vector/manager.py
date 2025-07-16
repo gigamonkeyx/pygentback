@@ -116,15 +116,15 @@ class VectorStoreManager:
         }
 
         if self.default_store_type == VectorStoreType.POSTGRESQL:
-            # PostgreSQL configuration
+            # PostgreSQL configuration - use Docker container settings
             db_config = getattr(self.settings, 'database', None)
             if db_config:
                 base_config.update({
                     "host": getattr(db_config, 'HOST', "localhost"),
-                    "port": getattr(db_config, 'PORT', 5432),
+                    "port": getattr(db_config, 'PORT', 54321),  # Docker container port
                     "database": getattr(db_config, 'NAME', "pygent_factory"),
                     "username": getattr(db_config, 'USER', "postgres"),
-                    "password": getattr(db_config, 'PASSWORD', ""),
+                    "password": getattr(db_config, 'PASSWORD', "postgres"),  # Docker container password
                     "schema": "vectors",
                     "max_connections": 10
                 })

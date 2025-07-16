@@ -1,0 +1,27 @@
+{
+  "name": "pygent-factory-ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsdx watch",
+    "build": "tsdx build",
+    "preview": "tsdx preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tanstack/react-query": "^4.0.3",
+    "axios": "^0.27.2",
+    "lucide-react": "^1.5.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.3.0",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat"
+  },
+  "devDependencies": {
+    "@tsdx/cli": "^1.2.0",
+    "typescript": "^4.5.4"
+  }
+}

@@ -281,7 +281,7 @@ class MCPServerConfig:
 
 
 # Factory functions for common server configurations
-def create_filesystem_server_config(name: str = None, root_path: str = ".") -> MCPServerConfig:
+def create_filesystem_server_config(name: str = None, root_path: str = "D:/mcp/pygent-factory") -> MCPServerConfig:
     """Create a filesystem server configuration"""
     return MCPServerConfig(
         name=name or "filesystem",

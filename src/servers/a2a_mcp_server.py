@@ -33,7 +33,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 # A2A Standard imports
-from a2a_standard import (
+from src.a2a_standard import (
     AgentCard, AgentProvider, AgentCapabilities, AgentSkill,
     Task, TaskState, TaskStatus, Message, Part, TextPart, FilePart, DataPart,
     Artifact, A2AError

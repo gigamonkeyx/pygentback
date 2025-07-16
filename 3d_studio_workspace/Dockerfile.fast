@@ -1,0 +1,43 @@
+# Fast ThreeStudio Docker build - Skip complex dependencies for now
+FROM pytorch/pytorch:2.5.1-cuda12.1-cudnn9-devel
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    build-essential \
+    cmake \
+    ninja-build \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace
+
+# Install only essential packages for basic functionality
+RUN pip install --no-cache-dir \
+    lightning==2.0.0 \
+    omegaconf==2.3.0 \
+    diffusers \
+    transformers==4.28.1 \
+    accelerate \
+    opencv-python \
+    tensorboard \
+    matplotlib \
+    imageio \
+    triton \
+    xformers \
+    torchmetrics \
+    einops \
+    kornia
+
+# Copy threestudio source
+COPY threestudio/ /workspace/
+
+# Create startup script with clean environment
+RUN echo '#!/bin/bash\nexport PYTHONWARNINGS="ignore::FutureWarning,ignore::UserWarning,ignore::DeprecationWarning"\npython "$@"' > /workspace/run_clean.sh && \
+    chmod +x /workspace/run_clean.sh
+
+# Set environment variables for cache
+ENV HF_HOME=/workspace/cache/huggingface
+ENV TORCH_HOME=/workspace/cache/torch
+ENV TRANSFORMERS_CACHE=/workspace/cache/huggingface

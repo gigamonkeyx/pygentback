@@ -28,6 +28,11 @@ try:
 
     from a2a_protocol.transport import A2ATransportLayer
     from a2a_protocol.task_manager import A2ATaskManager
+
+    # Import Supervisor Agent
+    from ...agents.supervisor_agent import SupervisorAgent
+    from ...agents.quality_evaluator import QualityEvaluator
+    from ...agents.teaching_system import TeachingSystem
     from a2a_protocol.security import A2ASecurityManager
     from a2a_protocol.discovery import A2AAgentDiscovery
     from a2a_protocol.agent_card_generator import A2AAgentCardGenerator
@@ -87,6 +92,18 @@ async def get_a2a_components():
         "discovery": A2AAgentDiscovery(),
         "card_generator": A2AAgentCardGenerator()
     }
+
+async def get_supervisor_agent() -> SupervisorAgent:
+    """Get supervisor agent instance"""
+    return SupervisorAgent()
+
+async def get_quality_evaluator() -> QualityEvaluator:
+    """Get quality evaluator instance"""
+    return QualityEvaluator()
+
+async def get_teaching_system() -> TeachingSystem:
+    """Get teaching system instance"""
+    return TeachingSystem()
 
 # Well-known endpoints
 @router.get("/.well-known/agent.json")
@@ -176,12 +193,26 @@ async def get_agent_card_by_id(
 async def send_message(
     request: A2AMessageRequest,
     agent_factory: AgentFactory = Depends(get_agent_factory),
-    a2a_components: Dict = Depends(get_a2a_components)
+    a2a_components: Dict = Depends(get_a2a_components),
+    supervisor: SupervisorAgent = Depends(get_supervisor_agent),
+    quality_evaluator: QualityEvaluator = Depends(get_quality_evaluator),
+    teaching_system: TeachingSystem = Depends(get_teaching_system)
 ):
-    """Send A2A message to agent"""
+    """Send A2A message to agent with supervisor oversight"""
     try:
         transport = a2a_components["transport"]
-        
+
+        # Extract task information from request
+        task_description = ""
+        if hasattr(request, 'params') and request.params:
+            if isinstance(request.params, dict):
+                task_description = request.params.get('message', {}).get('content', '')
+            elif isinstance(request.params, str):
+                task_description = request.params
+
+        # Generate task ID for supervision tracking
+        task_id = f"a2a_{request.id}_{datetime.now().timestamp()}"
+
         # Process A2A message through transport layer
         response = await transport.handle_jsonrpc_request({
             "jsonrpc": "2.0",
@@ -189,7 +220,24 @@ async def send_message(
             "params": request.params,
             "id": request.id
         })
-        
+
+        # If we have a result, supervise it
+        if response.get("result") and task_description:
+            supervision_result = await supervisor.supervise_task(
+                task_id=task_id,
+                task_description=task_description,
+                agent_output=response.get("result")
+            )
+
+            # Add supervision metadata to response
+            if isinstance(response.get("result"), dict):
+                response["result"]["supervision"] = {
+                    "quality_score": supervision_result.get("quality_score", {}).get("score", 0.0),
+                    "passed": not supervision_result.get("requires_retry", True),
+                    "feedback": supervision_result.get("feedback", ""),
+                    "task_id": task_id
+                }
+
         return A2AMessageResponse(
             result=response.get("result"),
             error=response.get("error"),

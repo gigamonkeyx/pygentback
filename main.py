@@ -14,6 +14,10 @@ import asyncio
 from pathlib import Path
 from typing import Optional
 
+# Force PostgreSQL connection before any imports
+os.environ["DATABASE_URL"] = "postgresql://postgres:postgres@localhost:54321/pygent_factory"
+os.environ["ASYNC_DATABASE_URL"] = "postgresql+asyncpg://postgres:postgres@localhost:54321/pygent_factory"
+
 # Add src to path for imports
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
@@ -102,7 +106,7 @@ async def run_api_server(host: str = "0.0.0.0", port: int = 8000, workers: int =
         import uvicorn
         from src.api.main import create_app
 
-        print(f"🚀 Starting PyGent Factory API Server")
+        print(f"Starting PyGent Factory API Server")
         print(f"   Host: {host}")
         print(f"   Port: {port}")
         print(f"   Workers: {workers}")
@@ -445,7 +449,7 @@ def run_system_test():
                 print(f"✅ {test_name} PASSED")
                 passed += 1
             else:
-                print(f"❌ {test_name} FAILED")
+                print(f"FAILED")
         except Exception as e:
             print(f"❌ {test_name} ERROR: {e}")
     
@@ -572,7 +576,7 @@ async def main():
     setup_logging(args.log_level, args.log_file)
     logger = logging.getLogger(__name__)
     
-    print("🚀 PyGent Factory - Advanced AI System")
+    print("PyGent Factory - Advanced AI System")
     print("=" * 45)
     print("Tree of Thought + s3 RAG + GPU Vector Search")
     print()
@@ -632,5 +636,5 @@ if __name__ == "__main__":
         print("\n⏹️ Interrupted by user")
         sys.exit(130)
     except Exception as e:
-        print(f"\n💥 Fatal error: {e}")
+        print(f"Fatal error: {e}")
         sys.exit(1)

@@ -95,7 +95,7 @@ class MCPSettings(BaseSettings):
     
     # Server-specific Configuration
     MCP_FILESYSTEM_ALLOWED_PATHS: str = Field(
-        default="./workspace,./data", 
+        default="D:/mcp/pygent-factory,D:/mcp,./workspace,./data,./src,./docs,./tests,./tools,./examples",
         description="Allowed filesystem paths for MCP filesystem server"
     )
     MCP_POSTGRES_CONNECTION_STRING: str = Field(

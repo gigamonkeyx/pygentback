@@ -56,8 +56,8 @@ FROM base as production
 
 # Copy only necessary files
 COPY src/ ./src/
-COPY config/ ./config/
 COPY main.py .
+COPY *.py .
 COPY requirements.txt .
 
 # Create necessary directories

@@ -58,7 +58,7 @@ class ProductionConfig:
     mcp_servers: Dict[str, Dict[str, Any]] = field(default_factory=lambda: {
         "filesystem": {
             "command": "npx -y @modelcontextprotocol/server-filesystem",
-            "args": ["D:/mcp/pygent-factory/data"],
+            "args": ["D:/mcp/pygent-factory"],
             "timeout": 30,
             "max_connections": 10
         },

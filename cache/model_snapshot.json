@@ -1,0 +1,1776 @@
+{
+  "timestamp": "2025-06-27T00:48:09.472438",
+  "best_models": {
+    "coding": {
+      "name": "microsoft/phi-4",
+      "provider": "huggingface",
+      "capabilities": [
+        "coding",
+        "reasoning",
+        "general"
+      ],
+      "performance_score": 0.6341291000000001,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 725097,
+      "likes": 2083,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "phi3",
+        "text-generation",
+        "phi",
+        "nlp",
+        "math",
+        "code",
+        "chat",
+        "conversational"
+      ]
+    },
+    "reasoning": {
+      "name": "microsoft/phi-4",
+      "provider": "huggingface",
+      "capabilities": [
+        "reasoning",
+        "coding",
+        "general"
+      ],
+      "performance_score": 0.6341291000000001,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 725097,
+      "likes": 2083,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "phi3",
+        "text-generation",
+        "phi",
+        "nlp",
+        "math",
+        "code",
+        "chat",
+        "conversational"
+      ]
+    },
+    "general": {
+      "name": "openai-community/gpt2",
+      "provider": "huggingface",
+      "capabilities": [
+        "general"
+      ],
+      "performance_score": 4.8886169,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 14426723,
+      "likes": 2803,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "tf",
+        "jax",
+        "tflite",
+        "rust",
+        "onnx",
+        "safetensors",
+        "gpt2",
+        "text-generation"
+      ]
+    },
+    "research": {
+      "name": "facebook/bart-large-cnn",
+      "provider": "huggingface",
+      "capabilities": [
+        "research"
+      ],
+      "performance_score": 1.2307553999999998,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 3162518,
+      "likes": 1410,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "tf",
+        "jax",
+        "rust",
+        "safetensors",
+        "bart",
+        "text2text-generation",
+        "summarization",
+        "en"
+      ]
+    },
+    "multimodal": {
+      "name": "openai/clip-vit-large-patch14",
+      "provider": "huggingface",
+      "capabilities": [
+        "multimodal"
+      ],
+      "performance_score": 10.0584649,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 32342883,
+      "likes": 1778,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "tf",
+        "jax",
+        "safetensors",
+        "clip",
+        "zero-shot-image-classification",
+        "vision",
+        "arxiv:2103.00020",
+        "arxiv:1908.04913"
+      ]
+    },
+    "embedding": {
+      "name": "sentence-transformers/all-MiniLM-L6-v2",
+      "provider": "huggingface",
+      "capabilities": [
+        "embedding"
+      ],
+      "performance_score": 28.785090399999998,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 93558968,
+      "likes": 3587,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "sentence-transformers",
+        "pytorch",
+        "tf",
+        "rust",
+        "onnx",
+        "safetensors",
+        "openvino",
+        "bert",
+        "feature-extraction",
+        "sentence-similarity"
+      ]
+    },
+    "fast_response": {
+      "name": "lusxvr/nanoVLM-222M",
+      "provider": "huggingface",
+      "capabilities": [
+        "fast_response",
+        "multimodal"
+      ],
+      "performance_score": 0.018413000000000002,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 2710,
+      "likes": 88,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "nanovlm",
+        "safetensors",
+        "vision-language",
+        "multimodal",
+        "pytorch",
+        "small-model",
+        "efficient",
+        "research",
+        "VLM",
+        "image-text-to-text"
+      ]
+    },
+    "fact_checking": {
+      "name": "amandakonet/climatebert-fact-checking",
+      "provider": "huggingface",
+      "capabilities": [
+        "fact_checking"
+      ],
+      "performance_score": 0.001839,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 130,
+      "likes": 9,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "roberta",
+        "text-classification",
+        "fact-checking",
+        "climate",
+        "text entailment",
+        "en",
+        "dataset:climate_fever",
+        "license:mit"
+      ]
+    }
+  },
+  "all_models": [
+    {
+      "name": "microsoft/phi-4",
+      "provider": "huggingface",
+      "capabilities": [
+        "reasoning",
+        "coding",
+        "general"
+      ],
+      "performance_score": 0.6341291000000001,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 725097,
+      "likes": 2083,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "phi3",
+        "text-generation",
+        "phi",
+        "nlp",
+        "math",
+        "code",
+        "chat",
+        "conversational"
+      ]
+    },
+    {
+      "name": "microsoft/Phi-3.5-vision-instruct",
+      "provider": "huggingface",
+      "capabilities": [
+        "coding",
+        "general",
+        "multimodal"
+      ],
+      "performance_score": 0.45089460000000003,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 1042982,
+      "likes": 690,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "phi3_v",
+        "text-generation",
+        "nlp",
+        "code",
+        "vision",
+        "image-text-to-text",
+        "conversational",
+        "custom_code"
+      ]
+    },
+    {
+      "name": "facebook/incoder-1B",
+      "provider": "huggingface",
+      "capabilities": [
+        "coding",
+        "general"
+      ],
+      "performance_score": 0.0166481,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 28827,
+      "likes": 40,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "xglm",
+        "text-generation",
+        "code",
+        "python",
+        "javascript",
+        "arxiv:2204.05999",
+        "license:cc-by-nc-4.0",
+        "autotrain_compatible"
+      ]
+    },
+    {
+      "name": "ValiantLabs/Qwen3-4B-Esper3",
+      "provider": "huggingface",
+      "capabilities": [
+        "reasoning",
+        "coding",
+        "general"
+      ],
+      "performance_score": 0.0021085,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 1695,
+      "likes": 8,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "qwen3",
+        "text-generation",
+        "esper",
+        "esper-3",
+        "valiant",
+        "valiant-labs",
+        "qwen",
+        "qwen-3"
+      ]
+    },
+    {
+      "name": "DavidAU/Llama-3.2-4X3B-MOE-Ultra-Instruct-10B-GGUF",
+      "provider": "huggingface",
+      "capabilities": [
+        "coding",
+        "reasoning",
+        "general"
+      ],
+      "performance_score": 0.0018034000000000001,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 678,
+      "likes": 8,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "gguf",
+        "mixture of experts",
+        "moe",
+        "4x3B",
+        "Llama 3.2 MOE",
+        "all use cases",
+        "programming",
+        "reasoning",
+        "tree of thought",
+        "creative"
+      ]
+    },
+    {
+      "name": "oscar128372/Qwen2.5-CoderX-7B-v0.5",
+      "provider": "huggingface",
+      "capabilities": [
+        "coding",
+        "general"
+      ],
+      "performance_score": 0.0009772,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 1924,
+      "likes": 2,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "qwen2",
+        "text-generation",
+        "code-generation",
+        "instruction-following",
+        "fine-tuned",
+        "unsloth",
+        "trl",
+        "sft"
+      ]
+    },
+    {
+      "name": "dougiefresh/jade_qwen3_4b_mlx_4bit",
+      "provider": "huggingface",
+      "capabilities": [
+        "reasoning",
+        "coding",
+        "general"
+      ],
+      "performance_score": 0.0005315999999999999,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 1772,
+      "likes": 0,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "mlx",
+        "safetensors",
+        "qwen3",
+        "grammar",
+        "logic",
+        "rhetoric",
+        "math",
+        "programming",
+        "aarch64",
+        "c"
+      ]
+    },
+    {
+      "name": "mradermacher/Qwen2.5-CoderX-7B-v0.5-i1-GGUF",
+      "provider": "huggingface",
+      "capabilities": [
+        "coding",
+        "general"
+      ],
+      "performance_score": 0.0004682,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 894,
+      "likes": 1,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "gguf",
+        "code-generation",
+        "text-generation",
+        "instruction-following",
+        "fine-tuned",
+        "qwen2",
+        "unsloth",
+        "trl",
+        "sft"
+      ]
+    },
+    {
+      "name": "lmstudio-community/Phi-4-mini-reasoning-MLX-4bit",
+      "provider": "huggingface",
+      "capabilities": [
+        "reasoning",
+        "coding",
+        "general"
+      ],
+      "performance_score": 0.0455941,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 150647,
+      "likes": 2,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "mlx",
+        "safetensors",
+        "phi3",
+        "nlp",
+        "math",
+        "code",
+        "text-generation",
+        "conversational",
+        "en",
+        "base_model:microsoft/Phi-4-mini-reasoning"
+      ]
+    },
+    {
+      "name": "lmstudio-community/Phi-4-reasoning-plus-MLX-4bit",
+      "provider": "huggingface",
+      "capabilities": [
+        "reasoning",
+        "coding",
+        "general"
+      ],
+      "performance_score": 0.0344334,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 114778,
+      "likes": 0,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "mlx",
+        "safetensors",
+        "phi3",
+        "phi",
+        "nlp",
+        "math",
+        "code",
+        "chat",
+        "conversational",
+        "reasoning"
+      ]
+    },
+    {
+      "name": "nvidia/AceReason-Nemotron-14B",
+      "provider": "huggingface",
+      "capabilities": [
+        "reasoning",
+        "coding",
+        "general"
+      ],
+      "performance_score": 0.0341987,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 57329,
+      "likes": 85,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "qwen2",
+        "text-generation",
+        "nvidia",
+        "reasoning",
+        "math",
+        "code",
+        "reinforcement learning",
+        "pytorch"
+      ]
+    },
+    {
+      "name": "ValiantLabs/Qwen3-8B-Esper3",
+      "provider": "huggingface",
+      "capabilities": [
+        "reasoning",
+        "coding",
+        "general"
+      ],
+      "performance_score": 0.0034983,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 1661,
+      "likes": 15,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "qwen3",
+        "text-generation",
+        "esper",
+        "esper-3",
+        "valiant",
+        "valiant-labs",
+        "qwen",
+        "qwen-3"
+      ]
+    },
+    {
+      "name": "lambdaindie/lambda-1v-1B",
+      "provider": "huggingface",
+      "capabilities": [
+        "reasoning",
+        "general"
+      ],
+      "performance_score": 0.0006835999999999999,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 1612,
+      "likes": 1,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "llama",
+        "text-generation",
+        "hf-inference",
+        "education",
+        "logic",
+        "math",
+        "low-resource",
+        "open-source"
+      ]
+    },
+    {
+      "name": "openai-community/gpt2",
+      "provider": "huggingface",
+      "capabilities": [
+        "general"
+      ],
+      "performance_score": 4.8886169,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 14426723,
+      "likes": 2803,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "tf",
+        "jax",
+        "tflite",
+        "rust",
+        "onnx",
+        "safetensors",
+        "gpt2",
+        "text-generation"
+      ]
+    },
+    {
+      "name": "meta-llama/Llama-3.1-8B-Instruct",
+      "provider": "huggingface",
+      "capabilities": [
+        "general"
+      ],
+      "performance_score": 2.3712137,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 5115379,
+      "likes": 4183,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "llama",
+        "text-generation",
+        "facebook",
+        "meta",
+        "pytorch",
+        "llama-3",
+        "conversational",
+        "en"
+      ]
+    },
+    {
+      "name": "Qwen/Qwen2-7B-Instruct",
+      "provider": "huggingface",
+      "capabilities": [
+        "general"
+      ],
+      "performance_score": 2.1447925000000003,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 6723975,
+      "likes": 638,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "qwen2",
+        "text-generation",
+        "chat",
+        "conversational",
+        "en",
+        "arxiv:2309.00071",
+        "base_model:Qwen/Qwen2-7B",
+        "base_model:finetune:Qwen/Qwen2-7B"
+      ]
+    },
+    {
+      "name": "Gensyn/Qwen2.5-1.5B-Instruct",
+      "provider": "huggingface",
+      "capabilities": [
+        "general"
+      ],
+      "performance_score": 1.6234167999999998,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 5404056,
+      "likes": 11,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "qwen2",
+        "text-generation",
+        "chat",
+        "rl-swarm",
+        "gensyn",
+        "conversational",
+        "en",
+        "base_model:Qwen/Qwen2.5-1.5B"
+      ]
+    },
+    {
+      "name": "Qwen/Qwen2.5-14B-Instruct",
+      "provider": "huggingface",
+      "capabilities": [
+        "general"
+      ],
+      "performance_score": 1.3627599,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 4382533,
+      "likes": 240,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "qwen2",
+        "text-generation",
+        "chat",
+        "conversational",
+        "en",
+        "arxiv:2309.00071",
+        "arxiv:2407.10671",
+        "base_model:Qwen/Qwen2.5-14B"
+      ]
+    },
+    {
+      "name": "facebook/bart-large-cnn",
+      "provider": "huggingface",
+      "capabilities": [
+        "research"
+      ],
+      "performance_score": 1.2307553999999998,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 3162518,
+      "likes": 1410,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "tf",
+        "jax",
+        "rust",
+        "safetensors",
+        "bart",
+        "text2text-generation",
+        "summarization",
+        "en"
+      ]
+    },
+    {
+      "name": "google-t5/t5-base",
+      "provider": "huggingface",
+      "capabilities": [
+        "research"
+      ],
+      "performance_score": 1.0174495,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 2908165,
+      "likes": 725,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "tf",
+        "jax",
+        "rust",
+        "safetensors",
+        "t5",
+        "text2text-generation",
+        "summarization",
+        "translation"
+      ]
+    },
+    {
+      "name": "google-t5/t5-small",
+      "provider": "huggingface",
+      "capabilities": [
+        "research"
+      ],
+      "performance_score": 0.9488835999999999,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 2853612,
+      "likes": 464,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "tf",
+        "jax",
+        "rust",
+        "onnx",
+        "safetensors",
+        "t5",
+        "text2text-generation",
+        "summarization"
+      ]
+    },
+    {
+      "name": "deepset/roberta-base-squad2",
+      "provider": "huggingface",
+      "capabilities": [
+        "research"
+      ],
+      "performance_score": 0.5596803,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 1275601,
+      "likes": 885,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "tf",
+        "jax",
+        "rust",
+        "safetensors",
+        "roberta",
+        "question-answering",
+        "en",
+        "dataset:squad_v2"
+      ]
+    },
+    {
+      "name": "distilbert/distilbert-base-cased-distilled-squad",
+      "provider": "huggingface",
+      "capabilities": [
+        "research"
+      ],
+      "performance_score": 0.1132251,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 213417,
+      "likes": 246,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "tf",
+        "rust",
+        "safetensors",
+        "openvino",
+        "distilbert",
+        "question-answering",
+        "en",
+        "dataset:squad"
+      ]
+    },
+    {
+      "name": "monologg/koelectra-small-v2-distilled-korquad-384",
+      "provider": "huggingface",
+      "capabilities": [
+        "research"
+      ],
+      "performance_score": 0.07756510000000001,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 255217,
+      "likes": 5,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "tflite",
+        "safetensors",
+        "electra",
+        "question-answering",
+        "endpoints_compatible",
+        "region:us"
+      ]
+    },
+    {
+      "name": "kk08/CryptoBERT",
+      "provider": "huggingface",
+      "capabilities": [
+        "research"
+      ],
+      "performance_score": 0.02639,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 59300,
+      "likes": 43,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "safetensors",
+        "bert",
+        "text-classification",
+        "generated_from_trainer",
+        "crypto",
+        "sentiment",
+        "analysis",
+        "en"
+      ]
+    },
+    {
+      "name": "mr4/phobert-base-vi-sentiment-analysis",
+      "provider": "huggingface",
+      "capabilities": [
+        "research"
+      ],
+      "performance_score": 0.0018465999999999999,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 2822,
+      "likes": 5,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "safetensors",
+        "roberta",
+        "text-classification",
+        "Vietnamese",
+        "sentiment",
+        "analysis",
+        "vi",
+        "autotrain_compatible"
+      ]
+    },
+    {
+      "name": "mr4/bert-base-jp-sentiment-analysis",
+      "provider": "huggingface",
+      "capabilities": [
+        "research"
+      ],
+      "performance_score": 0.0008927,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 2309,
+      "likes": 1,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "safetensors",
+        "bert",
+        "text-classification",
+        "sentiment",
+        "analysis",
+        "Japanses",
+        "ja",
+        "autotrain_compatible"
+      ]
+    },
+    {
+      "name": "openai/clip-vit-large-patch14",
+      "provider": "huggingface",
+      "capabilities": [
+        "multimodal"
+      ],
+      "performance_score": 10.0584649,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 32342883,
+      "likes": 1778,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "tf",
+        "jax",
+        "safetensors",
+        "clip",
+        "zero-shot-image-classification",
+        "vision",
+        "arxiv:2103.00020",
+        "arxiv:1908.04913"
+      ]
+    },
+    {
+      "name": "openai/clip-vit-base-patch32",
+      "provider": "huggingface",
+      "capabilities": [
+        "multimodal"
+      ],
+      "performance_score": 7.405182099999999,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 24212607,
+      "likes": 707,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "tf",
+        "jax",
+        "clip",
+        "zero-shot-image-classification",
+        "vision",
+        "arxiv:2103.00020",
+        "arxiv:1908.04913",
+        "endpoints_compatible"
+      ]
+    },
+    {
+      "name": "hustvl/vitmatte-small-composition-1k",
+      "provider": "huggingface",
+      "capabilities": [
+        "multimodal"
+      ],
+      "performance_score": 1.2957176999999998,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 4291059,
+      "likes": 42,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "safetensors",
+        "vitmatte",
+        "vision",
+        "arxiv:2305.15272",
+        "license:apache-2.0",
+        "endpoints_compatible",
+        "region:us"
+      ]
+    },
+    {
+      "name": "Qwen/Qwen2.5-VL-7B-Instruct",
+      "provider": "huggingface",
+      "capabilities": [
+        "multimodal",
+        "general"
+      ],
+      "performance_score": 1.1373962,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 3128654,
+      "likes": 994,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "qwen2_5_vl",
+        "image-text-to-text",
+        "multimodal",
+        "conversational",
+        "en",
+        "arxiv:2309.00071",
+        "arxiv:2409.12191",
+        "arxiv:2308.12966"
+      ]
+    },
+    {
+      "name": "Qwen/Qwen2.5-VL-3B-Instruct",
+      "provider": "huggingface",
+      "capabilities": [
+        "multimodal",
+        "general"
+      ],
+      "performance_score": 1.0837743,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 3326581,
+      "likes": 429,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "qwen2_5_vl",
+        "image-text-to-text",
+        "multimodal",
+        "conversational",
+        "en",
+        "arxiv:2309.00071",
+        "arxiv:2409.12191",
+        "arxiv:2308.12966"
+      ]
+    },
+    {
+      "name": "Qwen/Qwen2-VL-2B-Instruct",
+      "provider": "huggingface",
+      "capabilities": [
+        "multimodal",
+        "general"
+      ],
+      "performance_score": 0.3853945,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 999315,
+      "likes": 428,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "qwen2_vl",
+        "image-text-to-text",
+        "multimodal",
+        "conversational",
+        "en",
+        "arxiv:2409.12191",
+        "arxiv:2308.12966",
+        "base_model:Qwen/Qwen2-VL-2B"
+      ]
+    },
+    {
+      "name": "IDEA-CCNL/Taiyi-CLIP-Roberta-102M-Chinese",
+      "provider": "huggingface",
+      "capabilities": [
+        "multimodal",
+        "embedding"
+      ],
+      "performance_score": 0.1332837,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 410279,
+      "likes": 51,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "safetensors",
+        "bert",
+        "text-classification",
+        "clip",
+        "zh",
+        "image-text",
+        "feature-extraction",
+        "arxiv:2209.02970"
+      ]
+    },
+    {
+      "name": "IDEA-CCNL/Taiyi-CLIP-Roberta-large-326M-Chinese",
+      "provider": "huggingface",
+      "capabilities": [
+        "multimodal",
+        "embedding"
+      ],
+      "performance_score": 0.009286500000000001,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 2955,
+      "likes": 42,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "bert",
+        "text-classification",
+        "clip",
+        "zh",
+        "image-text",
+        "feature-extraction",
+        "arxiv:2209.02970",
+        "license:apache-2.0"
+      ]
+    },
+    {
+      "name": "IDEA-CCNL/Taiyi-CLIP-RoBERTa-102M-ViT-L-Chinese",
+      "provider": "huggingface",
+      "capabilities": [
+        "multimodal",
+        "embedding"
+      ],
+      "performance_score": 0.0039665,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 555,
+      "likes": 19,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "safetensors",
+        "bert",
+        "feature-extraction",
+        "clip",
+        "zh",
+        "image-text",
+        "arxiv:2209.02970",
+        "license:apache-2.0"
+      ]
+    },
+    {
+      "name": "sentence-transformers/all-MiniLM-L6-v2",
+      "provider": "huggingface",
+      "capabilities": [
+        "embedding"
+      ],
+      "performance_score": 28.785090399999998,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 93558968,
+      "likes": 3587,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "sentence-transformers",
+        "pytorch",
+        "tf",
+        "rust",
+        "onnx",
+        "safetensors",
+        "openvino",
+        "bert",
+        "feature-extraction",
+        "sentence-similarity"
+      ]
+    },
+    {
+      "name": "sentence-transformers/all-mpnet-base-v2",
+      "provider": "huggingface",
+      "capabilities": [
+        "embedding"
+      ],
+      "performance_score": 5.7299545,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 18368515,
+      "likes": 1097,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "sentence-transformers",
+        "pytorch",
+        "onnx",
+        "safetensors",
+        "openvino",
+        "mpnet",
+        "fill-mask",
+        "feature-extraction",
+        "sentence-similarity",
+        "transformers"
+      ]
+    },
+    {
+      "name": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+      "provider": "huggingface",
+      "capabilities": [
+        "embedding"
+      ],
+      "performance_score": 3.5416573,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 11196191,
+      "likes": 914,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "sentence-transformers",
+        "pytorch",
+        "tf",
+        "onnx",
+        "safetensors",
+        "openvino",
+        "bert",
+        "feature-extraction",
+        "sentence-similarity",
+        "transformers"
+      ]
+    },
+    {
+      "name": "speechbrain/spkrec-ecapa-voxceleb",
+      "provider": "huggingface",
+      "capabilities": [
+        "embedding"
+      ],
+      "performance_score": 0.48981020000000003,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 1488034,
+      "likes": 217,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "speechbrain",
+        "embeddings",
+        "Speaker",
+        "Verification",
+        "Identification",
+        "pytorch",
+        "ECAPA",
+        "TDNN",
+        "en",
+        "dataset:voxceleb"
+      ]
+    },
+    {
+      "name": "minishlab/potion-base-8M",
+      "provider": "huggingface",
+      "capabilities": [
+        "embedding"
+      ],
+      "performance_score": 0.3126228,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 998076,
+      "likes": 66,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "model2vec",
+        "onnx",
+        "safetensors",
+        "embeddings",
+        "static-embeddings",
+        "mteb",
+        "sentence-transformers",
+        "license:mit",
+        "model-index",
+        "region:us"
+      ]
+    },
+    {
+      "name": "cointegrated/rubert-tiny2",
+      "provider": "huggingface",
+      "capabilities": [
+        "embedding"
+      ],
+      "performance_score": 0.1919169,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 547723,
+      "likes": 138,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "sentence-transformers",
+        "pytorch",
+        "safetensors",
+        "bert",
+        "pretraining",
+        "russian",
+        "fill-mask",
+        "embeddings",
+        "masked-lm",
+        "tiny"
+      ]
+    },
+    {
+      "name": "lusxvr/nanoVLM-222M",
+      "provider": "huggingface",
+      "capabilities": [
+        "fast_response",
+        "multimodal"
+      ],
+      "performance_score": 0.018413000000000002,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 2710,
+      "likes": 88,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "nanovlm",
+        "safetensors",
+        "vision-language",
+        "multimodal",
+        "pytorch",
+        "small-model",
+        "efficient",
+        "research",
+        "VLM",
+        "image-text-to-text"
+      ]
+    },
+    {
+      "name": "boltuix/bert-emotion",
+      "provider": "huggingface",
+      "capabilities": [
+        "fast_response"
+      ],
+      "performance_score": 0.0121357,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 17119,
+      "likes": 35,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "bert",
+        "text-classification",
+        "emotion",
+        "classification",
+        "emojis",
+        "emotions",
+        "v1.0",
+        "sentiment-analysis"
+      ]
+    },
+    {
+      "name": "CrabInHoney/morphbert-tiny-v2-morpheme-segmentation-ru",
+      "provider": "huggingface",
+      "capabilities": [
+        "fast_response"
+      ],
+      "performance_score": 0.0037269,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 12423,
+      "likes": 0,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "bert",
+        "russian",
+        "morpheme-segmentation",
+        "token-classification",
+        "morphbert",
+        "lightweight",
+        "ru",
+        "russ"
+      ]
+    },
+    {
+      "name": "boltuix/NeuroFeel",
+      "provider": "huggingface",
+      "capabilities": [
+        "fast_response"
+      ],
+      "performance_score": 0.0029304,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 1768,
+      "likes": 12,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "bert",
+        "text-classification",
+        "emotion",
+        "classification",
+        "neurobert",
+        "emojis",
+        "emotions",
+        "v1.0"
+      ]
+    },
+    {
+      "name": "Abhishekcr448/Tiny-Hinglish-Chat-21M",
+      "provider": "huggingface",
+      "capabilities": [
+        "fast_response",
+        "general"
+      ],
+      "performance_score": 0.0012821,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 1607,
+      "likes": 4,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "tflite",
+        "onnx",
+        "safetensors",
+        "gpt2",
+        "text-generation",
+        "Tiny",
+        "Hinglish",
+        "small"
+      ]
+    },
+    {
+      "name": "xiaodongguaAIGC/llama-3-debug",
+      "provider": "huggingface",
+      "capabilities": [
+        "fast_response",
+        "general"
+      ],
+      "performance_score": 0.0010057,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 2019,
+      "likes": 2,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "llama",
+        "text-generation",
+        "llama-3",
+        "tiny-llama",
+        "nano-llama",
+        "small-llama",
+        "random-llama",
+        "tiny"
+      ]
+    },
+    {
+      "name": "mradermacher/Codestral-21B-Pruned-GGUF",
+      "provider": "huggingface",
+      "capabilities": [
+        "fast_response"
+      ],
+      "performance_score": 0.0001437,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 479,
+      "likes": 0,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "gguf",
+        "rag",
+        "context obedient",
+        "TroyDoesAI",
+        "Mermaid",
+        "Flow",
+        "Diagram",
+        "Sequence",
+        "Map"
+      ]
+    },
+    {
+      "name": "mradermacher/Codestral-21B-Pruned-i1-GGUF",
+      "provider": "huggingface",
+      "capabilities": [
+        "fast_response"
+      ],
+      "performance_score": 0.0001434,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 478,
+      "likes": 0,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "gguf",
+        "rag",
+        "context obedient",
+        "TroyDoesAI",
+        "Mermaid",
+        "Flow",
+        "Diagram",
+        "Sequence",
+        "Map"
+      ]
+    },
+    {
+      "name": "amandakonet/climatebert-fact-checking",
+      "provider": "huggingface",
+      "capabilities": [
+        "fact_checking"
+      ],
+      "performance_score": 0.001839,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 130,
+      "likes": 9,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "pytorch",
+        "roberta",
+        "text-classification",
+        "fact-checking",
+        "climate",
+        "text entailment",
+        "en",
+        "dataset:climate_fever",
+        "license:mit"
+      ]
+    },
+    {
+      "name": "launch/ThinkPRM-1.5B",
+      "provider": "huggingface",
+      "capabilities": [
+        "fact_checking",
+        "general"
+      ],
+      "performance_score": 0.001101,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 1670,
+      "likes": 3,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "qwen2",
+        "text-generation",
+        "reward-model",
+        "prm",
+        "generative reward model",
+        "process supervision",
+        "chain-of-thought",
+        "verification"
+      ]
+    },
+    {
+      "name": "mradermacher/ThinkPRM-14B-i1-GGUF",
+      "provider": "huggingface",
+      "capabilities": [
+        "fact_checking",
+        "general"
+      ],
+      "performance_score": 0.00012629999999999998,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 421,
+      "likes": 0,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "gguf",
+        "reward-model",
+        "prm",
+        "generative reward model",
+        "process supervision",
+        "chain-of-thought",
+        "verification",
+        "math reasoning",
+        "code verification"
+      ]
+    },
+    {
+      "name": "mradermacher/ThinkPRM-7B-i1-GGUF",
+      "provider": "huggingface",
+      "capabilities": [
+        "fact_checking",
+        "general"
+      ],
+      "performance_score": 7.799999999999999e-05,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 260,
+      "likes": 0,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "gguf",
+        "reward-model",
+        "prm",
+        "generative reward model",
+        "process supervision",
+        "chain-of-thought",
+        "verification",
+        "math reasoning",
+        "code verification"
+      ]
+    },
+    {
+      "name": "SemViQA/qatc-infoxlm-viwikifc",
+      "provider": "huggingface",
+      "capabilities": [
+        "fact_checking",
+        "research"
+      ],
+      "performance_score": 2.43e-05,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 81,
+      "likes": 0,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "qatc",
+        "question-answering",
+        "SemViQA",
+        "fact-checking",
+        "information-retrieval",
+        "vi",
+        "arxiv:2405.07615",
+        "arxiv:2503.00955"
+      ]
+    },
+    {
+      "name": "SemViQA/bc-xlmr-viwikifc",
+      "provider": "huggingface",
+      "capabilities": [
+        "fact_checking"
+      ],
+      "performance_score": 2.43e-05,
+      "size_gb": null,
+      "context_length": null,
+      "is_free": true,
+      "downloads": 81,
+      "likes": 0,
+      "last_updated": null,
+      "description": "",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "claim_verification",
+        "SemViQA",
+        "binary-classification",
+        "fact-checking",
+        "text-classification",
+        "vi",
+        "arxiv:2405.07615",
+        "arxiv:2503.00955"
+      ]
+    }
+  ],
+  "provider_stats": {
+    "huggingface": 59
+  },
+  "total_models": 56
+}

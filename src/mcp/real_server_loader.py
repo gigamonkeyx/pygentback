@@ -27,9 +27,9 @@ async def load_real_mcp_servers(mcp_manager: MCPServerManager) -> Dict[str, Any]
     logger.info("Loading real MCP server configurations...")
     
     # Load the server configurations
-    config_file = Path("mcp_server_configs.json")
+    config_file = Path("data/mcp_server_configs.json")
     if not config_file.exists():
-        logger.error("mcp_server_configs.json not found")
+        logger.error("data/mcp_server_configs.json not found")
         return {"success": False, "error": "Configuration file not found"}
     
     try:
