@@ -25,12 +25,12 @@ on:
       force_rebuild:
         description: 'Force complete rebuild'
         required: false
-        default: 'false'
+        default: false
         type: boolean
       production_build:
         description: 'Production build'
         required: false
-        default: 'true'
+        default: true
         type: boolean
 
 env:
