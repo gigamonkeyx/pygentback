@@ -5,6 +5,18 @@ on:
     branches: [ master, main, develop, feature/* ]
   pull_request:
     branches: [ master, main, develop ]
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        description: 'Enable debug logging'
+        required: false
+        default: 'false'
+        type: boolean
+      skip_tests:
+        description: 'Skip test execution (for debugging)'
+        required: false
+        default: 'false'
+        type: boolean
 
 env:
   PYTHON_VERSION: '3.11'
@@ -14,12 +26,19 @@ env:
   LANG: en_US.UTF-8
   LC_ALL: en_US.UTF-8
   ACTIONS_STEP_DEBUG: true
+  # Observer Enhanced Debugging
+  ACTIONS_RUNNER_DEBUG: true
+  CI_DEBUG: true
 
 jobs:
-  # Python Backend Tests
+  # Python Backend Tests - Observer Enhanced Matrix
   test-backend:
     runs-on: ubuntu-latest
-    
+    strategy:
+      matrix:
+        python-version: ['3.11']
+      fail-fast: false
+
     services:
       postgres:
         image: pgvector/pgvector:pg15
@@ -66,14 +85,34 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-pip-
 
-    - name: Install Python dependencies
+    - name: Install Python dependencies - Observer Enhanced
       run: |
         python -m pip install --upgrade pip
         pip install --upgrade setuptools wheel
-        pip check || echo "Dependency conflicts detected, continuing..."
-        pip install -r requirements.txt || echo "Some packages failed to install, continuing..."
-        pip install -r requirements-dev.txt || echo "Some dev packages failed to install, continuing..."
-        pip check || echo "Final dependency check completed with warnings"
+        echo "=== PRE-INSTALL DEPENDENCY CHECK ==="
+        pip check || echo "::warning::Pre-install dependency conflicts detected"
+        echo "=== INSTALLING REQUIREMENTS ==="
+        pip install -r requirements.txt || echo "::error::Critical packages failed to install"
+        pip install -r requirements-dev.txt || echo "::warning::Some dev packages failed to install"
+        echo "=== POST-INSTALL DEPENDENCY CHECK ==="
+        pip check || echo "::warning::Post-install dependency conflicts detected - Observer monitoring"
+        echo "=== CRITICAL DEPENDENCY VALIDATION ==="
+        python -c "
+        critical_imports = ['torch', 'networkx', 'fastapi', 'numpy', 'pandas']
+        failed = []
+        for module in critical_imports:
+            try:
+                __import__(module)
+                print(f'✅ {module}: Import successful')
+            except ImportError as e:
+                failed.append(module)
+                print(f'❌ {module}: Import failed - {e}')
+        if failed:
+            print(f'::error::Critical imports failed: {failed}')
+            exit(1)
+        else:
+            print('✅ All critical imports successful')
+        "
     
     - name: Run Python linting
       run: |
@@ -99,15 +138,27 @@ jobs:
           --timeout=300 --maxfail=5 --tb=short \
           -n auto --dist=worksteal || echo "Some tests failed, continuing for coverage report..."
     
+    - name: Upload test artifacts on failure - Observer Enhancement
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: test-failure-artifacts
+        path: |
+          test-results.xml
+          htmlcov/
+          logs/
+          *.log
+        retention-days: 7
+
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
-      if: ${{ secrets.CODECOV_TOKEN != '' }}
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: ./coverage.xml
         flags: backend
         name: backend-coverage
       continue-on-error: true
+      if: ${{ secrets.CODECOV_TOKEN != '' }}
 
   # Frontend Tests
   test-frontend:
@@ -213,13 +264,14 @@ jobs:
       with:
         python-version: ${{ env.PYTHON_VERSION }}
         cache: 'pip'
-    
+      env:
+        PYTHONIOENCODING: utf-8
+
     - name: Set up Node.js ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
-        cache-dependency-path: 'ui/package-lock.json'
 
     - name: Install dependencies
       run: |

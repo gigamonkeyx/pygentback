@@ -1,5 +1,5 @@
-# Web Framework
-fastapi>=0.115.9
+# Web Framework - Observer Critical Fix
+fastapi==0.115.9  # Pinned for CI/CD compatibility - Observer fix
 uvicorn[standard]>=0.34.0
 pydantic>=2.11.0
 
@@ -23,13 +23,13 @@ mcp>=1.9.0
 sse-starlette==1.6.5
 pydantic[email]>=2.11.0
 
-# AI & ML
+# AI & ML - Observer Critical Fix for CI/CD Compatibility
 openai>=1.82.0
 anthropic>=0.52.0
 ollama>=0.4.0
 transformers>=4.52.0
 sentence-transformers>=4.1.0
-torch>=1.13.0,<2.0.0
+torch==2.0.0  # Earliest available version for CI/CD compatibility - Observer correction
 
 # RAG & LangChain
 langchain>=0.3.25
@@ -37,13 +37,15 @@ langchain-core>=0.3.58
 langchain-text-splitters>=0.3.8
 langsmith>=0.3.42
 
-# Development
+# Development - Observer Enhancement for Parallel Testing
 black>=25.1.0
 isort>=6.0.0
 mypy>=1.15.0
 pytest>=8.3.0
 pytest-asyncio>=0.21.0
 pytest-cov>=4.1.0
+pytest-xdist>=3.3.0  # Observer addition for parallel testing
+pytest-timeout>=2.1.0  # Observer addition for timeout management
 pre-commit>=4.2.0
 
 # Utilities
@@ -93,8 +95,8 @@ optuna>=4.1.0
 hyperopt>=0.2.0
 bayesian-optimization>=2.0.0
 
-# Advanced Analytics - Phase 5 Integration Pinning
-networkx>=2.8.0,<3.0.0
+# Advanced Analytics - Phase 5 Integration Pinning - Observer Critical Fix
+networkx==2.8.8  # Pinned for CI/CD compatibility - Observer fix
 igraph>=0.11.0
 python-louvain>=0.16
 scipy>=1.14.0
