@@ -1,0 +1,210 @@
+{
+  "dgm_memory_system": {
+    "success": true,
+    "memory_system_initialized": true,
+    "generations_simulated": 4,
+    "inheritance_results": {
+      "explorer": {
+        "fitness_bonus": 3.75,
+        "capabilities": {
+          "cooperation": 0.716,
+          "exploration": 0.392,
+          "resource_gathering": 0.392,
+          "adaptation": 0.23,
+          "efficiency": 0.302
+        },
+        "cooperation_bonus": 7.16,
+        "resource_gathering_bonus": 0.392,
+        "sustainability_bonus": 0.36800000000000005,
+        "behavior_growth_bonus": 4.8,
+        "shift_resilience_bonus": 0.9,
+        "memory_retention_bonus": 24.0,
+        "generation_equivalent": 2
+      },
+      "gatherer": {
+        "fitness_bonus": 3.75,
+        "capabilities": {
+          "cooperation": 0.716,
+          "exploration": 0.392,
+          "resource_gathering": 0.392,
+          "adaptation": 0.23,
+          "efficiency": 0.302
+        },
+        "cooperation_bonus": 7.16,
+        "resource_gathering_bonus": 0.392,
+        "sustainability_bonus": 0.36800000000000005,
+        "behavior_growth_bonus": 4.8,
+        "shift_resilience_bonus": 0.9,
+        "memory_retention_bonus": 24.0,
+        "generation_equivalent": 2
+      },
+      "coordinator": {
+        "fitness_bonus": 3.75,
+        "capabilities": {
+          "cooperation": 0.716,
+          "exploration": 0.392,
+          "resource_gathering": 0.392,
+          "adaptation": 0.23,
+          "efficiency": 0.302
+        },
+        "cooperation_bonus": 7.16,
+        "resource_gathering_bonus": 0.392,
+        "sustainability_bonus": 0.36800000000000005,
+        "behavior_growth_bonus": 4.8,
+        "shift_resilience_bonus": 0.9,
+        "memory_retention_bonus": 24.0,
+        "generation_equivalent": 2
+      },
+      "learner": {
+        "fitness_bonus": 3.75,
+        "capabilities": {
+          "cooperation": 0.716,
+          "exploration": 0.392,
+          "resource_gathering": 0.392,
+          "adaptation": 0.23,
+          "efficiency": 0.302
+        },
+        "cooperation_bonus": 7.16,
+        "resource_gathering_bonus": 0.392,
+        "sustainability_bonus": 0.36800000000000005,
+        "behavior_growth_bonus": 4.8,
+        "shift_resilience_bonus": 0.9,
+        "memory_retention_bonus": 24.0,
+        "generation_equivalent": 2
+      }
+    },
+    "stats": {
+      "no_data": true
+    }
+  },
+  "shift_learning_system": {
+    "success": true,
+    "shift_detected": false,
+    "adaptation_rewards": [
+      0.98,
+      0.98,
+      0.0
+    ],
+    "mutation_bias": {
+      "cooperation": 0.14285714285714288,
+      "exploration": 0.14285714285714288,
+      "resource_gathering": 0.28571428571428575,
+      "adaptation": 0.14285714285714288,
+      "efficiency": 0.28571428571428575
+    },
+    "learning_stats": {
+      "total_adaptations": 3,
+      "successful_adaptations": 2,
+      "survival_rate": 0.6666666666666666,
+      "avg_reward": 0.6533333333333333,
+      "recent_survival_rate": 0.6666666666666666,
+      "total_shifts_detected": 0,
+      "learning_effectiveness": 0.7999999999999999
+    }
+  },
+  "seeded_direction_system": {
+    "success": true,
+    "seeds_added": 3,
+    "fitness_results": {
+      "basic_agent": 1.5,
+      "cooperation_focused_agent_coop_0.5": 2.17968,
+      "sustainability_focused_agent_sustain_0.7": 1.96998,
+      "gathering_focused_agent_gather_0.6": 1.9233600000000002
+    },
+    "mutation_results": {
+      "basic_agent": "basic_agent_mutated_seeded_cooperation_0.80_seeded_sustainability_0.70_seeded_gathering_0.60",
+      "cooperation_focused_agent_coop_0.5": "cooperation_focused_agent_coop_0.5_mutated_seeded_cooperation_0.80_seeded_sustainability_0.70_seeded_gathering_0.60",
+      "sustainability_focused_agent_sustain_0.7": "sustainability_focused_agent_sustain_0.7_mutated_seeded_cooperation_0.80_seeded_sustainability_0.70_seeded_gathering_0.60",
+      "gathering_focused_agent_gather_0.6": "gathering_focused_agent_gather_0.6_mutated_seeded_cooperation_0.80_seeded_sustainability_0.70_seeded_gathering_0.60"
+    },
+    "effectiveness_results": {
+      "seed_cooperation_1752780514": {
+        "seed_id": "seed_cooperation_1752780514",
+        "direction": "cooperation",
+        "target_improvement": 230,
+        "improvement_achieved": 129.99999999999997,
+        "effectiveness": 0.5652173913043478,
+        "direction_success": 1.0,
+        "success_rate": 0.5652173913043478
+      },
+      "seed_sustainability_1752780514": {
+        "seed_id": "seed_sustainability_1752780514",
+        "direction": "sustainability",
+        "target_improvement": 373,
+        "improvement_achieved": 129.99999999999997,
+        "effectiveness": 0.34852546916890076,
+        "direction_success": 1.0,
+        "success_rate": 0.34852546916890076
+      },
+      "seed_gathering_1752780514": {
+        "seed_id": "seed_gathering_1752780514",
+        "direction": "gathering",
+        "target_improvement": 392,
+        "improvement_achieved": 129.99999999999997,
+        "effectiveness": 0.33163265306122447,
+        "direction_success": 1.0,
+        "success_rate": 0.33163265306122447
+      }
+    },
+    "seeding_stats": {
+      "total_seeds": 3,
+      "active_seeds": 3,
+      "direction_distribution": {
+        "cooperation": 1,
+        "sustainability": 1,
+        "gathering": 1
+      },
+      "avg_seed_weight": 0.7000000000000001,
+      "available_directions": [
+        "cooperation",
+        "sustainability",
+        "gathering",
+        "exploration",
+        "efficiency",
+        "adaptation"
+      ]
+    }
+  },
+  "inheritance_integration": {
+    "success": true,
+    "inheritance_applied": true,
+    "evolution_completed": true,
+    "best_fitness": 3.5,
+    "head_start_effectiveness": 250.0,
+    "memory_stored": false,
+    "target_achieved": "True"
+  },
+  "compounded_learning": {
+    "success": true,
+    "generations_tested": 3,
+    "fitness_progression": [
+      {
+        "generation": 1,
+        "base_fitness": 1.5,
+        "inheritance_bonus": 0.6749999999999999,
+        "compounded_fitness": 2.175,
+        "cooperation_events": 500,
+        "behaviors_detected": 20
+      },
+      {
+        "generation": 2,
+        "base_fitness": 2.3,
+        "inheritance_bonus": 1.035,
+        "compounded_fitness": 3.335,
+        "cooperation_events": 700,
+        "behaviors_detected": 35
+      },
+      {
+        "generation": 3,
+        "base_fitness": 3.1,
+        "inheritance_bonus": 1.395,
+        "compounded_fitness": 4.495,
+        "cooperation_events": 900,
+        "behaviors_detected": 50
+      }
+    ],
+    "total_improvement": 199.66666666666669,
+    "behavior_growth": 150.0,
+    "target_behavior_growth_achieved": false
+  }
+}

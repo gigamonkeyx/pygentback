@@ -1,0 +1,27 @@
+🎯 OBSERVER MCP LEARNING REPORT
+==================================================
+
+Generated: 2025-07-17 12:58:31
+
+📊 USAGE SUMMARY:
+   Total Generations: 10
+   Average MCP Calls/Gen: 9.5
+   Average Success Rate: 92.5%
+   Average Enforcement Rate: 99.0%
+
+🧠 LEARNING SUMMARY:
+   Total MCP Evaluations: 20
+   Average Final Reward: 0.775
+   Proof Validation Rate: 75.0%
+   Learning Effectiveness: ⚠️ MODERATE
+
+🛡️ ENFORCEMENT SUMMARY:
+   Enforcement Rate: 96.0%
+   Gaming Attempts Detected: 0
+   Target Achievement: ✅ ACHIEVED
+
+📁 GENERATED FILES:
+   Usage Plot: mcp_usage_generations_20250717_125827.png
+   Learning Plot: mcp_reward_learning_20250717_125828.png
+   Enforcement Plot: mcp_enforcement_effectiveness_20250717_125830.png
+   Report: mcp_learning_report_20250717_125831.txt

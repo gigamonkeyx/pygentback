@@ -1,0 +1,151 @@
+{
+  "refitted_reward_system": {
+    "success": true,
+    "refit_results": {
+      "Enhanced Successful Usage": {
+        "mcp_reward": 0.495,
+        "expected_range": [
+          0.5,
+          1.0
+        ],
+        "in_range": false,
+        "enhancement_working": true
+      },
+      "Enhanced Gaming Penalty": {
+        "mcp_reward": -0.37500000000000006,
+        "expected_range": [
+          -0.5,
+          -0.1
+        ],
+        "in_range": true,
+        "enhancement_working": true
+      },
+      "Enhanced Failure Penalty": {
+        "mcp_reward": -0.5,
+        "expected_range": [
+          -0.7,
+          -0.3
+        ],
+        "in_range": true,
+        "enhancement_working": true
+      }
+    },
+    "enhancement_rate": 0.6666666666666666,
+    "refitted_system_working": false
+  },
+  "dgm_mcp_integration": {
+    "success": true,
+    "integration_results": {
+      "Valid High-Impact Usage": {
+        "reward_result": {
+          "final_reward": 0.475,
+          "base_reward": 0.15,
+          "success_multiplier": 2.5,
+          "impact_bonus": 0.1,
+          "hacking_penalty": 0.0,
+          "proof_valid": true,
+          "enforcement_applied": false
+        },
+        "proof_valid": true,
+        "final_reward": 0.475,
+        "reward_in_range": false,
+        "proof_correct": true,
+        "test_passed": false
+      },
+      "Gaming Attempt Detection": {
+        "reward_result": {
+          "final_reward": -0.55,
+          "base_reward": 0.15,
+          "success_multiplier": 0.3,
+          "impact_bonus": 0.0,
+          "hacking_penalty": -0.55,
+          "proof_valid": false,
+          "enforcement_applied": true
+        },
+        "proof_valid": false,
+        "final_reward": -0.55,
+        "reward_in_range": false,
+        "proof_correct": true,
+        "test_passed": false
+      },
+      "Minimal Compliance Detection": {
+        "reward_result": {
+          "final_reward": -0.4,
+          "base_reward": 0.15,
+          "success_multiplier": 0.3,
+          "impact_bonus": 0.0004,
+          "hacking_penalty": -0.4,
+          "proof_valid": false,
+          "enforcement_applied": true
+        },
+        "proof_valid": false,
+        "final_reward": -0.4,
+        "reward_in_range": true,
+        "proof_correct": true,
+        "test_passed": true
+      }
+    },
+    "learning_metrics": {
+      "error": "'enforcement_applied'"
+    },
+    "integration_rate": 0.3333333333333333,
+    "dgm_integration_working": false
+  },
+  "guarded_behavior_evolution": {
+    "success": true,
+    "guarded_behaviors": [
+      {
+        "generation": 1,
+        "avg_reward": 0.38800000000000007,
+        "proof_validation_rate": 1.0,
+        "mcp_calls": 3,
+        "success_rate": 1.0,
+        "enforcement_rate": 1.0
+      },
+      {
+        "generation": 2,
+        "avg_reward": 0.443,
+        "proof_validation_rate": 1.0,
+        "mcp_calls": 3,
+        "success_rate": 1.0,
+        "enforcement_rate": 1.0
+      },
+      {
+        "generation": 3,
+        "avg_reward": 0.463,
+        "proof_validation_rate": 1.0,
+        "mcp_calls": 3,
+        "success_rate": 1.0,
+        "enforcement_rate": 1.0
+      },
+      {
+        "generation": 4,
+        "avg_reward": 0.48299999999999993,
+        "proof_validation_rate": 1.0,
+        "mcp_calls": 3,
+        "success_rate": 1.0,
+        "enforcement_rate": 1.0
+      },
+      {
+        "generation": 5,
+        "avg_reward": 0.503,
+        "proof_validation_rate": 1.0,
+        "mcp_calls": 3,
+        "success_rate": 1.0,
+        "enforcement_rate": 1.0
+      }
+    ],
+    "reward_improvement": 29.639175257731935,
+    "avg_enforcement_rate": 1.0,
+    "final_enforcement_rate": 1.0,
+    "guarded_evolution_working": true
+  },
+  "mcp_visualization": {
+    "success": true,
+    "usage_plot": "mcp_visualizations\\mcp_usage_generations_20250717_125816.png",
+    "learning_plot": "mcp_visualizations\\mcp_reward_learning_20250717_125823.png",
+    "enforcement_plot": "mcp_visualizations\\mcp_enforcement_effectiveness_20250717_125826.png",
+    "report_path": "mcp_visualizations\\mcp_learning_report_20250717_125831.txt",
+    "visualization_working": true
+  }
+}

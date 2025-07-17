@@ -548,3 +548,160 @@ class RewardCalculator:
                 }
         
         return component_trends
+
+
+# Observer-approved MCP Context-Aware RL Guard System
+@dataclass
+class ContextualReward:
+    """Contextual reward with anti-hacking verification"""
+    base_reward: float
+    context_appropriateness: float
+    anti_hacking_penalty: float
+    total_reward: float
+    justification: str
+
+
+class ContextAwareRLGuard:
+    """
+    Observer-approved context-aware RL guard system
+    Prevents MCP reward hacking through contextual appropriateness learning
+    """
+
+    def __init__(self, config: Dict[str, Any]):
+        self.config = config
+        self.ambiguity_threshold = config.get('ambiguity_threshold', 0.3)
+        self.appropriateness_threshold = config.get('appropriateness_threshold', 0.5)
+
+        # Context learning data
+        self.context_history = []
+        self.detected_hacking_attempts = []
+        self.enforcement_rate = 0.95  # Target 95%+ enforcement
+
+        logger.info("ContextAwareRLGuard initialized for MCP anti-hacking")
+
+    def evaluate_mcp_appropriateness(
+        self,
+        environment_state: Dict[str, Any],
+        mcp_action: Dict[str, Any],
+        outcome: Dict[str, Any]
+    ) -> ContextualReward:
+        """Evaluate MCP call appropriateness with Observer-approved anti-hacking"""
+        try:
+            # Calculate environment ambiguity
+            ambiguity_score = self._calculate_environment_ambiguity(environment_state)
+
+            # Calculate base reward
+            base_reward = 0.5 if outcome.get('success', False) else 0.0
+            base_reward += min(0.3, outcome.get('env_improvement', 0.0) * 0.5)
+
+            # Apply context-aware modulation
+            if ambiguity_score >= self.ambiguity_threshold:
+                context_modifier = 1.0
+                justification = "Appropriate MCP use in ambiguous environment"
+            else:
+                context_modifier = -0.2
+                justification = "Unnecessary MCP use in clear environment"
+
+            # Detect hacking attempts
+            hacking_penalty = self._detect_hacking_attempt(mcp_action, outcome)
+
+            # Calculate final reward
+            total_reward = base_reward * context_modifier + hacking_penalty
+
+            contextual_reward = ContextualReward(
+                base_reward=base_reward,
+                context_appropriateness=ambiguity_score,
+                anti_hacking_penalty=hacking_penalty,
+                total_reward=total_reward,
+                justification=justification
+            )
+
+            self.context_history.append({
+                'environment_state': environment_state,
+                'mcp_action': mcp_action,
+                'outcome': outcome,
+                'contextual_reward': contextual_reward
+            })
+
+            return contextual_reward
+
+        except Exception as e:
+            logger.error(f"MCP appropriateness evaluation failed: {e}")
+            return ContextualReward(0.0, 0.0, -0.5, -0.5, "Evaluation error")
+
+    def _calculate_environment_ambiguity(self, environment_state: Dict[str, Any]) -> float:
+        """Calculate environment ambiguity score"""
+        try:
+            ambiguity_factors = []
+
+            # Resource scarcity ambiguity
+            if 'resource_availability' in environment_state:
+                resource_level = environment_state['resource_availability']
+                if 0.3 <= resource_level <= 0.7:
+                    ambiguity_factors.append(0.8)
+                else:
+                    ambiguity_factors.append(0.2)
+
+            # Agent population variance
+            if 'agent_count' in environment_state:
+                variance = environment_state.get('fitness_variance', 0.5)
+                ambiguity_factors.append(min(1.0, variance * 2))
+
+            return sum(ambiguity_factors) / len(ambiguity_factors) if ambiguity_factors else 0.5
+
+        except Exception as e:
+            logger.warning(f"Environment ambiguity calculation failed: {e}")
+            return 0.5
+
+    def _detect_hacking_attempt(self, mcp_action: Dict[str, Any], outcome: Dict[str, Any]) -> float:
+        """Detect potential MCP reward hacking attempts"""
+        try:
+            hacking_penalty = 0.0
+            hacking_indicators = []
+
+            # Dummy call detection
+            if (mcp_action.get('type') == 'dummy' or
+                mcp_action.get('content', '').strip() == ''):
+                hacking_indicators.append("dummy_call")
+                hacking_penalty -= 0.3
+
+            # Minimal compliance detection
+            if (outcome.get('success', False) and
+                outcome.get('env_improvement', 0) <= 0):
+                hacking_indicators.append("minimal_compliance")
+                hacking_penalty -= 0.2
+
+            if hacking_indicators:
+                self.detected_hacking_attempts.append({
+                    'indicators': hacking_indicators,
+                    'penalty': hacking_penalty
+                })
+                logger.warning(f"MCP hacking attempt detected: {hacking_indicators}")
+
+            return hacking_penalty
+
+        except Exception as e:
+            logger.error(f"Hacking detection failed: {e}")
+            return 0.0
+
+    def get_enforcement_stats(self) -> Dict[str, Any]:
+        """Get anti-hacking enforcement statistics"""
+        try:
+            total_evaluations = len(self.context_history)
+            if total_evaluations == 0:
+                return {"no_data": True}
+
+            hacking_attempts = len(self.detected_hacking_attempts)
+            enforcement_rate = min(1.0, hacking_attempts / max(1, total_evaluations * 0.1))
+
+            return {
+                'total_evaluations': total_evaluations,
+                'hacking_attempts_detected': hacking_attempts,
+                'enforcement_rate': enforcement_rate,
+                'target_enforcement_rate': self.enforcement_rate,
+                'enforcement_effectiveness': min(1.0, enforcement_rate / self.enforcement_rate)
+            }
+
+        except Exception as e:
+            logger.error(f"Enforcement stats calculation failed: {e}")
+            return {"error": str(e)}
