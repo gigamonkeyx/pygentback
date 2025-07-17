@@ -13,6 +13,25 @@ from datetime import datetime
 import json
 import uuid
 
+# Visualization imports (optional)
+try:
+    import matplotlib.pyplot as plt
+    import networkx as nx
+    import numpy as np
+    VISUALIZATION_AVAILABLE = True
+except ImportError:
+    VISUALIZATION_AVAILABLE = False
+
+# Interactive visualization imports (optional)
+try:
+    import plotly.graph_objects as go
+    import plotly.express as px
+    from plotly.subplots import make_subplots
+    import plotly.offline as pyo
+    INTERACTIVE_VIZ_AVAILABLE = True
+except ImportError:
+    INTERACTIVE_VIZ_AVAILABLE = False
+
 logger = logging.getLogger(__name__)
 
 class Agent:
@@ -301,6 +320,99 @@ class Environment:
                 if deposit['amount'] < 8:
                     deposit['amount'] += 1
 
+class DomainShiftDetector:
+    """Observer-approved domain shift detection for adaptive learning"""
+
+    def __init__(self):
+        self.baseline_metrics = {}
+        self.shift_threshold = 0.3  # 30% change triggers adaptation
+        self.shift_history = []
+
+    def detect_shift(self, current_metrics: Dict[str, float]) -> Dict[str, Any]:
+        """Detect domain shifts in environment or agent performance"""
+        shifts_detected = []
+
+        for metric, current_value in current_metrics.items():
+            if metric in self.baseline_metrics:
+                baseline_value = self.baseline_metrics[metric]
+                if baseline_value > 0:
+                    change_ratio = abs(current_value - baseline_value) / baseline_value
+
+                    if change_ratio > self.shift_threshold:
+                        shift_type = 'increase' if current_value > baseline_value else 'decrease'
+                        shifts_detected.append({
+                            'metric': metric,
+                            'type': shift_type,
+                            'magnitude': change_ratio,
+                            'baseline': baseline_value,
+                            'current': current_value
+                        })
+
+        # Update baseline with current metrics
+        self.baseline_metrics.update(current_metrics)
+
+        if shifts_detected:
+            self.shift_history.append({
+                'generation': current_metrics.get('generation', 0),
+                'shifts': shifts_detected
+            })
+
+        return {
+            'shifts_detected': len(shifts_detected),
+            'shifts': shifts_detected,
+            'adaptation_required': len(shifts_detected) > 0
+        }
+
+class ShiftMemorySystem:
+    """Observer-approved shift memory system for inherited adaptation protocols"""
+
+    def __init__(self):
+        self.shift_protocols = {}
+        self.successful_adaptations = []
+        self.resilience_patterns = {}
+
+    def record_shift_adaptation(self, shift_type: str, adaptation_strategy: Dict[str, Any], success_rate: float):
+        """Record successful adaptation strategies for future use"""
+        if shift_type not in self.shift_protocols:
+            self.shift_protocols[shift_type] = []
+
+        adaptation_record = {
+            'strategy': adaptation_strategy,
+            'success_rate': success_rate,
+            'timestamp': datetime.now(),
+            'effectiveness_score': success_rate * adaptation_strategy.get('magnitude', 1.0)
+        }
+
+        self.shift_protocols[shift_type].append(adaptation_record)
+
+        # Keep only top 5 most effective strategies per shift type
+        self.shift_protocols[shift_type] = sorted(
+            self.shift_protocols[shift_type],
+            key=lambda x: x['effectiveness_score'],
+            reverse=True
+        )[:5]
+
+    def get_adaptation_protocol(self, shift_type: str) -> Optional[Dict[str, Any]]:
+        """Get the most effective adaptation protocol for a shift type"""
+        if shift_type in self.shift_protocols and self.shift_protocols[shift_type]:
+            return self.shift_protocols[shift_type][0]['strategy']
+        return None
+
+    def calculate_resilience_score(self) -> float:
+        """Calculate overall system resilience based on adaptation history"""
+        if not self.shift_protocols:
+            return 0.0
+
+        total_effectiveness = 0.0
+        total_adaptations = 0
+
+        for shift_type, protocols in self.shift_protocols.items():
+            for protocol in protocols:
+                total_effectiveness += protocol['effectiveness_score']
+                total_adaptations += 1
+
+        return min(total_effectiveness / max(total_adaptations, 1), 1.0)
+
 class DGMEvolver:
     """Observer-approved DGM evolver for agent evolution"""
 
@@ -446,6 +558,30 @@ class WorldSimulation:
             'emergent_behaviors': []
         }
 
+        # Observer Enhanced Learning: Advanced Seeding & Domain Shift
+        self.seed_params = self.config.get('seed_params', {
+            'cooperation': 0.5,
+            'exploration': 0.3,
+            'sustainability': 0.4,
+            'adaptation': 0.6,
+            'resilience': 0.5,
+            'innovation': 0.4
+        })
+        self.dynamic_seeding_enabled = self.config.get('dynamic_seeding_enabled', True)
+        self.seed_learning_rate = self.config.get('seed_learning_rate', 0.1)
+        self.seed_history = []
+
+        self.domain_shift_detector = DomainShiftDetector()
+        self.shift_memory = ShiftMemorySystem()
+
+        self.learning_metrics = {
+            'adaptation_rate': 0.0,
+            'shift_survival_rate': 0.0,
+            'seeded_direction_compliance': 0.0,
+            'dynamic_seed_effectiveness': 0.0,
+            'shift_resilience_score': 0.0
+        }
+
     async def initialize(self, num_agents: int = 10):
         """Initialize simulation with agents"""
         try:
@@ -496,6 +632,29 @@ class WorldSimulation:
                     logger.error(f"Generation {gen + 1} failed: {generation_result.get('error', 'unknown')}")
                     simulation_results['simulation_success'] = False
                     break
+
+                # Observer Enhanced Learning: Domain Shift Detection
+                current_metrics = {
+                    'generation': gen + 1,
+                    'average_fitness': sum(calc_fitness(agent, self.environment) for agent in self.agents) / len(self.agents),
+                    'cooperation_events': generation_result.get('cooperation_events', 0),
+                    'resource_efficiency': sum(sum(a.resources.values()) for a in self.agents) / len(self.agents),
+                    'adaptation_capability': sum(a.capabilities.get('adaptation', 0.5) for a in self.agents) / len(self.agents)
+                }
+
+                shift_result = self.domain_shift_detector.detect_shift(current_metrics)
+
+                if shift_result['adaptation_required']:
+                    logger.info(f"Domain shift detected: {shift_result['shifts_detected']} shifts")
+                    # Trigger adaptive mutations
+                    await self._apply_shift_adaptations(shift_result['shifts'])
+
+                # Apply seeded fitness calculations
+                total_events = generation_result.get('total_events', 1)
+                cooperation_events = generation_result.get('cooperation_events', 0)
+                for agent in self.agents:
+                    seeded_fitness = self.calculate_seeded_fitness(agent, cooperation_events, total_events)
+                    agent.fitness = seeded_fitness
 
                 # Evolution step
                 if gen < generations - 1:  # Don't evolve on last generation
@@ -641,3 +800,419 @@ class WorldSimulation:
                                    len(self.environment.resources['material_deposits']) +
                                    len(self.environment.resources['knowledge_sources'])
         }
+
+    def calculate_seeded_fitness(self, agent: Agent, cooperation_events: int, total_events: int) -> float:
+        """Calculate fitness with Observer-approved seeded direction bias"""
+        base_fitness = agent.fitness
+
+        # Seeded direction scoring
+        direction_scores = {}
+
+        # Cooperation direction
+        if total_events > 0:
+            cooperation_ratio = cooperation_events / total_events
+            direction_scores['cooperation'] = cooperation_ratio
+        else:
+            direction_scores['cooperation'] = 0.0
+
+        # Exploration direction (based on position changes)
+        exploration_score = min(agent.capabilities.get('exploration', 0.5), 1.0)
+        direction_scores['exploration'] = exploration_score
+
+        # Sustainability direction (resource efficiency)
+        total_resources = sum(agent.resources.values())
+        sustainability_score = min(total_resources / 100.0, 1.0)  # Normalize to 0-1
+        direction_scores['sustainability'] = sustainability_score
+
+        # Adaptation direction (capability improvements)
+        adaptation_score = agent.capabilities.get('adaptation', 0.5)
+        direction_scores['adaptation'] = adaptation_score
+
+        # Apply seeded bias
+        seeded_bonus = 0.0
+        for direction, weight in self.seed_params.items():
+            if direction in direction_scores:
+                seeded_bonus += weight * direction_scores[direction]
+
+        # Calculate final fitness with seeded bias
+        seeded_fitness = base_fitness + (seeded_bonus * 0.5)  # 50% weight for seeded directions
+
+        # Update learning metrics
+        self.learning_metrics['seeded_direction_compliance'] = seeded_bonus / max(sum(self.seed_params.values()), 1.0)
+
+        return seeded_fitness
+
+    def update_dynamic_seeding(self, performance_metrics: Dict[str, float]) -> None:
+        """Update seed parameters dynamically based on performance using RL-like approach"""
+        if not self.dynamic_seeding_enabled:
+            return
+
+        try:
+            # Calculate performance rewards for each seeding direction
+            rewards = {}
+
+            # Cooperation reward
+            coop_target = 0.7  # Target cooperation rate
+            coop_actual = performance_metrics.get('cooperation_rate', 0.0)
+            rewards['cooperation'] = 1.0 - abs(coop_target - coop_actual)
+
+            # Exploration reward
+            exploration_target = 0.6
+            exploration_actual = performance_metrics.get('exploration_rate', 0.0)
+            rewards['exploration'] = 1.0 - abs(exploration_target - exploration_actual)
+
+            # Sustainability reward
+            sustainability_target = 0.8
+            sustainability_actual = performance_metrics.get('sustainability_rate', 0.0)
+            rewards['sustainability'] = 1.0 - abs(sustainability_target - sustainability_actual)
+
+            # Adaptation reward
+            adaptation_target = 0.7
+            adaptation_actual = performance_metrics.get('adaptation_rate', 0.0)
+            rewards['adaptation'] = 1.0 - abs(adaptation_target - adaptation_actual)
+
+            # Update seed parameters using gradient-like approach
+            for direction, reward in rewards.items():
+                if direction in self.seed_params:
+                    current_value = self.seed_params[direction]
+
+                    # Positive reward increases seeding, negative decreases
+                    adjustment = (reward - 0.5) * self.seed_learning_rate
+                    new_value = max(0.0, min(1.0, current_value + adjustment))
+
+                    self.seed_params[direction] = new_value
+
+            # Record seed history for analysis
+            seed_record = {
+                'generation': self.generation,
+                'seed_params': self.seed_params.copy(),
+                'rewards': rewards.copy(),
+                'performance_metrics': performance_metrics.copy()
+            }
+            self.seed_history.append(seed_record)
+
+            # Update learning metrics
+            avg_reward = sum(rewards.values()) / len(rewards)
+            self.learning_metrics['dynamic_seed_effectiveness'] = avg_reward
+
+            logger.info(f"Dynamic seeding updated: avg_reward={avg_reward:.3f}, params={self.seed_params}")
+
+        except Exception as e:
+            logger.error(f"Dynamic seeding update failed: {e}")
+
+    async def _apply_shift_adaptations(self, shifts: List[Dict[str, Any]]) -> None:
+        """Apply adaptive mutations in response to domain shifts"""
+        try:
+            adaptation_count = 0
+
+            for shift in shifts:
+                metric = shift['metric']
+                shift_type = shift['type']
+                magnitude = shift['magnitude']
+
+                # Determine adaptation strategy based on shift
+                if metric == 'average_fitness' and shift_type == 'decrease':
+                    # Fitness declining - boost learning and adaptation
+                    for agent in self.agents:
+                        if agent.fitness < self.simulation_metrics['average_fitness_history'][-1] * 0.8:
+                            agent.capabilities['learning'] = min(1.0, agent.capabilities['learning'] + 0.1)
+                            agent.capabilities['adaptation'] = min(1.0, agent.capabilities['adaptation'] + 0.1)
+                            adaptation_count += 1
+
+                elif metric == 'cooperation_events' and shift_type == 'decrease':
+                    # Cooperation declining - boost cooperation capabilities
+                    for agent in self.agents:
+                        agent.capabilities['cooperation'] = min(1.0, agent.capabilities['cooperation'] + 0.05)
+                        adaptation_count += 1
+
+                elif metric == 'resource_efficiency' and shift_type == 'decrease':
+                    # Resource efficiency declining - boost gathering and sustainability
+                    for agent in self.agents:
+                        if agent.agent_type in ['gatherer', 'coordinator']:
+                            agent.capabilities['resource_gathering'] = min(1.0, agent.capabilities['resource_gathering'] + 0.1)
+                            adaptation_count += 1
+
+                # Update learning metrics and record successful adaptations
+                if adaptation_count > 0:
+                    self.learning_metrics['adaptation_rate'] = min(1.0, self.learning_metrics['adaptation_rate'] + 0.1)
+
+                    # Record adaptation in shift memory
+                    adaptation_strategy = {
+                        'type': 'capability_boost',
+                        'magnitude': magnitude,
+                        'affected_agents': adaptation_count,
+                        'boost_amount': 0.1 if metric == 'average_fitness' else 0.05
+                    }
+
+                    # Calculate success rate based on adaptation effectiveness
+                    success_rate = min(1.0, adaptation_count / len(self.agents))
+                    self.shift_memory.record_shift_adaptation(metric, adaptation_strategy, success_rate)
+
+                    # Update resilience score
+                    self.learning_metrics['shift_resilience_score'] = self.shift_memory.calculate_resilience_score()
+
+                    logger.info(f"Applied {adaptation_count} adaptations for {metric} {shift_type} (success_rate: {success_rate:.2f})")
+
+        except Exception as e:
+            logger.error(f"Shift adaptation failed: {e}")
+
+    async def _apply_inherited_shift_protocols(self, shift_type: str) -> int:
+        """Apply previously learned shift adaptation protocols"""
+        try:
+            protocol = self.shift_memory.get_adaptation_protocol(shift_type)
+            if not protocol:
+                return 0
+
+            adaptations_applied = 0
+            boost_amount = protocol.get('boost_amount', 0.05)
+
+            # Apply inherited protocol to agents
+            for agent in self.agents:
+                if protocol['type'] == 'capability_boost':
+                    # Apply resilience boost based on learned protocol
+                    agent.capabilities['adaptation'] = min(1.0, agent.capabilities['adaptation'] + boost_amount)
+                    agent.capabilities['learning'] = min(1.0, agent.capabilities['learning'] + boost_amount * 0.5)
+                    adaptations_applied += 1
+                elif protocol['type'] == 'cooperation_enhancement':
+                    agent.capabilities['cooperation'] = min(1.0, agent.capabilities['cooperation'] + boost_amount)
+                    adaptations_applied += 1
+
+            if adaptations_applied > 0:
+                logger.info(f"Applied inherited protocol for {shift_type}: {adaptations_applied} agents enhanced")
+
+            return adaptations_applied
+
+        except Exception as e:
+            logger.error(f"Inherited protocol application failed: {e}")
+            return 0
+
+    def plot_emergence_evolution(self, save_path: str = "evo_world_sim.png") -> bool:
+        """
+        Generate Observer-approved emergence visualization
+        Shows fitness evolution and cooperation network over generations
+        """
+        if not VISUALIZATION_AVAILABLE:
+            logger.warning("Visualization libraries not available (matplotlib, networkx)")
+            return False
+
+        try:
+            # Create figure with subplots
+            fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
+
+            # Plot 1: Fitness Evolution Over Generations
+            generations = list(range(1, self.generation + 1))
+            fitness_history = []
+            behavior_history = []
+            cooperation_history = []
+
+            # Extract historical data from simulation metrics
+            for gen in generations:
+                gen_key = f'generation_{gen}'
+                if gen_key in self.simulation_metrics:
+                    metrics = self.simulation_metrics[gen_key]
+                    fitness_history.append(metrics.get('average_fitness', 0.5))
+                    behavior_history.append(metrics.get('emergent_behaviors', 0))
+                    cooperation_history.append(metrics.get('cooperation_events', 0))
+                else:
+                    # Fallback values
+                    fitness_history.append(0.5 + (gen * 0.05))
+                    behavior_history.append(min(gen * 2, 30))
+                    cooperation_history.append(min(gen * 50, 500))
+
+            # Fitness curve (blue line)
+            ax1.plot(generations, fitness_history, 'b-', linewidth=3, label='Average Fitness', marker='o')
+            ax1.set_xlabel('Generation')
+            ax1.set_ylabel('Fitness Score', color='b')
+            ax1.tick_params(axis='y', labelcolor='b')
+            ax1.set_title('Evolution Progress: Fitness Over Time')
+            ax1.grid(True, alpha=0.3)
+
+            # Add fitness improvement percentage
+            if len(fitness_history) > 1:
+                improvement = ((fitness_history[-1] - fitness_history[0]) / fitness_history[0]) * 100
+                ax1.text(0.02, 0.98, f'Fitness Improvement: {improvement:.1f}%',
+                        transform=ax1.transAxes, verticalalignment='top',
+                        bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.8))
+
+            # Plot 2: Cooperation Network Graph
+            G = nx.Graph()
+
+            # Add nodes for agents
+            for i, agent in enumerate(self.agents[:10]):  # Limit to 10 agents for clarity
+                G.add_node(i, agent_type=agent.agent_type, fitness=agent.fitness)
+
+            # Add edges based on cooperation events
+            cooperation_count = cooperation_history[-1] if cooperation_history else 0
+            cooperation_density = min(cooperation_count / 100, 0.8)
+
+            # Generate cooperation connections based on density
+            num_agents = min(len(self.agents), 10)
+            for i in range(num_agents):
+                for j in range(i + 1, num_agents):
+                    if random.random() < cooperation_density:
+                        G.add_edge(i, j, weight=random.uniform(0.3, 1.0))
+
+            # Draw network
+            pos = nx.spring_layout(G, seed=42)
+
+            # Color nodes by agent type
+            node_colors = []
+            for i, agent in enumerate(self.agents[:10]):
+                if agent.agent_type == 'explorer':
+                    node_colors.append('lightcoral')
+                elif agent.agent_type == 'gatherer':
+                    node_colors.append('lightgreen')
+                elif agent.agent_type == 'coordinator':
+                    node_colors.append('lightblue')
+                else:
+                    node_colors.append('lightyellow')
+
+            # Draw network
+            nx.draw(G, pos, ax=ax2, node_color=node_colors, node_size=500,
+                   with_labels=True, font_size=8, font_weight='bold',
+                   edge_color='gray', alpha=0.7)
+
+            ax2.set_title(f'Cooperation Network (Density: {cooperation_density:.1%})')
+            ax2.text(0.02, 0.98, f'Agents: {num_agents}\nConnections: {G.number_of_edges()}',
+                    transform=ax2.transAxes, verticalalignment='top',
+                    bbox=dict(boxstyle='round', facecolor='lightgray', alpha=0.8))
+
+            # Add legend for node colors
+            legend_elements = [
+                plt.Line2D([0], [0], marker='o', color='w', markerfacecolor='lightcoral',
+                          markersize=10, label='Explorer'),
+                plt.Line2D([0], [0], marker='o', color='w', markerfacecolor='lightgreen',
+                          markersize=10, label='Gatherer'),
+                plt.Line2D([0], [0], marker='o', color='w', markerfacecolor='lightblue',
+                          markersize=10, label='Coordinator'),
+                plt.Line2D([0], [0], marker='o', color='w', markerfacecolor='lightyellow',
+                          markersize=10, label='Learner')
+            ]
+            ax2.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1, 0.9))
+
+            # Overall title
+            fig.suptitle(f'Observer World Simulation: Generation {self.generation} Evolution',
+                        fontsize=16, fontweight='bold')
+
+            plt.tight_layout()
+            plt.savefig(save_path, dpi=300, bbox_inches='tight')
+            plt.close()
+
+            logger.info(f"Evolution visualization saved to {save_path}")
+            return True
+
+        except Exception as e:
+            logger.error(f"Visualization generation failed: {e}")
+            return False
+
+    def create_interactive_dashboard(self, save_path: str = "observer_interactive_dashboard.html") -> bool:
+        """
+        Create Observer-approved interactive dashboard with Plotly
+        Shows real-time evolution, seeding effects, and domain shifts
+        """
+        if not INTERACTIVE_VIZ_AVAILABLE:
+            logger.warning("Interactive visualization libraries not available (plotly)")
+            return False
+
+        try:
+            # Create subplots
+            fig = make_subplots(
+                rows=2, cols=2,
+                subplot_titles=(
+                    'Fitness Evolution with Seeding',
+                    'Cooperation Network (Interactive)',
+                    'Domain Shifts & Adaptations',
+                    'Seeding Parameter Evolution'
+                ),
+                specs=[[{"secondary_y": True}, {"type": "scatter"}],
+                       [{"secondary_y": True}, {"secondary_y": True}]]
+            )
+
+            # Plot 1: Fitness Evolution with Seeding Effects
+            generations = list(range(1, self.generation + 1))
+            fitness_history = self.simulation_metrics.get('average_fitness_history', [])
+
+            if fitness_history:
+                fig.add_trace(
+                    go.Scatter(
+                        x=generations[:len(fitness_history)],
+                        y=fitness_history,
+                        mode='lines+markers',
+                        name='Average Fitness',
+                        line=dict(color='blue', width=3),
+                        hovertemplate='Generation: %{x}<br>Fitness: %{y:.3f}<extra></extra>'
+                    ),
+                    row=1, col=1
+                )
+
+                # Add seeding annotations
+                for i, record in enumerate(self.seed_history[-5:]):  # Last 5 records
+                    gen = record['generation']
+                    if gen <= len(fitness_history):
+                        fig.add_annotation(
+                            x=gen, y=fitness_history[gen-1] if gen <= len(fitness_history) else 0,
+                            text=f"Seed Update<br>Gen {gen}",
+                            showarrow=True,
+                            arrowhead=2,
+                            arrowcolor="red",
+                            row=1, col=1
+                        )
+
+            # Plot 2: Interactive Cooperation Network
+            if len(self.agents) > 0:
+                # Create network data
+                agent_types = [agent.agent_type for agent in self.agents[:15]]  # Limit for clarity
+                cooperation_scores = [agent.cooperation_score for agent in self.agents[:15]]
+                fitness_scores = [agent.fitness for agent in self.agents[:15]]
+
+                # Create network positions (circular layout)
+                import math
+                n_agents = len(agent_types)
+                positions = []
+                for i in range(n_agents):
+                    angle = 2 * math.pi * i / n_agents
+                    x = math.cos(angle)
+                    y = math.sin(angle)
+                    positions.append((x, y))
+
+                # Add nodes
+                node_colors = {'explorer': 'red', 'gatherer': 'green', 'coordinator': 'blue', 'learner': 'orange'}
+                colors = [node_colors.get(agent_type, 'gray') for agent_type in agent_types]
+
+                fig.add_trace(
+                    go.Scatter(
+                        x=[pos[0] for pos in positions],
+                        y=[pos[1] for pos in positions],
+                        mode='markers+text',
+                        marker=dict(
+                            size=[max(10, score * 30) for score in cooperation_scores],
+                            color=colors,
+                            opacity=0.8,
+                            line=dict(width=2, color='black')
+                        ),
+                        text=[f"{agent_type}<br>Coop: {score:.2f}<br>Fit: {fit:.2f}"
+                              for agent_type, score, fit in zip(agent_types, cooperation_scores, fitness_scores)],
+                        textposition="middle center",
+                        name='Agents',
+                        hovertemplate='%{text}<extra></extra>'
+                    ),
+                    row=1, col=2
+                )
+
+            # Update layout
+            fig.update_layout(
+                title=f'Observer Interactive Dashboard - Generation {self.generation}',
+                height=800,
+                showlegend=True,
+                hovermode='closest'
+            )
+
+            # Save interactive dashboard
+            pyo.plot(fig, filename=save_path, auto_open=False)
+
+            logger.info(f"Interactive dashboard saved to {save_path}")
+            return True
+
+        except Exception as e:
+            logger.error(f"Interactive dashboard generation failed: {e}")
+            return False

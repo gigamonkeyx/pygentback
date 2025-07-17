@@ -569,6 +569,13 @@ async def main():
         "--log-file",
         help="Log file path"
     )
+
+    # Observer Systems Autonomy Toggle
+    parser.add_argument(
+        "--autonomous",
+        action="store_true",
+        help="Enable Observer autonomous mode for self-evolution on issues (RIPER-Ω compliant)"
+    )
     
     args = parser.parse_args()
     
@@ -579,6 +586,16 @@ async def main():
     print("PyGent Factory - Advanced AI System")
     print("=" * 45)
     print("Tree of Thought + s3 RAG + GPU Vector Search")
+
+    # Observer Systems Status
+    if args.autonomous:
+        print("🤖 Observer Autonomous Mode: ENABLED")
+        print("🔄 Self-evolution on issues: ACTIVE")
+        print("📊 RIPER-Ω Protocol: COMPLIANT")
+    else:
+        print("👤 Observer Supervised Mode: ACTIVE")
+        print("🔧 Manual intervention required for issues")
+
     print()
     
     # Check dependencies

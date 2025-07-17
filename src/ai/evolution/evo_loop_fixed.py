@@ -65,6 +65,19 @@ class ObserverEvolutionLoop:
             "batch_size": config.get("gpu_batch_size", 32),
             "gradient_accumulation": config.get("gpu_gradient_accumulation", 4)
         }
+
+        # Observer Enhanced Learning Configuration
+        self.learning_phases = config.get('learning_phases', {
+            'exploration_phase': {'generations': 3, 'mutation_rate': 0.3, 'diversity_bonus': 0.1},
+            'exploitation_phase': {'generations': 7, 'crossover_rate': 0.8, 'elite_preservation': 0.2}
+        })
+        self.domain_adaptation_enabled = config.get('domain_adaptation_enabled', True)
+        self.seeded_evolution_weights = config.get('seeded_evolution_weights', {
+            'cooperation': 0.3,
+            'sustainability': 0.2,
+            'adaptation': 0.5
+        })
+        self.shift_adaptation_rate = config.get('shift_adaptation_rate', 0.1)
         
     async def run_evolution(self, 
                           population: List[Any], 
