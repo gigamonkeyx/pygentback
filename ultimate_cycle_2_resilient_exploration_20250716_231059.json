@@ -1,0 +1,78 @@
+{
+  "generation": 2,
+  "timestamp": "2025-07-16 23:10:58.764979",
+  "config": {
+    "name": "resilient_exploration",
+    "strategy_override": {
+      "exploration": 0.8,
+      "resilience": 0.9
+    }
+  },
+  "systems": {
+    "world_sim": {
+      "success": true,
+      "agents": 30,
+      "behaviors": 47,
+      "cooperation": 741,
+      "fitness": 3.1738015984816346,
+      "learning_metrics": {},
+      "performance_metrics": {
+        "cooperation_rate": 741.0,
+        "exploration_rate": 0.47,
+        "sustainability_rate": 0.634760319696327,
+        "adaptation_rate": 0.0
+      },
+      "time": 0.06481623649597168
+    },
+    "formal_proof": {
+      "success": true,
+      "approval_rate": 1.0,
+      "adaptation_bonus": 0.1,
+      "resilience_bonus": 0.0,
+      "total_bonus": 0.1,
+      "scenarios": 5,
+      "time": 0.010189056396484375
+    },
+    "evolution": {
+      "success": true,
+      "phase": "exploration",
+      "mutation_focus": "diversity",
+      "generations": 1,
+      "fitness": 1.0,
+      "population_size": 19,
+      "time": 0.003997087478637695
+    }
+  },
+  "learning_metrics": {
+    "seeded_compliance": 0.0,
+    "adaptation_rate": 0.0,
+    "dynamic_seed_effectiveness": 0.0,
+    "shift_resilience_score": 0.0,
+    "domain_shifts_detected": 0,
+    "seeding_updates": 3,
+    "phase": "exploration",
+    "mutation_focus": "diversity"
+  },
+  "domain_shifts": [],
+  "seeding_updates": {
+    "exploration": {
+      "old": 0.8,
+      "new": 0.8555,
+      "change": 0.055499999999999994
+    },
+    "sustainability": {
+      "old": 0.8040215628128282,
+      "new": 0.8542356107672773,
+      "change": 0.05021404795444906
+    },
+    "adaptation": {
+      "old": 0.77,
+      "new": 0.74,
+      "change": -0.030000000000000027
+    }
+  },
+  "cycle_time": 0.8911149501800537,
+  "success_rate": 1.0,
+  "successful_systems": 3,
+  "total_systems": 3
+}

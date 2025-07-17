@@ -1,0 +1,22 @@
+{
+  "dgm_validator": {
+    "success": false,
+    "error": "ALGORITHM"
+  },
+  "two_phase_evolution": {
+    "success": true,
+    "evolution_completed": true,
+    "generations_completed": 5,
+    "best_fitness": 2.0,
+    "rl_reward_calculated": true,
+    "target_improvement_reached": "True"
+  },
+  "dgm_evolution_integration": {
+    "success": false,
+    "error": "attempted relative import beyond top-level package"
+  },
+  "useful_demo": {
+    "success": false,
+    "error": "attempted relative import beyond top-level package"
+  }
+}

@@ -1,0 +1,10 @@
+Observer E2E Deployment Test Report
+Generated: 2025-07-16 22:17:50.542876
+Success Rate: 100.0%
+Execution Time: 14.1s
+
+world_sim: {'success': True, 'agents': 20, 'behaviors': 27, 'cooperation': 364, 'fitness': 1.7912292026100314, 'visualization': False}
+formal_proof: {'success': True, 'approval_rate': 1.0, 'invariants': 5, 'scenarios_tested': 5}
+evolution: {'success': True, 'generations': 2, 'fitness': 1.118, 'population_size': 10}
+communication: {'success': True, 'fallback_enabled': True, 'metrics': {'metrics': {'messages_sent': 0, 'messages_received': 0, 'failed_deliveries': 0, 'fallback_activations': 0, 'average_latency': 0.0}, 'redis_available': False, 'fallback_enabled': True, 'registered_agents': 0, 'pending_messages': 0, 'message_history_size': 0}}
+query_system: {'success': True, 'success_rate': 1.0, 'queries_tested': 3}

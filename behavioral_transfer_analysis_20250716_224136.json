@@ -1,0 +1,77 @@
+{
+  "timestamp": "20250716_224136",
+  "comparison": {
+    "baseline": {
+      "avg_fitness": 0.0,
+      "avg_knowledge": 0.0,
+      "avg_cooperation": 0.0
+    },
+    "evolved": {
+      "avg_fitness": 11.586666666666641,
+      "avg_knowledge": 53.13333333333333,
+      "avg_cooperation": 10.373333333333315
+    },
+    "transfer": {
+      "avg_fitness": 3.662499999999999,
+      "avg_knowledge": 30.25,
+      "avg_cooperation": 7.159791666666654
+    }
+  },
+  "improvements": {
+    "fitness": 366249.9999999999,
+    "knowledge": 3025.0,
+    "cooperation": 7159.791666666653
+  },
+  "behavioral_improvements": {
+    "explorer": {
+      "capability_improvements": {
+        "exploration": -10.580888573797443,
+        "resource_gathering": -5.901526451333164,
+        "cooperation": -12.78557555746723,
+        "learning": 11.376422196946928,
+        "adaptation": 16.042260194745094
+      },
+      "knowledge_gained": 0,
+      "cooperation_boost": 3.884999999999996
+    },
+    "gatherer": {
+      "capability_improvements": {
+        "exploration": 5.074064940372127,
+        "resource_gathering": 10.319183352634463,
+        "cooperation": -13.695415465100789,
+        "learning": -2.4428835907719297,
+        "adaptation": 6.449222739395949
+      },
+      "knowledge_gained": 0,
+      "cooperation_boost": 1.177499999999998
+    },
+    "coordinator": {
+      "capability_improvements": {
+        "exploration": 16.582454683038396,
+        "resource_gathering": -24.485991988291953,
+        "cooperation": 12.264011473809507,
+        "learning": -12.842096768138939,
+        "adaptation": 21.185524256135793
+      },
+      "knowledge_gained": 0,
+      "cooperation_boost": 8.45999999999998
+    },
+    "learner": {
+      "capability_improvements": {
+        "exploration": 10.88214017862458,
+        "resource_gathering": 39.16319059708709,
+        "cooperation": 16.78592034091457,
+        "learning": -14.932877196060398,
+        "adaptation": -1.1027967283483138
+      },
+      "knowledge_gained": 59,
+      "cooperation_boost": 2.5499999999999945
+    }
+  },
+  "transfer_effective": true,
+  "agents_tested": {
+    "baseline": 10,
+    "evolved": 15,
+    "transfer": 12
+  }
+}

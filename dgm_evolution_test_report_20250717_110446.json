@@ -1,0 +1,36 @@
+{
+  "dgm_validator": {
+    "success": true,
+    "validator_initialized": true,
+    "candidates_tested": 2,
+    "validation_results": [
+      "candidate_id='test_candidate_1' success=True performance_before=[PerformanceMetric(name='response_time', value=0.5, unit='seconds', timestamp=datetime.datetime(2025, 7, 17, 18, 4, 45, 769266), context=None), PerformanceMetric(name='accuracy', value=0.85, unit='percentage', timestamp=datetime.datetime(2025, 7, 17, 18, 4, 45, 769266), context=None), PerformanceMetric(name='memory_usage', value=128.0, unit='MB', timestamp=datetime.datetime(2025, 7, 17, 18, 4, 45, 769266), context=None)] performance_after=[PerformanceMetric(name='response_time', value=0.4166666666666667, unit='seconds', timestamp=datetime.datetime(2025, 7, 17, 18, 4, 45, 863053), context=None), PerformanceMetric(name='accuracy', value=1.0, unit='percentage', timestamp=datetime.datetime(2025, 7, 17, 18, 4, 45, 863053), context=None), PerformanceMetric(name='memory_usage', value=102.4, unit='MB', timestamp=datetime.datetime(2025, 7, 17, 18, 4, 45, 863053), context=None)] improvement_score=0.18104575163398692 safety_score=0.9 test_results={'success': True, 'tests_passed': 10, 'tests_failed': 0, 'coverage': 0.95, 'execution_time': 0.1, 'safety_threshold_passed': True, 'performance_threshold_passed': True, 'complexity_passed': True, 'bloat_passed': True, 'thresholds_used': {'safety': 0.6, 'performance': 0.05, 'complexity': 1500, 'bloat': 0.15}} validation_time=0.093787 timestamp=datetime.datetime(2025, 7, 17, 18, 4, 45, 863570)",
+      "candidate_id='test_candidate_2' success=True performance_before=[PerformanceMetric(name='response_time', value=0.5, unit='seconds', timestamp=datetime.datetime(2025, 7, 17, 18, 4, 45, 864567), context=None), PerformanceMetric(name='accuracy', value=0.85, unit='percentage', timestamp=datetime.datetime(2025, 7, 17, 18, 4, 45, 864567), context=None), PerformanceMetric(name='memory_usage', value=128.0, unit='MB', timestamp=datetime.datetime(2025, 7, 17, 18, 4, 45, 864567), context=None)] performance_after=[PerformanceMetric(name='response_time', value=0.4347826086956522, unit='seconds', timestamp=datetime.datetime(2025, 7, 17, 18, 4, 45, 972214), context=None), PerformanceMetric(name='accuracy', value=0.9774999999999999, unit='percentage', timestamp=datetime.datetime(2025, 7, 17, 18, 4, 45, 972214), context=None), PerformanceMetric(name='memory_usage', value=108.80000000000001, unit='MB', timestamp=datetime.datetime(2025, 7, 17, 18, 4, 45, 972214), context=None)] improvement_score=0.14347826086956514 safety_score=0.95 test_results={'success': True, 'tests_passed': 10, 'tests_failed': 0, 'coverage': 0.95, 'execution_time': 0.1, 'safety_threshold_passed': True, 'performance_threshold_passed': True, 'complexity_passed': True, 'bloat_passed': True, 'thresholds_used': {'safety': 0.6, 'performance': 0.05, 'complexity': 1500, 'bloat': 0.15}} validation_time=0.107647 timestamp=datetime.datetime(2025, 7, 17, 18, 4, 45, 972214)"
+    ],
+    "adaptive_thresholds_working": true
+  },
+  "two_phase_evolution": {
+    "success": true,
+    "evolution_completed": true,
+    "generations_completed": 5,
+    "best_fitness": 1.87,
+    "rl_reward_calculated": true,
+    "target_improvement_reached": "True"
+  },
+  "dgm_evolution_integration": {
+    "success": true,
+    "integration_completed": true,
+    "dgm_validation_applied": true,
+    "self_rewrite_triggered": false,
+    "dependency_fixes_applied": false,
+    "best_fitness": 1.94
+  },
+  "useful_demo": {
+    "success": true,
+    "demo_completed": true,
+    "best_fitness": 0.52,
+    "target_reached": "False",
+    "success_rate": 0.43333333333333335,
+    "solution_quality": "good"
+  }
+}

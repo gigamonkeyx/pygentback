@@ -1,0 +1,87 @@
+{
+  "generation": 5,
+  "timestamp": "2025-07-16 23:12:01.112662",
+  "config": {
+    "name": "ultimate_balance",
+    "strategy_override": {
+      "cooperation": 0.8,
+      "exploration": 0.7,
+      "sustainability": 0.9,
+      "adaptation": 0.9,
+      "resilience": 0.8,
+      "innovation": 0.7
+    }
+  },
+  "systems": {
+    "world_sim": {
+      "success": true,
+      "agents": 30,
+      "behaviors": 119,
+      "cooperation": 1932,
+      "fitness": 7.844058782061283,
+      "learning_metrics": {},
+      "performance_metrics": {
+        "cooperation_rate": 1932.0,
+        "exploration_rate": 1.0,
+        "sustainability_rate": 1.5688117564122566,
+        "adaptation_rate": 0.0
+      },
+      "time": 0.041753292083740234
+    },
+    "formal_proof": {
+      "success": true,
+      "approval_rate": 1.0,
+      "adaptation_bonus": 0.1,
+      "resilience_bonus": 0.0,
+      "total_bonus": 0.1,
+      "scenarios": 5,
+      "time": 0.0090179443359375
+    },
+    "evolution": {
+      "success": true,
+      "phase": "exploitation",
+      "mutation_focus": "optimization",
+      "generations": 1,
+      "fitness": 1.0,
+      "population_size": 26,
+      "time": 0.002983570098876953
+    }
+  },
+  "learning_metrics": {
+    "seeded_compliance": 0.0,
+    "adaptation_rate": 0.0,
+    "dynamic_seed_effectiveness": 0.0,
+    "shift_resilience_score": 0.0,
+    "domain_shifts_detected": 0,
+    "seeding_updates": 4,
+    "phase": "exploitation",
+    "mutation_focus": "optimization"
+  },
+  "domain_shifts": [],
+  "seeding_updates": {
+    "cooperation": {
+      "old": 0.8,
+      "new": 0.0,
+      "change": -0.8
+    },
+    "exploration": {
+      "old": 0.7,
+      "new": 0.715,
+      "change": 0.015000000000000013
+    },
+    "sustainability": {
+      "old": 0.9,
+      "new": 0.8596782365381616,
+      "change": -0.04032176346183847
+    },
+    "adaptation": {
+      "old": 0.9,
+      "new": 0.87,
+      "change": -0.030000000000000027
+    }
+  },
+  "cycle_time": 0.6204161643981934,
+  "success_rate": 1.0,
+  "successful_systems": 3,
+  "total_systems": 3
+}

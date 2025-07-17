@@ -27,8 +27,8 @@ async def test_dgm_validator():
     print("-" * 40)
     
     try:
-        from dgm.core.validator import DGMValidator
-        from dgm.models import ImprovementCandidate, ImprovementType
+        from src.dgm.core.validator import DGMValidator
+        from src.dgm.models import ImprovementCandidate, ImprovementType
         
         # Configure validator with Observer-approved thresholds
         validator_config = {
@@ -101,7 +101,7 @@ async def test_two_phase_evolution():
     print("-" * 40)
     
     try:
-        from ai.evolution.two_phase import TwoPhaseEvolutionSystem
+        from src.ai.evolution.two_phase import TwoPhaseEvolutionSystem
         
         # Configure two-phase evolution
         evolution_config = {
@@ -177,8 +177,8 @@ async def test_dgm_evolution_integration():
     print("-" * 40)
     
     try:
-        from dgm.core.evolution_integration import DGMEvolutionEngine
-        from dgm.models import ImprovementCandidate, ImprovementType
+        from src.dgm.core.evolution_integration import DGMEvolutionEngine
+        from src.dgm.models import ImprovementCandidate, ImprovementType
         
         # Configure integration engine
         integration_config = {
@@ -265,8 +265,8 @@ async def test_useful_demo():
     print("-" * 40)
     
     try:
-        from dgm.core.evolution_integration import DGMEvolutionEngine
-        from dgm.models import ImprovementCandidate, ImprovementType
+        from src.dgm.core.evolution_integration import DGMEvolutionEngine
+        from src.dgm.models import ImprovementCandidate, ImprovementType
         
         # Configure for Unicode fix demo
         demo_config = {

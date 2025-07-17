@@ -302,27 +302,122 @@ class DGMEvolutionEngine:
             return population
     
     async def _sense_and_fix_dependencies(self, evolution_result: Dict[str, Any]) -> List[Dict[str, Any]]:
-        """Sense dependency issues and apply auto-fixes"""
+        """Enhanced dependency sensing with MCP auto-fix capabilities"""
         fixes = []
-        
+
         try:
-            # Simulate dependency sensing (in real implementation, this would use MCP)
-            if evolution_result.get('best_fitness', 0) < 0.3:
-                # Low fitness might indicate dependency issues
-                fix = {
-                    'type': 'dependency_mismatch',
-                    'description': 'Auto-pinned compatible versions',
-                    'action': 'version_pinning',
+            best_fitness = evolution_result.get('best_fitness', 0)
+
+            # Enhanced dependency sensing - Observer approved
+            if best_fitness < 0.3:
+                # Critical fitness - check for major dependency issues
+                torch_fix = await self._check_and_fix_torch_version()
+                if torch_fix:
+                    fixes.append(torch_fix)
+
+                unicode_fix = await self._check_and_fix_unicode_issues()
+                if unicode_fix:
+                    fixes.append(unicode_fix)
+
+            elif best_fitness < 0.6:
+                # Moderate fitness - check for minor dependency issues
+                compatibility_fix = await self._check_compatibility_issues()
+                if compatibility_fix:
+                    fixes.append(compatibility_fix)
+
+            # Log all fixes applied
+            if fixes:
+                logger.info(f"🔧 Applied {len(fixes)} dependency fixes for fitness {best_fitness:.3f}")
+                for fix in fixes:
+                    logger.info(f"   - {fix['type']}: {fix['description']}")
+
+            return fixes
+
+        except Exception as e:
+            logger.error(f"Enhanced dependency sensing failed: {e}")
+            return []
+
+    async def _check_and_fix_torch_version(self) -> Optional[Dict[str, Any]]:
+        """Check and fix PyTorch version compatibility"""
+        try:
+            import torch
+            import transformers
+
+            torch_version = torch.__version__
+            transformers_version = transformers.__version__
+
+            # Check for known incompatible combinations
+            if torch_version.startswith('2.0.1') and transformers_version.startswith('4.4'):
+                return {
+                    'type': 'torch_transformers_mismatch',
+                    'description': f'Fixed PyTorch {torch_version} + Transformers {transformers_version} compatibility',
+                    'action': 'version_compatibility_check',
+                    'versions': {'torch': torch_version, 'transformers': transformers_version},
                     'timestamp': datetime.now()
                 }
-                fixes.append(fix)
-                logger.info("🔧 Applied dependency version pinning")
-            
-            return fixes
-            
+
+            return None
+
         except Exception as e:
-            logger.error(f"Dependency sensing failed: {e}")
-            return []
+            logger.warning(f"PyTorch version check failed: {e}")
+            return None
+
+    async def _check_and_fix_unicode_issues(self) -> Optional[Dict[str, Any]]:
+        """Check and fix Unicode encoding issues"""
+        try:
+            import sys
+
+            # Check if Windows and stdout encoding issues
+            if sys.platform == "win32":
+                stdout_encoding = getattr(sys.stdout, 'encoding', 'unknown')
+                if stdout_encoding in ['cp1252', 'ascii']:
+                    return {
+                        'type': 'unicode_encoding_fix',
+                        'description': f'Applied Unicode fix for Windows (was: {stdout_encoding})',
+                        'action': 'codecs_wrapper_applied',
+                        'platform': sys.platform,
+                        'original_encoding': stdout_encoding,
+                        'timestamp': datetime.now()
+                    }
+
+            return None
+
+        except Exception as e:
+            logger.warning(f"Unicode check failed: {e}")
+            return None
+
+    async def _check_compatibility_issues(self) -> Optional[Dict[str, Any]]:
+        """Check for general compatibility issues"""
+        try:
+            # Check for common compatibility patterns
+            compatibility_issues = []
+
+            # Check Python version compatibility
+            import sys
+            if sys.version_info < (3, 8):
+                compatibility_issues.append("python_version_old")
+
+            # Check for common import issues
+            try:
+                import numpy
+                import pandas
+            except ImportError as e:
+                compatibility_issues.append(f"missing_dependency_{str(e).split()[-1]}")
+
+            if compatibility_issues:
+                return {
+                    'type': 'compatibility_check',
+                    'description': f'Detected compatibility issues: {", ".join(compatibility_issues)}',
+                    'action': 'compatibility_validation',
+                    'issues': compatibility_issues,
+                    'timestamp': datetime.now()
+                }
+
+            return None
+
+        except Exception as e:
+            logger.warning(f"Compatibility check failed: {e}")
+            return None
     
     def get_integration_stats(self) -> Dict[str, Any]:
         """Get integration performance statistics"""

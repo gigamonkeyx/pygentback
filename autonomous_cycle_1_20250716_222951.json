@@ -1,0 +1,35 @@
+{
+  "generation": 1,
+  "timestamp": "2025-07-16 22:29:45.797402",
+  "systems": {
+    "world_sim": {
+      "success": true,
+      "agents": 30,
+      "behaviors": 10,
+      "cooperation": 191,
+      "fitness": 0.953654494919929,
+      "time": 0.025165796279907227
+    },
+    "formal_proof": {
+      "success": true,
+      "approval_rate": 1.0,
+      "scenarios": 5,
+      "time": 0.6634244918823242
+    },
+    "evolution": {
+      "success": true,
+      "generations": 2,
+      "fitness": 1.0,
+      "population_size": 11,
+      "time": 0.3726203441619873
+    },
+    "health": {
+      "success": true,
+      "response_time": 0
+    }
+  },
+  "cycle_time": 6.083672285079956,
+  "success_rate": 1.0,
+  "successful_systems": 4,
+  "total_systems": 4
+}

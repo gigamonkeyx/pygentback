@@ -65,12 +65,18 @@ class TwoPhaseEvolutionSystem:
             elite_preservation=config.get("exploitation_elite_preservation", 0.2)
         )
         
-        # RL reward system
+        # RL reward system - Observer enhanced for 200%+ performance
         self.rl_enabled = config.get("rl_enabled", True)
         self.efficiency_target = config.get("efficiency_target", 5.0)  # Target cycles
-        self.improvement_target = config.get("improvement_target", 1.976)  # 197.6% target
+        self.improvement_target = config.get("improvement_target", 2.0)  # 200% target (enhanced)
         self.safety_weight = config.get("safety_weight", 0.3)
         self.diversity_weight = config.get("diversity_weight", 0.2)
+
+        # Observer-approved RL tuning parameters
+        self.reward_safety_threshold = config.get("reward_safety_threshold", 1.0)
+        self.reward_safety_bonus = config.get("reward_safety_bonus", 0.2)
+        self.stagnation_delta_threshold = config.get("stagnation_delta_threshold", 0.01)
+        self.stagnation_generation_limit = config.get("stagnation_generation_limit", 3)
         
         # Evolution tracking
         self.evolution_history = []
@@ -192,13 +198,22 @@ class TwoPhaseEvolutionSystem:
                        f"avg_fitness={avg_fitness:.3f}, max_fitness={max_fitness:.3f}, "
                        f"diversity={diversity_score:.3f}")
             
-            # Check for stagnation
-            if len(fitness_history) >= self.stagnation_threshold:
-                recent_improvement = fitness_history[-1] - fitness_history[-self.stagnation_threshold]
-                if abs(recent_improvement) < self.stagnation_tolerance:
+            # Enhanced stagnation detection - Observer approved refinement
+            if len(fitness_history) >= self.stagnation_generation_limit:
+                # Check last 3 generations for improvement delta < 0.01
+                recent_deltas = []
+                for i in range(self.stagnation_generation_limit - 1):
+                    delta = fitness_history[-(i+1)] - fitness_history[-(i+2)]
+                    recent_deltas.append(abs(delta))
+
+                avg_delta = sum(recent_deltas) / len(recent_deltas)
+                if avg_delta < self.stagnation_delta_threshold:
                     stagnation_counter += 1
+                    logger.info(f"⚠️ Stagnation warning in {phase.name} phase: avg_delta={avg_delta:.4f}")
+
                     if stagnation_counter >= 2:
-                        logger.info(f"🛑 Stagnation detected in {phase.name} phase at generation {generation + 1}")
+                        logger.info(f"🛑 Enhanced stagnation detected in {phase.name} phase at generation {generation + 1}")
+                        logger.info(f"   Recent deltas: {recent_deltas}")
                         return {
                             'phase': phase.name,
                             'generations_completed': generation + 1,
@@ -208,6 +223,7 @@ class TwoPhaseEvolutionSystem:
                             'best_fitness': max_fitness,
                             'avg_fitness': avg_fitness,
                             'stagnation_detected': True,
+                            'stagnation_reason': f'avg_delta={avg_delta:.4f} < {self.stagnation_delta_threshold}',
                             'phase_time': time.time() - phase_start
                         }
                 else:
@@ -428,10 +444,18 @@ class TwoPhaseEvolutionSystem:
         # Improvement reward (higher fitness is better)
         improvement_reward = min(1.0, best_fitness / self.improvement_target)
 
-        # Safety reward (based on average fitness stability)
+        # Enhanced safety reward with Observer-approved bonus system
         if len(phase_results) >= 2:
             fitness_variance = np.var([result['avg_fitness'] for result in phase_results])
-            safety_reward = max(0.0, 1.0 - fitness_variance)
+            base_safety_reward = max(0.0, 1.0 - fitness_variance)
+
+            # Observer bonus: Extra reward if fitness exceeds safety threshold
+            safety_bonus = 0.0
+            if best_fitness >= self.reward_safety_threshold:
+                safety_bonus = self.reward_safety_bonus
+                logger.info(f"🏆 Safety bonus awarded: {safety_bonus:.3f} (fitness {best_fitness:.3f} >= {self.reward_safety_threshold})")
+
+            safety_reward = min(1.0, base_safety_reward + safety_bonus)
         else:
             safety_reward = 0.5
 

@@ -1,0 +1,48 @@
+{
+  "generation": 4,
+  "timestamp": "2025-07-16 22:54:22.056853",
+  "config": {
+    "name": "adaptation_focus",
+    "seed_override": {
+      "adaptation": 0.9,
+      "exploration": 0.6
+    }
+  },
+  "systems": {
+    "world_sim": {
+      "success": true,
+      "agents": 25,
+      "behaviors": 72,
+      "cooperation": 766,
+      "fitness": 3.3002189116052447,
+      "learning_metrics": {},
+      "time": 0.020996809005737305
+    },
+    "formal_proof": {
+      "success": true,
+      "approval_rate": 1.0,
+      "adaptation_bonus": 0.1,
+      "scenarios": 5,
+      "time": 0.013702869415283203
+    },
+    "evolution": {
+      "success": true,
+      "phase": "exploitation",
+      "generations": 2,
+      "fitness": 1.0,
+      "population_size": 17,
+      "time": 0.002999544143676758
+    }
+  },
+  "learning_metrics": {
+    "seeded_compliance": 0.0,
+    "adaptation_rate": 0.0,
+    "domain_shifts_detected": 0,
+    "phase": "exploitation"
+  },
+  "domain_shifts": [],
+  "cycle_time": 0.6185541152954102,
+  "success_rate": 1.0,
+  "successful_systems": 3,
+  "total_systems": 3
+}

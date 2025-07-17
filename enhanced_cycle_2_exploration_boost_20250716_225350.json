@@ -1,0 +1,48 @@
+{
+  "generation": 2,
+  "timestamp": "2025-07-16 22:53:50.124538",
+  "config": {
+    "name": "exploration_boost",
+    "seed_override": {
+      "exploration": 0.7,
+      "adaptation": 0.8
+    }
+  },
+  "systems": {
+    "world_sim": {
+      "success": true,
+      "agents": 25,
+      "behaviors": 36,
+      "cooperation": 462,
+      "fitness": 1.9769702030033347,
+      "learning_metrics": {},
+      "time": 0.02365732192993164
+    },
+    "formal_proof": {
+      "success": true,
+      "approval_rate": 1.0,
+      "adaptation_bonus": 0.1,
+      "scenarios": 5,
+      "time": 0.010030269622802734
+    },
+    "evolution": {
+      "success": true,
+      "phase": "exploration",
+      "generations": 2,
+      "fitness": 1.0,
+      "population_size": 14,
+      "time": 0.0029861927032470703
+    }
+  },
+  "learning_metrics": {
+    "seeded_compliance": 0.0,
+    "adaptation_rate": 0.0,
+    "domain_shifts_detected": 0,
+    "phase": "exploration"
+  },
+  "domain_shifts": [],
+  "cycle_time": 0.6316547393798828,
+  "success_rate": 1.0,
+  "successful_systems": 3,
+  "total_systems": 3
+}

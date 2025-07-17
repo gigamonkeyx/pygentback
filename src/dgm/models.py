@@ -8,11 +8,15 @@ class ImprovementType(str, Enum):
     ALGORITHM_MODIFICATION = "algorithm_modification"
     ARCHITECTURE_CHANGE = "architecture_change"
     CONFIGURATION_UPDATE = "configuration_update"
-    # Observer-approved additional types
+    # Observer-approved additional types for enhanced DGM/Evolution
     ALGORITHM = "algorithm"
     OPTIMIZATION = "optimization"
     BUG_FIX = "bug_fix"
     PERFORMANCE = "performance"
+    CONFIG = "config"
+    DEP_FIX = "dep_fix"
+    UNICODE_FIX = "unicode_fix"
+    DEPENDENCY_RESOLUTION = "dependency_resolution"
 
 class ImprovementStatus(str, Enum):
     PROPOSED = "proposed"
