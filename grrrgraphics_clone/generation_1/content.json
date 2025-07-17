@@ -1,0 +1,127 @@
+{
+  "site_info": {
+    "title": "GrrrGraphics Clone",
+    "subtitle": "Political Commentary Through Illustration",
+    "description": "Independent political cartoons and commentary",
+    "author": "AI Generated Content"
+  },
+  "navigation": [
+    {
+      "name": "Cartoons",
+      "url": "#cartoons"
+    },
+    {
+      "name": "Donate",
+      "url": "#donate"
+    },
+    {
+      "name": "Shop",
+      "url": "#shop"
+    },
+    {
+      "name": "About",
+      "url": "#about"
+    },
+    {
+      "name": "Contact",
+      "url": "#contact"
+    }
+  ],
+  "cartoons": [
+    {
+      "id": 1,
+      "title": "The Digital Revolution",
+      "description": "Commentary on technology's impact on society and politics",
+      "image": "assets/cartoon1.jpg",
+      "tags": [
+        "technology",
+        "society",
+        "digital",
+        "politics"
+      ],
+      "date": "2025-01-15"
+    },
+    {
+      "id": 2,
+      "title": "Economic Crossroads",
+      "description": "Visual analysis of current economic policies and their consequences",
+      "image": "assets/cartoon2.jpg",
+      "tags": [
+        "economics",
+        "policy",
+        "finance",
+        "government"
+      ],
+      "date": "2025-01-14"
+    },
+    {
+      "id": 3,
+      "title": "Media Landscape",
+      "description": "Critical look at modern journalism and information dissemination",
+      "image": "assets/cartoon3.jpg",
+      "tags": [
+        "media",
+        "journalism",
+        "information",
+        "bias"
+      ],
+      "date": "2025-01-13"
+    },
+    {
+      "id": 4,
+      "title": "Global Perspectives",
+      "description": "International relations through the lens of political satire",
+      "image": "assets/cartoon4.jpg",
+      "tags": [
+        "international",
+        "diplomacy",
+        "global",
+        "relations"
+      ],
+      "date": "2025-01-12"
+    },
+    {
+      "id": 5,
+      "title": "Constitutional Questions",
+      "description": "Examining fundamental rights and governmental powers",
+      "image": "assets/cartoon5.jpg",
+      "tags": [
+        "constitution",
+        "rights",
+        "government",
+        "law"
+      ],
+      "date": "2025-01-11"
+    },
+    {
+      "id": 6,
+      "title": "Social Dynamics",
+      "description": "Contemporary social issues and cultural commentary",
+      "image": "assets/cartoon6.jpg",
+      "tags": [
+        "social",
+        "culture",
+        "society",
+        "commentary"
+      ],
+      "date": "2025-01-10"
+    }
+  ],
+  "about": {
+    "title": "About This Site",
+    "content": "This is an AI-generated recreation of a political cartoon website, demonstrating autonomous web development capabilities. The content is created for educational and demonstration purposes."
+  },
+  "footer": {
+    "copyright": "\u00a9 2025 GrrrGraphics Clone. All Rights Reserved.",
+    "links": [
+      {
+        "name": "Disclaimer",
+        "url": "#disclaimer"
+      },
+      {
+        "name": "Copyright",
+        "url": "#copyright"
+      }
+    ]
+  }
+}
