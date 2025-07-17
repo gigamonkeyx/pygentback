@@ -249,7 +249,7 @@ class ShiftLearningRL:
             logger.error(f"Learning stats calculation failed: {e}")
             return {"error": str(e)}
 
-class EmergentDetector:
+class EmergentBehaviorDetector:
     """
     Observer-approved emergent behavior detector with shift learning
     Detects emergent behaviors and applies RL-based adaptation learning
@@ -434,4 +434,187 @@ class EmergentDetector:
             
         except Exception as e:
             logger.error(f"Detection stats calculation failed: {e}")
+            return {"error": str(e)}
+
+    def log_mcp_audit_chain(
+        self,
+        agent_id: str,
+        mcp_action: Dict[str, Any],
+        outcome: Dict[str, Any],
+        context: Dict[str, Any]
+    ) -> str:
+        """
+        Observer-approved MCP audit chain logging
+        Logs MCP calls with hashes and proofs for visualization
+        """
+        try:
+            import hashlib
+            import json
+
+            # Generate audit hash
+            audit_data = {
+                'agent_id': agent_id,
+                'mcp_action': mcp_action,
+                'outcome': outcome,
+                'context': context,
+                'timestamp': datetime.now().isoformat()
+            }
+
+            audit_hash = hashlib.sha256(
+                json.dumps(audit_data, sort_keys=True).encode()
+            ).hexdigest()[:16]  # Short hash for visualization
+
+            # Create audit entry
+            audit_entry = {
+                'audit_id': f"mcp_{agent_id}_{audit_hash}",
+                'agent_id': agent_id,
+                'timestamp': datetime.now(),
+                'mcp_action': mcp_action,
+                'outcome': outcome,
+                'context': context,
+                'audit_hash': audit_hash,
+                'appropriateness_score': context.get('context_appropriateness', 0.5),
+                'success': outcome.get('success', False),
+                'env_improvement': outcome.get('env_improvement', 0.0),
+                'gaming_detected': self._detect_gaming_in_audit(mcp_action, outcome)
+            }
+
+            # Store audit entry
+            if not hasattr(self, 'mcp_audit_log'):
+                self.mcp_audit_log = []
+
+            self.mcp_audit_log.append(audit_entry)
+
+            # Limit audit log size
+            if len(self.mcp_audit_log) > 1000:
+                self.mcp_audit_log = self.mcp_audit_log[-1000:]
+
+            logger.debug(f"MCP audit logged: {audit_entry['audit_id']}")
+            return audit_entry['audit_id']
+
+        except Exception as e:
+            logger.error(f"MCP audit chain logging failed: {e}")
+            return ""
+
+    def _detect_gaming_in_audit(self, mcp_action: Dict[str, Any], outcome: Dict[str, Any]) -> bool:
+        """Detect gaming patterns in MCP audit"""
+        try:
+            # Gaming indicators
+            action_str = str(mcp_action).lower()
+            gaming_keywords = ['dummy', 'test', 'fake', 'hack']
+
+            # Check for gaming patterns
+            if any(keyword in action_str for keyword in gaming_keywords):
+                return True
+
+            # Minimal compliance detection
+            if (outcome.get('success', False) and
+                outcome.get('env_improvement', 0) <= 0.001):
+                return True
+
+            return False
+
+        except Exception as e:
+            logger.warning(f"Gaming detection in audit failed: {e}")
+            return False
+
+    def generate_audit_heatmap_data(self, generations: int = 10) -> Dict[str, Any]:
+        """
+        Generate data for MCP audit heatmap visualization
+        Shows usage vs generations with gaming attempts colored
+        """
+        try:
+            if not hasattr(self, 'mcp_audit_log') or not self.mcp_audit_log:
+                return {"no_data": True}
+
+            # Group audits by generation (approximate from timestamp)
+            generation_data = {}
+
+            for i, audit in enumerate(self.mcp_audit_log[-generations*50:]):  # Last N generations worth
+                # Approximate generation from index
+                generation = (i // 50) + 1  # Assume 50 audits per generation
+
+                if generation not in generation_data:
+                    generation_data[generation] = {
+                        'total_calls': 0,
+                        'successful_calls': 0,
+                        'gaming_attempts': 0,
+                        'avg_appropriateness': 0.0,
+                        'avg_improvement': 0.0,
+                        'agents': set()
+                    }
+
+                gen_data = generation_data[generation]
+                gen_data['total_calls'] += 1
+                gen_data['agents'].add(audit['agent_id'])
+
+                if audit['success']:
+                    gen_data['successful_calls'] += 1
+
+                if audit['gaming_detected']:
+                    gen_data['gaming_attempts'] += 1
+
+                gen_data['avg_appropriateness'] += audit['appropriateness_score']
+                gen_data['avg_improvement'] += audit['env_improvement']
+
+            # Calculate averages
+            for gen, data in generation_data.items():
+                total = data['total_calls']
+                if total > 0:
+                    data['avg_appropriateness'] /= total
+                    data['avg_improvement'] /= total
+                    data['success_rate'] = data['successful_calls'] / total
+                    data['gaming_rate'] = data['gaming_attempts'] / total
+                    data['unique_agents'] = len(data['agents'])
+
+                # Remove set for JSON serialization
+                del data['agents']
+
+            # Prepare heatmap data
+            heatmap_data = {
+                'generations': list(generation_data.keys()),
+                'total_calls': [data['total_calls'] for data in generation_data.values()],
+                'success_rates': [data['success_rate'] for data in generation_data.values()],
+                'gaming_rates': [data['gaming_rate'] for data in generation_data.values()],
+                'appropriateness_scores': [data['avg_appropriateness'] for data in generation_data.values()],
+                'generation_data': generation_data
+            }
+
+            logger.info(f"Generated audit heatmap data for {len(generation_data)} generations")
+            return heatmap_data
+
+        except Exception as e:
+            logger.error(f"Audit heatmap data generation failed: {e}")
+            return {"error": str(e)}
+
+    def get_mcp_audit_summary(self) -> Dict[str, Any]:
+        """Get summary of MCP audit data"""
+        try:
+            if not hasattr(self, 'mcp_audit_log') or not self.mcp_audit_log:
+                return {"no_data": True}
+
+            total_audits = len(self.mcp_audit_log)
+            successful_audits = sum(1 for audit in self.mcp_audit_log if audit['success'])
+            gaming_audits = sum(1 for audit in self.mcp_audit_log if audit['gaming_detected'])
+
+            avg_appropriateness = sum(audit['appropriateness_score'] for audit in self.mcp_audit_log) / total_audits
+            avg_improvement = sum(audit['env_improvement'] for audit in self.mcp_audit_log) / total_audits
+
+            unique_agents = len(set(audit['agent_id'] for audit in self.mcp_audit_log))
+
+            return {
+                'total_mcp_audits': total_audits,
+                'successful_audits': successful_audits,
+                'gaming_audits': gaming_audits,
+                'success_rate': successful_audits / total_audits,
+                'gaming_rate': gaming_audits / total_audits,
+                'avg_appropriateness_score': avg_appropriateness,
+                'avg_environment_improvement': avg_improvement,
+                'unique_agents_monitored': unique_agents,
+                'enforcement_effectiveness': 1.0 - (gaming_audits / total_audits),
+                'audit_coverage': 'comprehensive' if total_audits > 100 else 'moderate' if total_audits > 50 else 'limited'
+            }
+
+        except Exception as e:
+            logger.error(f"MCP audit summary calculation failed: {e}")
             return {"error": str(e)}

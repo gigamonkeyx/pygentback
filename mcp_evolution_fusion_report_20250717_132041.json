@@ -1,0 +1,260 @@
+{
+  "mcp_fitness_integration": {
+    "success": true,
+    "integration_results": {
+      "High Appropriateness Amplification": {
+        "mcp_fitness_bonus": 0.5,
+        "expected_range": [
+          0.1,
+          0.4
+        ],
+        "in_range": false,
+        "base_fitness": 1.0
+      },
+      "Compound Learning Acceleration": {
+        "mcp_fitness_bonus": 0.4875,
+        "expected_range": [
+          0.2,
+          0.5
+        ],
+        "in_range": true,
+        "base_fitness": 1.5
+      },
+      "Gaming Penalty Application": {
+        "mcp_fitness_bonus": -0.1,
+        "expected_range": [
+          -0.3,
+          -0.1
+        ],
+        "in_range": true,
+        "base_fitness": 1.0
+      }
+    },
+    "integration_stats": {
+      "no_data": true
+    },
+    "success_rate": 0.6666666666666666,
+    "mcp_fitness_integration_working": false
+  },
+  "cascade_penalty_evolution": {
+    "success": true,
+    "evolution_results": {
+      "High Gaming Frequency": {
+        "penalty_evolution": {
+          "generation": 5,
+          "original_penalties": {
+            "minor": -0.1,
+            "major": -0.5,
+            "critical": -1.0
+          },
+          "adaptation": "increased_severity",
+          "evolved_penalties": {
+            "minor": -0.12,
+            "major": -0.65,
+            "critical": -1.1
+          }
+        },
+        "expected_adaptation": "increased_severity",
+        "adaptation_correct": true
+      },
+      "Perfect Enforcement": {
+        "penalty_evolution": {
+          "generation": 10,
+          "original_penalties": {
+            "minor": -0.12,
+            "major": -0.65,
+            "critical": -1.1
+          },
+          "adaptation": "optimized_balance",
+          "evolved_penalties": {
+            "minor": -0.11399999999999999,
+            "major": -0.6,
+            "critical": -1.089
+          }
+        },
+        "expected_adaptation": "optimized_balance",
+        "adaptation_correct": true
+      },
+      "Stable Gaming Levels": {
+        "penalty_evolution": {
+          "generation": 3,
+          "original_penalties": {
+            "minor": -0.11399999999999999,
+            "major": -0.6,
+            "critical": -1.089
+          },
+          "adaptation": "maintained_stability",
+          "evolved_penalties": {
+            "minor": -0.11399999999999999,
+            "major": -0.6,
+            "critical": -1.089
+          }
+        },
+        "expected_adaptation": "maintained_stability",
+        "adaptation_correct": true
+      }
+    },
+    "rewrite_result": {
+      "rewrite_needed": false,
+      "reason": "Agent not marked for rewrite"
+    },
+    "pruning_result": {
+      "gaming_traits_removed": 2,
+      "pruned_traits": {
+        "enhanced_dummy_call_tendency": 0.8,
+        "enhanced_minimal_compliance_behavior": 0.7,
+        "exploration_skill": 0.6,
+        "cooperation_ability": 0.9,
+        "mcp_appropriateness_focus": 0.9,
+        "context_awareness": 0.8,
+        "gaming_resistance": 0.95,
+        "enforcement_compliance": 0.9
+      }
+    },
+    "evolution_rate": 1.0,
+    "cascade_evolution_working": true
+  },
+  "mcp_audit_visualization": {
+    "success": false,
+    "error": "cannot import name 'EmergentBehaviorDetector' from 'sim.emergent_detector' (D:\\mcp\\pygent-factory\\src\\sim\\emergent_detector.py)"
+  },
+  "mcp_seeded_environment": {
+    "success": true,
+    "seeding_result": {
+      "audit_data_count": 3,
+      "audit_analysis": {
+        "total_audits": 3,
+        "success_rate": 1.0,
+        "gaming_rate": 0.3333333333333333,
+        "avg_appropriateness": 0.6333333333333333,
+        "high_appropriateness_rate": 0.6666666666666666,
+        "avg_environment_improvement": 0.11666666666666665,
+        "positive_improvement_rate": 0.6666666666666666,
+        "unique_agents": 3,
+        "agent_performance": {
+          "agent_3": {
+            "success_rate": 1.0,
+            "appropriateness": 0.9,
+            "audit_count": 1
+          },
+          "agent_1": {
+            "success_rate": 1.0,
+            "appropriateness": 0.8,
+            "audit_count": 1
+          },
+          "agent_2": {
+            "success_rate": 1.0,
+            "appropriateness": 0.2,
+            "audit_count": 1
+          }
+        },
+        "pattern_classification": "high_gaming_pattern"
+      },
+      "bias_recommendations": [
+        "MCPBias(bias_type='anti_gaming_enforcement', bias_strength=0.6666666666666666, target_behavior='gaming_resistance', appropriateness_threshold=0.8, success_weight=0.9, context_weight=0.95)",
+        "MCPBias(bias_type='improvement_focus_amplification', bias_strength=0.5833333333333333, target_behavior='environment_improvement', appropriateness_threshold=0.5, success_weight=0.6, context_weight=0.7)"
+      ],
+      "applied_biases": [
+        {
+          "bias_type": "anti_gaming_enforcement",
+          "bias_strength": 0.6666666666666666,
+          "target_behavior": "gaming_resistance",
+          "application_timestamp": "2025-07-17 13:20:41.624057",
+          "success": true,
+          "effects": [
+            "reduced_easy_rewards",
+            "increased_exploration_requirements"
+          ],
+          "environment_state_after": {
+            "resource_availability": 0.43333333333333335,
+            "cooperation_density": 0.3,
+            "exploration_coverage": 0.2,
+            "mcp_appropriateness": 0.5
+          }
+        },
+        {
+          "bias_type": "improvement_focus_amplification",
+          "bias_strength": 0.5833333333333333,
+          "target_behavior": "environment_improvement",
+          "application_timestamp": "2025-07-17 13:20:41.624057",
+          "success": true,
+          "effects": [
+            "increased_improvement_rewards",
+            "enhanced_exploration_coverage"
+          ],
+          "environment_state_after": {
+            "resource_availability": 0.43333333333333335,
+            "cooperation_density": 0.3,
+            "exploration_coverage": 0.25833333333333336,
+            "mcp_appropriateness": 0.5
+          }
+        }
+      ],
+      "auto_bias_enabled": true,
+      "environment_state": {
+        "resource_availability": 0.4,
+        "cooperation_density": 0.3,
+        "exploration_coverage": 0.25833333333333336,
+        "mcp_appropriateness": 0.5
+      }
+    },
+    "growth_result": {
+      "test_behaviors": [
+        "mcp_smart_usage",
+        "context_smart_decisions",
+        "gaming_resistance",
+        "environment_improvement"
+      ],
+      "behavior_test_results": {
+        "mcp_smart_usage": {
+          "behavior_score": 0.7676768580229392,
+          "target_threshold": 0.88,
+          "meets_threshold": false,
+          "bias_influence": 0.0
+        },
+        "context_smart_decisions": {
+          "behavior_score": 0.766406495759696,
+          "target_threshold": 0.88,
+          "meets_threshold": false,
+          "bias_influence": 0.0
+        },
+        "gaming_resistance": {
+          "behavior_score": 0.7271816493368491,
+          "target_threshold": 0.88,
+          "meets_threshold": false,
+          "bias_influence": 0.6666666666666666
+        },
+        "environment_improvement": {
+          "behavior_score": 0.9194258691762058,
+          "target_threshold": 0.88,
+          "meets_threshold": true,
+          "bias_influence": 0.5833333333333333
+        }
+      },
+      "successful_behaviors": 1,
+      "growth_effectiveness": 0.25,
+      "target_effectiveness": 0.88,
+      "directed_growth_working": false
+    },
+    "seeding_stats": {
+      "active_biases": 2,
+      "bias_history": 0,
+      "mcp_audit_data_count": 3,
+      "auto_bias_enabled": true,
+      "current_generation": 0,
+      "environment_state": {
+        "resource_availability": 0.4,
+        "cooperation_density": 0.3,
+        "exploration_coverage": 0.25833333333333336,
+        "mcp_appropriateness": 0.5
+      },
+      "mcp_weight_base": 0.5,
+      "appropriateness_threshold": 0.7
+    },
+    "mcp_seeded_env_working": false
+  },
+  "end_to_end_mcp_fusion": {
+    "success": false,
+    "error": "cannot import name 'EmergentBehaviorDetector' from 'sim.emergent_detector' (D:\\mcp\\pygent-factory\\src\\sim\\emergent_detector.py)"
+  }
+}

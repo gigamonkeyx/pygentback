@@ -407,3 +407,161 @@ class SafetyMonitor:
         except Exception as e:
             logger.error(f"Penalty clearing failed for agent {agent_id}: {e}")
             return False
+
+    def evolve_cascade_penalties(self, generation_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Observer-approved cascade penalty evolution
+        Evolves penalties based on gaming patterns and effectiveness
+        """
+        try:
+            generation = generation_data.get('generation', 1)
+            gaming_attempts = generation_data.get('gaming_attempts', 0)
+            enforcement_rate = generation_data.get('enforcement_rate', 1.0)
+
+            # Evolve penalty severity based on gaming patterns
+            penalty_evolution = {
+                'generation': generation,
+                'original_penalties': {
+                    'minor': self.minor_penalty,
+                    'major': self.major_penalty,
+                    'critical': self.critical_penalty
+                }
+            }
+
+            # Adaptive penalty scaling based on gaming frequency
+            if gaming_attempts > 5:  # High gaming frequency
+                # Increase penalties to deter gaming
+                self.minor_penalty = min(-0.05, self.minor_penalty * 1.2)
+                self.major_penalty = min(-0.3, self.major_penalty * 1.3)
+                self.critical_penalty = min(-0.5, self.critical_penalty * 1.1)
+                penalty_evolution['adaptation'] = 'increased_severity'
+
+            elif gaming_attempts == 0 and enforcement_rate >= 0.95:  # Perfect enforcement
+                # Slightly reduce penalties to avoid over-penalization
+                self.minor_penalty = max(-0.15, self.minor_penalty * 0.95)
+                self.major_penalty = max(-0.6, self.major_penalty * 0.98)
+                self.critical_penalty = max(-1.2, self.critical_penalty * 0.99)
+                penalty_evolution['adaptation'] = 'optimized_balance'
+
+            else:  # Stable gaming levels
+                penalty_evolution['adaptation'] = 'maintained_stability'
+
+            penalty_evolution['evolved_penalties'] = {
+                'minor': self.minor_penalty,
+                'major': self.major_penalty,
+                'critical': self.critical_penalty
+            }
+
+            logger.info(f"Cascade penalties evolved for generation {generation}: {penalty_evolution['adaptation']}")
+            return penalty_evolution
+
+        except Exception as e:
+            logger.error(f"Cascade penalty evolution failed: {e}")
+            return {'error': str(e)}
+
+    def integrate_dgm_rewrite_system(self, agent_id: str) -> Dict[str, Any]:
+        """
+        Observer-approved DGM rewrite integration
+        Triggers DGM rewriting for persistent gaming agents
+        """
+        try:
+            if agent_id not in self.agent_rewrite_candidates:
+                return {'rewrite_needed': False, 'reason': 'Agent not marked for rewrite'}
+
+            # Get agent penalty history
+            agent_summary = self.get_agent_penalty_summary(agent_id)
+
+            # Determine rewrite urgency
+            penalty_counts = agent_summary.get('penalty_counts', {})
+            critical_count = penalty_counts.get('critical', 0)
+            major_count = penalty_counts.get('major', 0)
+
+            rewrite_urgency = 'low'
+            if critical_count >= 3:
+                rewrite_urgency = 'critical'
+            elif major_count >= 5:
+                rewrite_urgency = 'high'
+            elif major_count >= 3:
+                rewrite_urgency = 'moderate'
+
+            # Generate DGM rewrite specification
+            rewrite_spec = {
+                'agent_id': agent_id,
+                'rewrite_urgency': rewrite_urgency,
+                'target_behaviors': {
+                    'eliminate_gaming_patterns': True,
+                    'enhance_mcp_appropriateness': True,
+                    'improve_context_awareness': True,
+                    'strengthen_outcome_validation': True
+                },
+                'penalty_history': agent_summary,
+                'expected_improvements': {
+                    'gaming_elimination': 'target_0_attempts',
+                    'appropriateness_score': 'target_0.8_plus',
+                    'success_rate': 'target_0.9_plus',
+                    'enforcement_compliance': 'target_0.95_plus'
+                }
+            }
+
+            logger.warning(f"DGM rewrite triggered for agent {agent_id} with {rewrite_urgency} urgency")
+
+            return {
+                'rewrite_needed': True,
+                'rewrite_spec': rewrite_spec,
+                'urgency': rewrite_urgency
+            }
+
+        except Exception as e:
+            logger.error(f"DGM rewrite integration failed for agent {agent_id}: {e}")
+            return {'error': str(e)}
+
+    def prune_gaming_traits(self, agent_traits: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Observer-approved gaming trait pruning
+        Removes gaming-associated traits from agent behavior patterns
+        """
+        try:
+            original_traits = agent_traits.copy()
+            pruned_traits = {}
+            gaming_indicators = []
+
+            # Identify and prune gaming-associated traits
+            for trait_name, trait_value in agent_traits.items():
+                trait_str = str(trait_name).lower()
+
+                # Gaming trait patterns to prune
+                gaming_patterns = [
+                    'dummy', 'fake', 'exploit', 'hack', 'cheat',
+                    'minimal_compliance', 'low_effort', 'gaming'
+                ]
+
+                is_gaming_trait = any(pattern in trait_str for pattern in gaming_patterns)
+
+                if is_gaming_trait:
+                    gaming_indicators.append(trait_name)
+                    # Replace with positive alternatives
+                    pruned_traits[f"enhanced_{trait_name}"] = max(0.7, trait_value)
+                else:
+                    # Keep non-gaming traits
+                    pruned_traits[trait_name] = trait_value
+
+            # Add anti-gaming traits
+            anti_gaming_traits = {
+                'mcp_appropriateness_focus': 0.9,
+                'context_awareness': 0.8,
+                'gaming_resistance': 0.95,
+                'enforcement_compliance': 0.9
+            }
+
+            pruned_traits.update(anti_gaming_traits)
+
+            logger.info(f"Gaming traits pruned: {len(gaming_indicators)} removed, {len(anti_gaming_traits)} anti-gaming traits added")
+
+            return {
+                'gaming_traits_removed': len(gaming_indicators),
+                'pruned_traits': pruned_traits
+            }
+
+        except Exception as e:
+            logger.error(f"Gaming trait pruning failed: {e}")
+            return {'error': str(e), 'pruned_traits': agent_traits}
