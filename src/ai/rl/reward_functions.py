@@ -705,3 +705,312 @@ class ContextAwareRLGuard:
         except Exception as e:
             logger.error(f"Enforcement stats calculation failed: {e}")
             return {"error": str(e)}
+
+
+class GamingPredictor:
+    """
+    Observer-approved gaming prediction system
+    Forecasts hacking attempts for >100% cascade adaptation
+    """
+
+    def __init__(self, config: Dict[str, Any]):
+        self.config = config
+        self.prediction_window = config.get('prediction_window', 5)
+        self.confidence_threshold = config.get('confidence_threshold', 0.7)
+
+        # Gaming pattern history
+        self.gaming_patterns = []
+        self.prediction_accuracy = []
+        self.pre_penalty_rewards = []
+
+        # Pattern recognition
+        self.known_gaming_signatures = {
+            'dummy_spam': {'type': 'dummy', 'frequency': 'high', 'impact': 'zero'},
+            'minimal_compliance': {'success': True, 'improvement': 'minimal', 'appropriateness': 'low'},
+            'failure_cascade': {'failures': 'increasing', 'pattern': 'repetitive'},
+            'context_exploitation': {'appropriateness': 'declining', 'success': 'maintained'}
+        }
+
+        logger.info("Gaming predictor initialized for >100% cascade adaptation")
+
+    def predict_gaming_attempt(
+        self,
+        agent_history: List[Dict[str, Any]],
+        current_context: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Predict gaming attempts with pre-penalty reward adaptation
+        """
+        try:
+            if len(agent_history) < 3:
+                return {'prediction': 'insufficient_data', 'confidence': 0.0}
+
+            # Analyze recent patterns
+            pattern_analysis = self._analyze_gaming_patterns(agent_history)
+
+            # Calculate gaming probability
+            gaming_probability = self._calculate_gaming_probability(pattern_analysis, current_context)
+
+            # Generate prediction
+            prediction_result = {
+                'gaming_probability': gaming_probability,
+                'confidence': self._calculate_prediction_confidence(pattern_analysis),
+                'predicted_gaming_type': self._identify_gaming_type(pattern_analysis),
+                'pre_penalty_recommendation': self._generate_pre_penalty_recommendation(gaming_probability),
+                'adaptation_strength': min(1.0, gaming_probability * 1.5)  # >100% adaptation
+            }
+
+            # Store prediction for accuracy tracking
+            self._store_prediction(prediction_result, agent_history)
+
+            logger.debug(f"Gaming prediction: {gaming_probability:.3f} probability, {prediction_result['confidence']:.3f} confidence")
+
+            return prediction_result
+
+        except Exception as e:
+            logger.error(f"Gaming prediction failed: {e}")
+            return {'prediction': 'error', 'confidence': 0.0, 'error': str(e)}
+
+    def _analyze_gaming_patterns(self, agent_history: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Analyze agent history for gaming patterns"""
+        try:
+            recent_actions = agent_history[-self.prediction_window:]
+
+            pattern_indicators = {
+                'dummy_call_frequency': 0,
+                'minimal_compliance_count': 0,
+                'failure_rate_trend': 0.0,
+                'appropriateness_decline': 0.0,
+                'success_without_impact': 0,
+                'repetitive_behavior': 0.0
+            }
+
+            # Analyze dummy call frequency
+            dummy_calls = sum(1 for action in recent_actions
+                            if action.get('mcp_action', {}).get('type') == 'dummy')
+            pattern_indicators['dummy_call_frequency'] = dummy_calls / len(recent_actions)
+
+            # Analyze minimal compliance
+            minimal_compliance = sum(1 for action in recent_actions
+                                   if (action.get('outcome', {}).get('success', False) and
+                                       action.get('outcome', {}).get('env_improvement', 0) <= 0.01))
+            pattern_indicators['minimal_compliance_count'] = minimal_compliance / len(recent_actions)
+
+            # Analyze failure rate trend
+            failures = [1 if not action.get('outcome', {}).get('success', True) else 0
+                       for action in recent_actions]
+            if len(failures) >= 3:
+                early_failures = sum(failures[:len(failures)//2])
+                late_failures = sum(failures[len(failures)//2:])
+                pattern_indicators['failure_rate_trend'] = late_failures - early_failures
+
+            # Analyze appropriateness decline
+            appropriateness_scores = [action.get('context', {}).get('context_appropriateness', 0.5)
+                                    for action in recent_actions]
+            if len(appropriateness_scores) >= 3:
+                early_avg = sum(appropriateness_scores[:len(appropriateness_scores)//2]) / (len(appropriateness_scores)//2)
+                late_avg = sum(appropriateness_scores[len(appropriateness_scores)//2:]) / (len(appropriateness_scores) - len(appropriateness_scores)//2)
+                pattern_indicators['appropriateness_decline'] = early_avg - late_avg
+
+            # Analyze success without impact
+            success_no_impact = sum(1 for action in recent_actions
+                                  if (action.get('outcome', {}).get('success', False) and
+                                      action.get('outcome', {}).get('env_improvement', 0) <= 0))
+            pattern_indicators['success_without_impact'] = success_no_impact / len(recent_actions)
+
+            # Analyze repetitive behavior
+            action_types = [action.get('mcp_action', {}).get('type', 'unknown') for action in recent_actions]
+            unique_types = len(set(action_types))
+            pattern_indicators['repetitive_behavior'] = 1.0 - (unique_types / len(action_types))
+
+            return pattern_indicators
+
+        except Exception as e:
+            logger.error(f"Gaming pattern analysis failed: {e}")
+            return {}
+
+    def _calculate_gaming_probability(
+        self,
+        pattern_analysis: Dict[str, Any],
+        current_context: Dict[str, Any]
+    ) -> float:
+        """Calculate probability of gaming attempt"""
+        try:
+            gaming_score = 0.0
+
+            # Weight different indicators
+            weights = {
+                'dummy_call_frequency': 0.3,
+                'minimal_compliance_count': 0.25,
+                'failure_rate_trend': 0.15,
+                'appropriateness_decline': 0.15,
+                'success_without_impact': 0.1,
+                'repetitive_behavior': 0.05
+            }
+
+            for indicator, value in pattern_analysis.items():
+                if indicator in weights:
+                    # Normalize and apply weight
+                    normalized_value = min(1.0, max(0.0, value))
+                    gaming_score += normalized_value * weights[indicator]
+
+            # Context modifiers
+            context_appropriateness = current_context.get('context_appropriateness', 0.5)
+            if context_appropriateness < 0.3:
+                gaming_score += 0.2  # Low appropriateness increases gaming probability
+
+            resource_scarcity = current_context.get('resource_scarcity', False)
+            if resource_scarcity:
+                gaming_score += 0.1  # Scarcity may incentivize gaming
+
+            return min(1.0, gaming_score)
+
+        except Exception as e:
+            logger.error(f"Gaming probability calculation failed: {e}")
+            return 0.0
+
+    def _calculate_prediction_confidence(self, pattern_analysis: Dict[str, Any]) -> float:
+        """Calculate confidence in gaming prediction"""
+        try:
+            # Base confidence on pattern strength and historical accuracy
+            pattern_strength = sum(pattern_analysis.values()) / len(pattern_analysis) if pattern_analysis else 0.0
+
+            # Historical accuracy factor
+            historical_accuracy = (sum(self.prediction_accuracy) / len(self.prediction_accuracy)
+                                 if self.prediction_accuracy else 0.5)
+
+            # Combine factors
+            confidence = (pattern_strength * 0.7) + (historical_accuracy * 0.3)
+
+            return min(1.0, confidence)
+
+        except Exception as e:
+            logger.error(f"Prediction confidence calculation failed: {e}")
+            return 0.0
+
+    def _identify_gaming_type(self, pattern_analysis: Dict[str, Any]) -> str:
+        """Identify the type of gaming attempt"""
+        try:
+            if pattern_analysis.get('dummy_call_frequency', 0) > 0.5:
+                return 'dummy_spam'
+            elif pattern_analysis.get('minimal_compliance_count', 0) > 0.6:
+                return 'minimal_compliance'
+            elif pattern_analysis.get('failure_rate_trend', 0) > 0.3:
+                return 'failure_cascade'
+            elif pattern_analysis.get('appropriateness_decline', 0) > 0.2:
+                return 'context_exploitation'
+            else:
+                return 'unknown_pattern'
+
+        except Exception as e:
+            logger.error(f"Gaming type identification failed: {e}")
+            return 'unknown'
+
+    def _generate_pre_penalty_recommendation(self, gaming_probability: float) -> Dict[str, Any]:
+        """Generate pre-penalty reward adaptation recommendation"""
+        try:
+            if gaming_probability >= 0.8:
+                return {
+                    'action': 'immediate_penalty',
+                    'strength': 1.2,  # >100% adaptation
+                    'reward_modifier': -0.5,
+                    'monitoring_increase': 'high'
+                }
+            elif gaming_probability >= 0.6:
+                return {
+                    'action': 'warning_penalty',
+                    'strength': 1.0,
+                    'reward_modifier': -0.2,
+                    'monitoring_increase': 'moderate'
+                }
+            elif gaming_probability >= 0.4:
+                return {
+                    'action': 'increased_monitoring',
+                    'strength': 0.8,
+                    'reward_modifier': -0.1,
+                    'monitoring_increase': 'low'
+                }
+            else:
+                return {
+                    'action': 'normal_operation',
+                    'strength': 0.0,
+                    'reward_modifier': 0.0,
+                    'monitoring_increase': 'none'
+                }
+
+        except Exception as e:
+            logger.error(f"Pre-penalty recommendation generation failed: {e}")
+            return {'action': 'error', 'strength': 0.0}
+
+    def _store_prediction(self, prediction: Dict[str, Any], agent_history: List[Dict[str, Any]]):
+        """Store prediction for accuracy tracking"""
+        try:
+            prediction_record = {
+                'timestamp': datetime.now(),
+                'prediction': prediction,
+                'agent_history_snapshot': agent_history[-3:],  # Last 3 actions
+                'verified': False  # Will be updated when actual outcome is known
+            }
+
+            self.gaming_patterns.append(prediction_record)
+
+            # Limit history size
+            if len(self.gaming_patterns) > 100:
+                self.gaming_patterns = self.gaming_patterns[-100:]
+
+        except Exception as e:
+            logger.error(f"Prediction storage failed: {e}")
+
+    def update_prediction_accuracy(self, actual_gaming_detected: bool, prediction_id: int = -1):
+        """Update prediction accuracy based on actual outcomes"""
+        try:
+            if prediction_id == -1:
+                prediction_id = len(self.gaming_patterns) - 1
+
+            if 0 <= prediction_id < len(self.gaming_patterns):
+                prediction_record = self.gaming_patterns[prediction_id]
+                predicted_probability = prediction_record['prediction']['gaming_probability']
+
+                # Calculate accuracy
+                if actual_gaming_detected and predicted_probability >= 0.5:
+                    accuracy = predicted_probability  # Correct positive prediction
+                elif not actual_gaming_detected and predicted_probability < 0.5:
+                    accuracy = 1.0 - predicted_probability  # Correct negative prediction
+                else:
+                    accuracy = 0.0  # Incorrect prediction
+
+                self.prediction_accuracy.append(accuracy)
+                prediction_record['verified'] = True
+
+                # Limit accuracy history
+                if len(self.prediction_accuracy) > 50:
+                    self.prediction_accuracy = self.prediction_accuracy[-50:]
+
+                logger.debug(f"Prediction accuracy updated: {accuracy:.3f}")
+
+        except Exception as e:
+            logger.error(f"Prediction accuracy update failed: {e}")
+
+    def get_prediction_stats(self) -> Dict[str, Any]:
+        """Get gaming prediction statistics"""
+        try:
+            if not self.prediction_accuracy:
+                return {"no_data": True}
+
+            avg_accuracy = sum(self.prediction_accuracy) / len(self.prediction_accuracy)
+            total_predictions = len(self.gaming_patterns)
+            verified_predictions = sum(1 for p in self.gaming_patterns if p['verified'])
+
+            return {
+                'total_predictions': total_predictions,
+                'verified_predictions': verified_predictions,
+                'average_accuracy': avg_accuracy,
+                'prediction_confidence': avg_accuracy,
+                'adaptation_effectiveness': min(1.0, avg_accuracy * 1.2),  # >100% when highly accurate
+                'target_adaptation_rate': 1.0,
+                'prediction_system_working': avg_accuracy >= 0.7
+            }
+
+        except Exception as e:
+            logger.error(f"Prediction stats calculation failed: {e}")
+            return {"error": str(e)}
