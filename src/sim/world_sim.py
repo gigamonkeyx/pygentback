@@ -583,31 +583,91 @@ class WorldSimulation:
         }
 
     async def initialize(self, num_agents: int = 10):
-        """Initialize simulation with agents"""
+        """Initialize simulation with agents - Observer enhanced for production scaling"""
         try:
             logger.info(f"Initializing world simulation with {num_agents} agents")
 
-            # Create diverse agent population
-            agent_types = ['explorer', 'gatherer', 'coordinator', 'learner']
+            # Observer-approved production scaling configuration
+            if num_agents >= 100:
+                logger.info("🚀 PRODUCTION SCALING MODE: Optimizing for 100+ agents")
+                self.production_mode = True
+                self.batch_size = min(50, num_agents // 4)  # Process in batches
+                self.parallel_processing = True
+                # Scale MCP servers for production
+                self.mcp_server_count = min(10, max(3, num_agents // 20))
+            else:
+                self.production_mode = False
+                self.batch_size = num_agents
+                self.parallel_processing = False
+                self.mcp_server_count = 3
 
+            # Enhanced agent types for production swarms
+            agent_types = [
+                'explorer', 'gatherer', 'coordinator', 'learner',
+                'optimizer', 'validator', 'monitor', 'enhancer'  # Observer-approved new types
+            ]
+
+            # Create agents with production-optimized distribution
             for i in range(num_agents):
                 agent_type = agent_types[i % len(agent_types)]
                 agent_id = f"agent_{agent_type}_{i}"
 
+                # Production-optimized MCP configuration
                 mcp_config = {
-                    'server_id': f"mcp_server_{i % 3}",  # Distribute across 3 MCP servers
-                    'capabilities': ['query', 'action', 'communication']
+                    'server_id': f"mcp_server_{i % self.mcp_server_count}",
+                    'capabilities': ['query', 'action', 'communication'],
+                    'production_mode': self.production_mode,
+                    'batch_id': i // self.batch_size if self.production_mode else 0,
+                    'priority': self._calculate_agent_priority_simple(agent_type, i)
                 }
 
                 agent = Agent(agent_id, agent_type, mcp_config)
+
+                # Production-specific agent enhancements
+                if self.production_mode:
+                    agent.production_optimized = True
+                    agent.batch_id = i // self.batch_size
+                    agent.processing_priority = mcp_config['priority']
+
                 self.agents.append(agent)
 
-            logger.info(f"Created {len(self.agents)} agents: {[a.agent_type for a in self.agents]}")
+            # Initialize production monitoring
+            if self.production_mode:
+                self.production_metrics = {
+                    'total_agents': num_agents,
+                    'batch_size': self.batch_size,
+                    'num_batches': (num_agents + self.batch_size - 1) // self.batch_size,
+                    'mcp_servers': self.mcp_server_count,
+                    'agent_types_distribution': {agent_type: sum(1 for a in self.agents if a.agent_type == agent_type)
+                                               for agent_type in agent_types}
+                }
+                logger.info(f"🎯 Production metrics initialized: {self.production_metrics}")
+
+            logger.info(f"Created {len(self.agents)} agents: {[a.agent_type for a in self.agents[:10]]}{'...' if len(self.agents) > 10 else ''}")
+            logger.info(f"Production mode: {self.production_mode}, MCP servers: {self.mcp_server_count}")
             return True
 
         except Exception as e:
             logger.error(f"Simulation initialization failed: {e}")
             return False
+
+    def _calculate_agent_priority_simple(self, agent_type: str, index: int) -> float:
+        """Calculate simple processing priority for production agents"""
+        try:
+            # Priority based on agent type and index
+            type_priorities = {
+                'optimizer': 0.9, 'validator': 0.8, 'monitor': 0.7, 'enhancer': 0.8,
+                'coordinator': 0.6, 'learner': 0.7, 'explorer': 0.5, 'gatherer': 0.4
+            }
+
+            base_priority = type_priorities.get(agent_type, 0.5)
+            # Slight variation based on index to prevent ties
+            priority = base_priority + (index % 10) * 0.01
+            return min(1.0, priority)
+
+        except Exception as e:
+            logger.warning(f"Priority calculation failed for agent type {agent_type}: {e}")
+            return 0.5
 
     async def sim_loop(self, generations: int = 10) -> Dict[str, Any]:
         """Run simulation loop for specified generations"""
