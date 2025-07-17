@@ -1,0 +1,513 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Two-Phase Evolution System with RL Integration
+Observer-approved evolution strategy with exploration/exploitation phases and RL rewards
+"""
+
+import asyncio
+import logging
+import time
+import numpy as np
+from typing import Dict, Any, List, Callable, Optional, Tuple
+from datetime import datetime
+from dataclasses import dataclass
+
+logger = logging.getLogger(__name__)
+
+@dataclass
+class EvolutionPhase:
+    """Configuration for an evolution phase"""
+    name: str
+    generations: int
+    mutation_rate: float
+    crossover_rate: float
+    selection_pressure: float
+    diversity_bonus: float = 0.0
+    elite_preservation: float = 0.1
+
+@dataclass
+class RLReward:
+    """RL reward structure for evolution cycles"""
+    efficiency_reward: float
+    improvement_reward: float
+    safety_reward: float
+    diversity_reward: float
+    total_reward: float
+
+class TwoPhaseEvolutionSystem:
+    """
+    Observer-approved two-phase evolution system with RL integration
+    Combines exploration and exploitation phases with reinforcement learning rewards
+    """
+    
+    def __init__(self, config: Dict[str, Any]):
+        self.config = config
+        
+        # Phase configurations
+        self.exploration_phase = EvolutionPhase(
+            name="exploration",
+            generations=config.get("exploration_generations", 3),
+            mutation_rate=config.get("exploration_mutation_rate", 0.4),
+            crossover_rate=config.get("exploration_crossover_rate", 0.6),
+            selection_pressure=config.get("exploration_selection_pressure", 0.3),
+            diversity_bonus=config.get("exploration_diversity_bonus", 0.2),
+            elite_preservation=config.get("exploration_elite_preservation", 0.05)
+        )
+        
+        self.exploitation_phase = EvolutionPhase(
+            name="exploitation",
+            generations=config.get("exploitation_generations", 7),
+            mutation_rate=config.get("exploitation_mutation_rate", 0.1),
+            crossover_rate=config.get("exploitation_crossover_rate", 0.9),
+            selection_pressure=config.get("exploitation_selection_pressure", 0.8),
+            diversity_bonus=config.get("exploitation_diversity_bonus", 0.05),
+            elite_preservation=config.get("exploitation_elite_preservation", 0.2)
+        )
+        
+        # RL reward system
+        self.rl_enabled = config.get("rl_enabled", True)
+        self.efficiency_target = config.get("efficiency_target", 5.0)  # Target cycles
+        self.improvement_target = config.get("improvement_target", 1.976)  # 197.6% target
+        self.safety_weight = config.get("safety_weight", 0.3)
+        self.diversity_weight = config.get("diversity_weight", 0.2)
+        
+        # Evolution tracking
+        self.evolution_history = []
+        self.rl_rewards = []
+        self.phase_performance = {"exploration": [], "exploitation": []}
+        
+        # Stagnation detection
+        self.stagnation_threshold = config.get("stagnation_threshold", 5)
+        self.stagnation_tolerance = config.get("stagnation_tolerance", 0.01)
+        
+        logger.info("TwoPhaseEvolutionSystem initialized with RL integration")
+    
+    async def evolve_population(
+        self, 
+        initial_population: List[Any],
+        fitness_function: Callable,
+        mutation_function: Callable,
+        crossover_function: Callable
+    ) -> Dict[str, Any]:
+        """
+        Run two-phase evolution with RL rewards
+        """
+        logger.info("Starting two-phase evolution with RL integration")
+        evolution_start = time.time()
+        
+        population = initial_population.copy()
+        total_generations = 0
+        phase_results = []
+        
+        try:
+            # Phase 1: Exploration
+            logger.info(f"🔍 EXPLORATION PHASE: {self.exploration_phase.generations} generations")
+            exploration_result = await self._run_phase(
+                population, 
+                self.exploration_phase,
+                fitness_function,
+                mutation_function,
+                crossover_function
+            )
+            
+            population = exploration_result['final_population']
+            total_generations += exploration_result['generations_completed']
+            phase_results.append(exploration_result)
+            
+            # Check for early termination due to stagnation
+            if exploration_result.get('stagnation_detected', False):
+                logger.info("🛑 Early termination due to stagnation in exploration phase")
+                return self._compile_final_results(
+                    population, phase_results, total_generations, evolution_start, early_termination=True
+                )
+            
+            # Phase 2: Exploitation
+            logger.info(f"🎯 EXPLOITATION PHASE: {self.exploitation_phase.generations} generations")
+            exploitation_result = await self._run_phase(
+                population,
+                self.exploitation_phase,
+                fitness_function,
+                mutation_function,
+                crossover_function
+            )
+            
+            population = exploitation_result['final_population']
+            total_generations += exploitation_result['generations_completed']
+            phase_results.append(exploitation_result)
+            
+            # Compile final results
+            return self._compile_final_results(
+                population, phase_results, total_generations, evolution_start
+            )
+            
+        except Exception as e:
+            logger.error(f"Two-phase evolution failed: {e}")
+            return {
+                'success': False,
+                'error': str(e),
+                'generations_completed': total_generations,
+                'evolution_time': time.time() - evolution_start
+            }
+    
+    async def _run_phase(
+        self,
+        population: List[Any],
+        phase: EvolutionPhase,
+        fitness_function: Callable,
+        mutation_function: Callable,
+        crossover_function: Callable
+    ) -> Dict[str, Any]:
+        """Run a single evolution phase"""
+        phase_start = time.time()
+        current_population = population.copy()
+        
+        fitness_history = []
+        diversity_history = []
+        stagnation_counter = 0
+        
+        for generation in range(phase.generations):
+            gen_start = time.time()
+            
+            # Evaluate fitness
+            fitness_scores = []
+            for individual in current_population:
+                try:
+                    fitness = await fitness_function(individual)
+                    fitness_scores.append(fitness)
+                except Exception as e:
+                    logger.warning(f"Fitness evaluation failed for individual: {e}")
+                    fitness_scores.append(0.0)
+            
+            # Calculate diversity
+            diversity_score = self._calculate_diversity(current_population)
+            
+            # Record metrics
+            avg_fitness = np.mean(fitness_scores)
+            max_fitness = np.max(fitness_scores)
+            fitness_history.append(avg_fitness)
+            diversity_history.append(diversity_score)
+            
+            logger.info(f"  Gen {generation + 1}/{phase.generations}: "
+                       f"avg_fitness={avg_fitness:.3f}, max_fitness={max_fitness:.3f}, "
+                       f"diversity={diversity_score:.3f}")
+            
+            # Check for stagnation
+            if len(fitness_history) >= self.stagnation_threshold:
+                recent_improvement = fitness_history[-1] - fitness_history[-self.stagnation_threshold]
+                if abs(recent_improvement) < self.stagnation_tolerance:
+                    stagnation_counter += 1
+                    if stagnation_counter >= 2:
+                        logger.info(f"🛑 Stagnation detected in {phase.name} phase at generation {generation + 1}")
+                        return {
+                            'phase': phase.name,
+                            'generations_completed': generation + 1,
+                            'final_population': current_population,
+                            'fitness_history': fitness_history,
+                            'diversity_history': diversity_history,
+                            'best_fitness': max_fitness,
+                            'avg_fitness': avg_fitness,
+                            'stagnation_detected': True,
+                            'phase_time': time.time() - phase_start
+                        }
+                else:
+                    stagnation_counter = 0
+            
+            # Early termination if we've reached the last generation
+            if generation == phase.generations - 1:
+                break
+            
+            # Selection
+            selected_population = self._selection(
+                current_population, fitness_scores, phase.selection_pressure
+            )
+            
+            # Crossover
+            offspring = []
+            for i in range(0, len(selected_population) - 1, 2):
+                if np.random.random() < phase.crossover_rate:
+                    try:
+                        child1, child2 = await crossover_function(
+                            selected_population[i], selected_population[i + 1]
+                        )
+                        offspring.extend([child1, child2])
+                    except Exception as e:
+                        logger.warning(f"Crossover failed: {e}")
+                        offspring.extend([selected_population[i], selected_population[i + 1]])
+                else:
+                    offspring.extend([selected_population[i], selected_population[i + 1]])
+            
+            # Mutation
+            mutated_population = []
+            for individual in offspring:
+                if np.random.random() < phase.mutation_rate:
+                    try:
+                        mutated = await mutation_function(individual)
+                        mutated_population.append(mutated)
+                    except Exception as e:
+                        logger.warning(f"Mutation failed: {e}")
+                        mutated_population.append(individual)
+                else:
+                    mutated_population.append(individual)
+            
+            # Elite preservation
+            if phase.elite_preservation > 0:
+                elite_count = max(1, int(len(current_population) * phase.elite_preservation))
+                elite_indices = np.argsort(fitness_scores)[-elite_count:]
+                elite_individuals = [current_population[i] for i in elite_indices]
+                
+                # Replace worst individuals with elite
+                mutated_population = mutated_population[:-elite_count] + elite_individuals
+            
+            # Apply diversity bonus
+            if phase.diversity_bonus > 0:
+                mutated_population = self._apply_diversity_bonus(
+                    mutated_population, phase.diversity_bonus
+                )
+            
+            current_population = mutated_population
+        
+        # Calculate phase performance
+        final_fitness_scores = []
+        for individual in current_population:
+            try:
+                fitness = await fitness_function(individual)
+                final_fitness_scores.append(fitness)
+            except Exception as e:
+                final_fitness_scores.append(0.0)
+        
+        return {
+            'phase': phase.name,
+            'generations_completed': phase.generations,
+            'final_population': current_population,
+            'fitness_history': fitness_history,
+            'diversity_history': diversity_history,
+            'best_fitness': np.max(final_fitness_scores),
+            'avg_fitness': np.mean(final_fitness_scores),
+            'stagnation_detected': False,
+            'phase_time': time.time() - phase_start
+        }
+
+    def _selection(self, population: List[Any], fitness_scores: List[float], selection_pressure: float) -> List[Any]:
+        """Tournament selection with configurable pressure"""
+        selected = []
+        tournament_size = max(2, int(len(population) * selection_pressure))
+
+        for _ in range(len(population)):
+            # Tournament selection
+            tournament_indices = np.random.choice(len(population), tournament_size, replace=False)
+            tournament_fitness = [fitness_scores[i] for i in tournament_indices]
+            winner_idx = tournament_indices[np.argmax(tournament_fitness)]
+            selected.append(population[winner_idx])
+
+        return selected
+
+    def _calculate_diversity(self, population: List[Any]) -> float:
+        """Calculate population diversity score"""
+        try:
+            # Simple diversity measure based on string representation
+            unique_individuals = set(str(individual) for individual in population)
+            diversity = len(unique_individuals) / len(population)
+            return diversity
+        except Exception as e:
+            logger.warning(f"Diversity calculation failed: {e}")
+            return 0.5  # Default moderate diversity
+
+    def _apply_diversity_bonus(self, population: List[Any], bonus: float) -> List[Any]:
+        """Apply diversity bonus to encourage exploration"""
+        try:
+            # Simple diversity enhancement by adding variation
+            enhanced_population = []
+            for individual in population:
+                if np.random.random() < bonus:
+                    # Add small variation to encourage diversity
+                    varied_individual = f"{individual}_diverse_{np.random.randint(1000)}"
+                    enhanced_population.append(varied_individual)
+                else:
+                    enhanced_population.append(individual)
+            return enhanced_population
+        except Exception as e:
+            logger.warning(f"Diversity bonus application failed: {e}")
+            return population
+
+    def _compile_final_results(
+        self,
+        final_population: List[Any],
+        phase_results: List[Dict[str, Any]],
+        total_generations: int,
+        evolution_start: float,
+        early_termination: bool = False
+    ) -> Dict[str, Any]:
+        """Compile final evolution results with RL rewards"""
+        evolution_time = time.time() - evolution_start
+
+        # Calculate final fitness
+        try:
+            # Use the last phase's fitness scores
+            if phase_results:
+                best_fitness = max(result['best_fitness'] for result in phase_results)
+                avg_fitness = np.mean([result['avg_fitness'] for result in phase_results])
+            else:
+                best_fitness = 0.0
+                avg_fitness = 0.0
+        except Exception as e:
+            logger.warning(f"Final fitness calculation failed: {e}")
+            best_fitness = 0.0
+            avg_fitness = 0.0
+
+        # Calculate RL rewards if enabled
+        rl_reward = None
+        if self.rl_enabled:
+            rl_reward = self._calculate_rl_reward(
+                total_generations, best_fitness, avg_fitness, evolution_time, phase_results
+            )
+            self.rl_rewards.append(rl_reward)
+
+        # Update evolution history
+        evolution_record = {
+            'timestamp': datetime.now(),
+            'total_generations': total_generations,
+            'evolution_time': evolution_time,
+            'best_fitness': best_fitness,
+            'avg_fitness': avg_fitness,
+            'phase_results': phase_results,
+            'rl_reward': rl_reward,
+            'early_termination': early_termination
+        }
+        self.evolution_history.append(evolution_record)
+
+        # Update phase performance tracking
+        for result in phase_results:
+            phase_name = result['phase']
+            if phase_name in self.phase_performance:
+                self.phase_performance[phase_name].append({
+                    'best_fitness': result['best_fitness'],
+                    'avg_fitness': result['avg_fitness'],
+                    'generations': result['generations_completed'],
+                    'time': result['phase_time']
+                })
+
+        logger.info(f"Two-phase evolution completed: {total_generations} generations, "
+                   f"best_fitness={best_fitness:.3f}, time={evolution_time:.2f}s")
+
+        if rl_reward:
+            logger.info(f"RL Reward: total={rl_reward.total_reward:.3f}, "
+                       f"efficiency={rl_reward.efficiency_reward:.3f}, "
+                       f"improvement={rl_reward.improvement_reward:.3f}")
+
+        return {
+            'success': True,
+            'generations_completed': total_generations,
+            'evolution_time': evolution_time,
+            'best_fitness': best_fitness,
+            'avg_fitness': avg_fitness,
+            'final_population': final_population,
+            'phase_results': phase_results,
+            'rl_reward': rl_reward,
+            'early_termination': early_termination,
+            'improvement_achieved': best_fitness > 1.0,
+            'target_improvement_reached': best_fitness >= self.improvement_target
+        }
+
+    def _calculate_rl_reward(
+        self,
+        generations: int,
+        best_fitness: float,
+        avg_fitness: float,
+        evolution_time: float,
+        phase_results: List[Dict[str, Any]]
+    ) -> RLReward:
+        """Calculate RL reward based on evolution performance"""
+
+        # Efficiency reward (fewer generations is better)
+        if generations <= self.efficiency_target:
+            efficiency_reward = 1.0
+        else:
+            efficiency_reward = max(0.0, 1.0 - (generations - self.efficiency_target) / 10.0)
+
+        # Improvement reward (higher fitness is better)
+        improvement_reward = min(1.0, best_fitness / self.improvement_target)
+
+        # Safety reward (based on average fitness stability)
+        if len(phase_results) >= 2:
+            fitness_variance = np.var([result['avg_fitness'] for result in phase_results])
+            safety_reward = max(0.0, 1.0 - fitness_variance)
+        else:
+            safety_reward = 0.5
+
+        # Diversity reward (based on phase diversity)
+        diversity_scores = []
+        for result in phase_results:
+            if 'diversity_history' in result and result['diversity_history']:
+                avg_diversity = np.mean(result['diversity_history'])
+                diversity_scores.append(avg_diversity)
+
+        if diversity_scores:
+            diversity_reward = np.mean(diversity_scores)
+        else:
+            diversity_reward = 0.5
+
+        # Calculate total reward
+        total_reward = (
+            efficiency_reward * 0.3 +
+            improvement_reward * 0.4 +
+            safety_reward * self.safety_weight +
+            diversity_reward * self.diversity_weight
+        )
+
+        return RLReward(
+            efficiency_reward=efficiency_reward,
+            improvement_reward=improvement_reward,
+            safety_reward=safety_reward,
+            diversity_reward=diversity_reward,
+            total_reward=total_reward
+        )
+
+    def get_performance_stats(self) -> Dict[str, Any]:
+        """Get performance statistics for the evolution system"""
+        if not self.evolution_history:
+            return {"no_data": True}
+
+        # Overall statistics
+        total_runs = len(self.evolution_history)
+        avg_generations = np.mean([run['total_generations'] for run in self.evolution_history])
+        avg_time = np.mean([run['evolution_time'] for run in self.evolution_history])
+        avg_best_fitness = np.mean([run['best_fitness'] for run in self.evolution_history])
+
+        # RL reward statistics
+        rl_stats = {}
+        if self.rl_rewards:
+            rl_stats = {
+                'avg_total_reward': np.mean([r.total_reward for r in self.rl_rewards]),
+                'avg_efficiency_reward': np.mean([r.efficiency_reward for r in self.rl_rewards]),
+                'avg_improvement_reward': np.mean([r.improvement_reward for r in self.rl_rewards]),
+                'avg_safety_reward': np.mean([r.safety_reward for r in self.rl_rewards]),
+                'avg_diversity_reward': np.mean([r.diversity_reward for r in self.rl_rewards])
+            }
+
+        # Phase-specific statistics
+        phase_stats = {}
+        for phase_name, performances in self.phase_performance.items():
+            if performances:
+                phase_stats[phase_name] = {
+                    'avg_best_fitness': np.mean([p['best_fitness'] for p in performances]),
+                    'avg_generations': np.mean([p['generations'] for p in performances]),
+                    'avg_time': np.mean([p['time'] for p in performances])
+                }
+
+        return {
+            'total_runs': total_runs,
+            'avg_generations': avg_generations,
+            'avg_evolution_time': avg_time,
+            'avg_best_fitness': avg_best_fitness,
+            'target_achievement_rate': sum(1 for run in self.evolution_history
+                                         if run['best_fitness'] >= self.improvement_target) / total_runs,
+            'rl_statistics': rl_stats,
+            'phase_statistics': phase_stats,
+            'current_config': {
+                'exploration_phase': self.exploration_phase.__dict__,
+                'exploitation_phase': self.exploitation_phase.__dict__,
+                'rl_enabled': self.rl_enabled,
+                'improvement_target': self.improvement_target
+            }
+        }

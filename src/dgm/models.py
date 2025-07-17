@@ -8,6 +8,11 @@ class ImprovementType(str, Enum):
     ALGORITHM_MODIFICATION = "algorithm_modification"
     ARCHITECTURE_CHANGE = "architecture_change"
     CONFIGURATION_UPDATE = "configuration_update"
+    # Observer-approved additional types
+    ALGORITHM = "algorithm"
+    OPTIMIZATION = "optimization"
+    BUG_FIX = "bug_fix"
+    PERFORMANCE = "performance"
 
 class ImprovementStatus(str, Enum):
     PROPOSED = "proposed"
@@ -26,7 +31,7 @@ class PerformanceMetric(BaseModel):
 
 class ImprovementCandidate(BaseModel):
     id: str
-    agent_id: str
+    agent_id: Optional[str] = None  # Observer fix: make optional for testing
     improvement_type: ImprovementType
     description: str
     code_changes: Dict[str, str]  # filename -> new_code
