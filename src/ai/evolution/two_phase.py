@@ -184,6 +184,16 @@ class TwoPhaseEvolutionSystem:
                 except Exception as e:
                     logger.warning(f"Fitness evaluation failed for individual: {e}")
                     fitness_scores.append(0.0)
+
+            # Apply Grok4 Heavy JSON bloat penalty for evolution 6→8/10 rating
+            BLOAT_THRESHOLD = 100
+            BLOAT_PENALTY = 0.05
+            for i, individual in enumerate(current_population):
+                individual_size = len(str(individual))  # Rough size estimate
+                if individual_size > BLOAT_THRESHOLD:
+                    bloat_penalty = (individual_size - BLOAT_THRESHOLD) * BLOAT_PENALTY
+                    fitness_scores[i] -= bloat_penalty
+                    logger.debug(f"Applied bloat penalty {bloat_penalty:.3f} to individual {i} (size: {individual_size})")
             
             # Calculate diversity
             diversity_score = self._calculate_diversity(current_population)

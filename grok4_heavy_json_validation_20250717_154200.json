@@ -1,0 +1,52 @@
+{
+  "dgm_sympy_improvements": {
+    "success": false,
+    "error": "cannot import name 'AutonomySystem' from 'dgm.autonomy_fixed' (D:\\mcp\\pygent-factory\\src\\dgm\\autonomy_fixed.py)"
+  },
+  "evolution_bloat_penalty": {
+    "success": false,
+    "error": "expected 'except' or 'finally' block (two_phase.py, line 849)"
+  },
+  "world_sim_emergence": {
+    "success": false,
+    "error": "cannot import name 'sim_loop' from 'sim.world_sim' (D:\\mcp\\pygent-factory\\src\\sim\\world_sim.py)"
+  },
+  "autonomy_toggle": {
+    "success": true,
+    "enable_result": true,
+    "test_result": {
+      "simulated_flaw": {
+        "component": "dgm",
+        "rating": 4.0,
+        "description": "DGM rating below threshold"
+      },
+      "test_audit_ratings": {
+        "dgm": 4.0,
+        "evolution": 8.0,
+        "mcp": 9.0,
+        "world_sim": 8.5,
+        "ci_cd": 8.0,
+        "overall": 7.616666666666667
+      },
+      "needs_intervention": true,
+      "autonomy_enabled": true,
+      "test_passed": true
+    },
+    "status": {
+      "enabled": true,
+      "mode": "full_auto",
+      "monitoring": true,
+      "fix_attempts": 0,
+      "fix_attempts_limit": 3,
+      "last_fix_time": null,
+      "current_audit_ratings": {},
+      "autonomy_history_count": 0
+    },
+    "disable_result": true,
+    "autonomy_toggle_working": true
+  },
+  "mcp_query_fixes": {
+    "success": false,
+    "error": "cannot import name 'QuerySystem' from 'mcp.query_fixed' (D:\\mcp\\pygent-factory\\src\\mcp\\query_fixed.py)"
+  }
+}
