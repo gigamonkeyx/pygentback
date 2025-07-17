@@ -241,3 +241,8 @@ models/
 *.model
 
 # Data and logs
+
+# Secret/Classified Projects - Observer Protocol
+grrrgraphics_clone/
+*_clone/
+autonomous_web_developer.py
