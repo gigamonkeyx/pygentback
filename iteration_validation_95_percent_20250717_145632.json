@@ -1,0 +1,295 @@
+{
+  "calibrated_synergy_effectiveness": {
+    "success": false,
+    "error": "expected 'except' or 'finally' block (two_phase.py, line 839)"
+  },
+  "rl_forecast_gaming_confidence": {
+    "success": true,
+    "confidence_test_result": {
+      "confidence_results": {
+        "High Pattern Gaming Forecast": {
+          "enhanced_result": {
+            "immediate_prediction": {
+              "gaming_probability": 0.8500000000000001,
+              "confidence": 0.5348055555555556,
+              "predicted_gaming_type": "dummy_spam",
+              "pre_penalty_recommendation": {
+                "action": "immediate_penalty",
+                "strength": 1.2,
+                "reward_modifier": -0.5,
+                "monitoring_increase": "high"
+              },
+              "adaptation_strength": 1.0
+            },
+            "pattern_forecast": {
+              "pattern_analysis": {
+                "trend_probability": 1.0,
+                "trend_direction": 0.0,
+                "pattern_strength": 1.0,
+                "pattern_consistency": 1.0,
+                "gaming_indicators": [
+                  1.0,
+                  1.0,
+                  1.0
+                ],
+                "recent_avg": 1.0,
+                "earlier_avg": 1.0
+              },
+              "forecast_predictions": [
+                {
+                  "step": 1,
+                  "forecasted_probability": 1.0,
+                  "confidence_boost": 1.2,
+                  "rl_amplification": 1.3,
+                  "adaptation_strength": 2.2
+                },
+                {
+                  "step": 2,
+                  "forecasted_probability": 1.0,
+                  "confidence_boost": 1.4,
+                  "rl_amplification": 1.6,
+                  "adaptation_strength": 2.4
+                },
+                {
+                  "step": 3,
+                  "forecasted_probability": 1.0,
+                  "confidence_boost": 1.6,
+                  "rl_amplification": 1.9,
+                  "adaptation_strength": 2.6
+                }
+              ],
+              "forecast_horizon": 3,
+              "avg_confidence_boost": 1.3999999999999997,
+              "max_adaptation_strength": 2.6,
+              "rl_forecast_effectiveness": 1.0,
+              "over_100_percent_adaptation": true
+            },
+            "enhanced_probability": 1.0,
+            "enhanced_confidence": 1.0,
+            "enhanced_adaptation_strength": 2.6,
+            "proactive_action": "immediate_penalty",
+            "penalty_applied": -0.7,
+            "forecast_enhanced": true
+          },
+          "enhanced_confidence": 1.0,
+          "enhanced_adaptation": 2.6,
+          "forecast_enhanced": true,
+          "over_100_percent_adaptation": true,
+          "zero_gaming_confidence": true
+        },
+        "Moderate Pattern Gaming Forecast": {
+          "enhanced_result": {
+            "immediate_prediction": {
+              "gaming_probability": 0.27191666666666664,
+              "confidence": 0.30963888888888885,
+              "predicted_gaming_type": "minimal_compliance",
+              "pre_penalty_recommendation": {
+                "action": "normal_operation",
+                "strength": 0.0,
+                "reward_modifier": 0.0,
+                "monitoring_increase": "none"
+              },
+              "adaptation_strength": 0.407875
+            },
+            "pattern_forecast": {
+              "pattern_analysis": {
+                "trend_probability": 0.44999999999999996,
+                "trend_direction": 0.14999999999999997,
+                "pattern_strength": 0.9775,
+                "pattern_consistency": 0.85,
+                "gaming_indicators": [
+                  0.3,
+                  0.3,
+                  0.6
+                ],
+                "recent_avg": 0.44999999999999996,
+                "earlier_avg": 0.3
+              },
+              "forecast_predictions": [
+                {
+                  "step": 1,
+                  "forecasted_probability": 0.5819624999999999,
+                  "confidence_boost": 1.02,
+                  "rl_amplification": 1.29325,
+                  "adaptation_strength": 2.02
+                },
+                {
+                  "step": 2,
+                  "forecasted_probability": 0.7139249999999999,
+                  "confidence_boost": 1.19,
+                  "rl_amplification": 1.5865,
+                  "adaptation_strength": 2.19
+                },
+                {
+                  "step": 3,
+                  "forecasted_probability": 0.8458874999999999,
+                  "confidence_boost": 1.36,
+                  "rl_amplification": 1.87975,
+                  "adaptation_strength": 2.3600000000000003
+                }
+              ],
+              "forecast_horizon": 3,
+              "avg_confidence_boost": 1.1900000000000002,
+              "max_adaptation_strength": 2.3600000000000003,
+              "rl_forecast_effectiveness": 1.0,
+              "over_100_percent_adaptation": true
+            },
+            "enhanced_probability": 0.6289166666666667,
+            "enhanced_confidence": 1.0,
+            "enhanced_adaptation_strength": 2.3600000000000003,
+            "proactive_action": "warning_penalty",
+            "penalty_applied": -0.4,
+            "forecast_enhanced": true
+          },
+          "enhanced_confidence": 1.0,
+          "enhanced_adaptation": 2.3600000000000003,
+          "forecast_enhanced": true,
+          "over_100_percent_adaptation": true,
+          "zero_gaming_confidence": true
+        }
+      },
+      "avg_confidence": 1.0,
+      "confidence_achievement_rate": 1.0,
+      "high_confidence_scenarios": 2,
+      "total_scenarios": 2,
+      "zero_gaming_confidence_working": true
+    },
+    "avg_confidence": 1.0,
+    "confidence_achievement_rate": 1.0,
+    "target_confidence": 0.8,
+    "rl_forecast_confidence_working": true
+  },
+  "rl_param_optimization": {
+    "success": true,
+    "optimization_result": {
+      "audit_logs_analyzed": 4,
+      "optimization_analysis": {
+        "high_performance_rate": 1.0,
+        "improvement_consistency": 0.99908125,
+        "appropriateness_stability": 0.999275,
+        "growth_potential_indicators": {
+          "avg_improvement": 0.22749999999999998,
+          "max_improvement": 0.27,
+          "avg_appropriateness": 0.925,
+          "max_appropriateness": 0.96,
+          "success_rate": 1.0
+        },
+        "parameter_optimization_targets": {
+          "bias_strength_target": 0.9,
+          "learning_acceleration_target": 0.799540625,
+          "success_multiplier_target": 3.2986950000000004,
+          "efficiency_multiplier_target": 2.2
+        }
+      },
+      "optimized_params": {
+        "rl_bias_strength": 1.0,
+        "learning_acceleration": 0.9,
+        "success_reward_multiplier": 3.5,
+        "efficiency_multiplier": 2.2,
+        "growth_acceleration_factor": 2.0,
+        "compound_learning_rate": 0.8
+      },
+      "applied_optimizations": {
+        "rl_bias_strength": {
+          "old_value": null,
+          "optimized_value": 1.0,
+          "improvement": 1.0
+        },
+        "learning_acceleration": {
+          "old_value": null,
+          "optimized_value": 0.9,
+          "improvement": 0.9
+        },
+        "success_reward_multiplier": {
+          "old_value": null,
+          "optimized_value": 3.5,
+          "improvement": 3.5
+        },
+        "efficiency_multiplier": {
+          "old_value": null,
+          "optimized_value": 2.2,
+          "improvement": 2.2
+        },
+        "growth_acceleration_factor": {
+          "old_value": null,
+          "optimized_value": 2.0,
+          "improvement": 2.0
+        },
+        "compound_learning_rate": {
+          "old_value": null,
+          "optimized_value": 0.8,
+          "improvement": 0.8
+        }
+      },
+      "optimization_test_result": {
+        "optimized_results": {
+          "mcp_appropriateness": {
+            "base_performance": 0.6,
+            "optimized_performance": 1.0,
+            "growth_factor": 1.6666666666666667,
+            "growth_percentage": 66.66666666666667,
+            "meets_target": false
+          },
+          "gaming_resistance": {
+            "base_performance": 0.4,
+            "optimized_performance": 1.0,
+            "growth_factor": 2.5,
+            "growth_percentage": 150.0,
+            "meets_target": false
+          },
+          "context_adaptation": {
+            "base_performance": 0.5,
+            "optimized_performance": 1.0,
+            "growth_factor": 2.0,
+            "growth_percentage": 100.0,
+            "meets_target": false
+          },
+          "cooperation_efficiency": {
+            "base_performance": 0.7,
+            "optimized_performance": 1.0,
+            "growth_factor": 1.4285714285714286,
+            "growth_percentage": 42.85714285714286,
+            "meets_target": false
+          },
+          "resource_optimization": {
+            "base_performance": 0.55,
+            "optimized_performance": 1.0,
+            "growth_factor": 1.8181818181818181,
+            "growth_percentage": 81.81818181818181,
+            "meets_target": false
+          },
+          "compound_learning": {
+            "base_performance": 0.45,
+            "optimized_performance": 1.0,
+            "growth_factor": 2.2222222222222223,
+            "growth_percentage": 122.22222222222223,
+            "meets_target": false
+          },
+          "enforcement_effectiveness": {
+            "base_performance": 0.65,
+            "optimized_performance": 1.0,
+            "growth_factor": 1.5384615384615383,
+            "growth_percentage": 53.84615384615383,
+            "meets_target": false
+          }
+        },
+        "avg_growth_factor": 1.8820148105862393,
+        "achieved_boost": 1.8820148105862393,
+        "successful_scenarios": 0,
+        "total_scenarios": 7,
+        "target_achievement_rate": 0.0,
+        "optimized_growth_working": false
+      },
+      "target_growth": 4.89,
+      "rl_param_optimization_working": false
+    },
+    "achieved_boost": 1.8820148105862393,
+    "target_achievement_rate": 0.0,
+    "target_boost": 4.89,
+    "rl_param_optimization_working": false
+  },
+  "predictive_dashboard": {
+    "success": false,
+    "error": "attempted relative import beyond top-level package"
+  }
+}
