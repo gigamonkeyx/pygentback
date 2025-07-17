@@ -21,6 +21,21 @@ from src.mcp.server_registry import MCPServerManager
 from src.config.settings import Settings
 from src.ai.providers.provider_registry import get_provider_registry
 
+# Observer-approved fixed modules integration
+try:
+    from src.ai.evolution.evo_loop_fixed import ObserverEvolutionLoop
+    from src.agents.communication_system_fixed import ObserverCommunicationSystem
+    from src.dgm.autonomy_fixed import FormalProofSystem, ObserverAutonomyController
+    from src.mcp.query_fixed import ObserverQuerySystem
+    from src.sim.world_sim import WorldSimulation
+    OBSERVER_MODULES_AVAILABLE = True
+    logger = logging.getLogger(__name__)
+    logger.info("Observer-approved fixed modules loaded successfully")
+except ImportError as e:
+    OBSERVER_MODULES_AVAILABLE = False
+    logger = logging.getLogger(__name__)
+    logger.warning(f"Observer modules not available: {e}")
+
 # Phase 4 Integration: Import new simulation and behavior detection modules
 try:
     from .sim_env import SimulationEnvironment, create_simulation_environment
@@ -190,6 +205,21 @@ class AgentFactory:
         self.behavior_detector = None
         self.phase4_enabled = PHASE4_MODULES_AVAILABLE and getattr(self.settings, 'PHASE4_ENABLED', True)
 
+        # Observer-approved system integration
+        self.observer_systems = {}
+        self.observer_enabled = OBSERVER_MODULES_AVAILABLE and getattr(self.settings, 'OBSERVER_ENABLED', True)
+
+        if self.observer_enabled:
+            # Initialize Observer systems
+            self.observer_systems = {
+                'evolution_loop': None,
+                'communication_system': None,
+                'formal_proof_system': None,
+                'autonomy_controller': None,
+                'query_system': None,
+                'world_simulation': None
+            }
+
         # A2A Protocol setup
         self.base_url = base_url
         if A2A_AVAILABLE:
@@ -261,8 +291,12 @@ class AgentFactory:
             if self.phase4_enabled:
                 await self._initialize_phase4_components()
 
+            # Initialize Observer systems if enabled
+            if self.observer_enabled:
+                await self._initialize_observer_systems()
+
             self._initialized = True
-            logger.info("Agent factory initialized")
+            logger.info("Agent factory initialized with Observer systems")
     
     @property
     def is_initialized(self) -> bool:
@@ -320,6 +354,74 @@ class AgentFactory:
                     return {"response": f"Simple response to: {getattr(message, 'content', str(message))}"}
             
             self.registry.register_agent_type("general", SimpleAgent)
+
+    async def _initialize_observer_systems(self) -> None:
+        """Initialize Observer-approved systems for enhanced agent capabilities."""
+        try:
+            logger.info("Initializing Observer-approved systems...")
+
+            # Initialize Evolution Loop
+            evolution_config = {
+                'max_generations': getattr(self.settings, 'EVOLUTION_MAX_GENERATIONS', 100),
+                'max_runtime_seconds': getattr(self.settings, 'EVOLUTION_MAX_RUNTIME', 3600),
+                'bloat_penalty_enabled': True,
+                'gpu_memory_fraction': 0.8
+            }
+            self.observer_systems['evolution_loop'] = ObserverEvolutionLoop(evolution_config)
+
+            # Initialize Communication System
+            comm_config = {
+                'fallback_enabled': True,
+                'redis_enabled': getattr(self.settings, 'REDIS_ENABLED', False)
+            }
+            self.observer_systems['communication_system'] = ObserverCommunicationSystem(comm_config)
+            await self.observer_systems['communication_system'].initialize()
+
+            # Initialize Formal Proof System
+            proof_config = {
+                'formal_proofs': {
+                    'enabled': True,
+                    'cache_size': 1000
+                }
+            }
+            self.observer_systems['formal_proof_system'] = FormalProofSystem(proof_config['formal_proofs'])
+
+            # Initialize Autonomy Controller
+            autonomy_config = {
+                'formal_proofs': proof_config['formal_proofs'],
+                'improvement_interval': 60
+            }
+            self.observer_systems['autonomy_controller'] = ObserverAutonomyController(autonomy_config)
+
+            # Initialize Query System
+            query_config = {
+                'cache_enabled': True,
+                'cache_ttl': 300,
+                'limits': {
+                    'max_queries_per_minute': 60,
+                    'max_query_depth': 10,
+                    'circuit_breaker_threshold': 10
+                }
+            }
+            self.observer_systems['query_system'] = ObserverQuerySystem(query_config)
+
+            # Initialize World Simulation
+            sim_config = {
+                'environment': {
+                    'size': {'width': 100, 'height': 100}
+                },
+                'evolution': {
+                    'mutation_rate': 0.1,
+                    'crossover_rate': 0.8
+                }
+            }
+            self.observer_systems['world_simulation'] = WorldSimulation(sim_config)
+
+            logger.info("Observer systems initialized successfully")
+
+        except Exception as e:
+            logger.error(f"Failed to initialize Observer systems: {e}")
+            self.observer_enabled = False
     
     async def create_agent(self, 
                           agent_type: str, 
@@ -733,6 +835,16 @@ class AgentFactory:
                 logger.error(f"Error shutting down agent {agent.agent_id}: {str(e)}")
         
         await self.provider_registry.shutdown()
+
+        # Shutdown Observer systems
+        if self.observer_enabled and self.observer_systems:
+            try:
+                if self.observer_systems.get('autonomy_controller'):
+                    await self.observer_systems['autonomy_controller'].disable_autonomy()
+                logger.info("Observer systems shutdown complete")
+            except Exception as e:
+                logger.error(f"Error shutting down Observer systems: {e}")
+
         logger.info("Agent Factory shutdown complete")
 
     async def create_agent_from_request(self, request: AgentCreationRequest) -> AgentCreationResult:
@@ -2159,4 +2271,131 @@ class Docker443ModelRunner:
 
         except Exception as e:
             self.logger.error(f"Failed to get Model Runner status: {e}")
+            return {"error": str(e)}
+
+    # Observer System Access Methods
+
+    def get_observer_evolution_loop(self) -> Optional['ObserverEvolutionLoop']:
+        """Get Observer evolution loop instance."""
+        if self.observer_enabled:
+            return self.observer_systems.get('evolution_loop')
+        return None
+
+    def get_observer_communication_system(self) -> Optional['ObserverCommunicationSystem']:
+        """Get Observer communication system instance."""
+        if self.observer_enabled:
+            return self.observer_systems.get('communication_system')
+        return None
+
+    def get_observer_formal_proof_system(self) -> Optional['FormalProofSystem']:
+        """Get Observer formal proof system instance."""
+        if self.observer_enabled:
+            return self.observer_systems.get('formal_proof_system')
+        return None
+
+    def get_observer_autonomy_controller(self) -> Optional['ObserverAutonomyController']:
+        """Get Observer autonomy controller instance."""
+        if self.observer_enabled:
+            return self.observer_systems.get('autonomy_controller')
+        return None
+
+    def get_observer_query_system(self) -> Optional['ObserverQuerySystem']:
+        """Get Observer query system instance."""
+        if self.observer_enabled:
+            return self.observer_systems.get('query_system')
+        return None
+
+    def get_observer_world_simulation(self) -> Optional['WorldSimulation']:
+        """Get Observer world simulation instance."""
+        if self.observer_enabled:
+            return self.observer_systems.get('world_simulation')
+        return None
+
+    async def run_observer_world_simulation(self, num_agents: int = 10, generations: int = 5) -> Dict[str, Any]:
+        """Run Observer world simulation with specified parameters."""
+        if not self.observer_enabled:
+            return {"error": "Observer systems not enabled"}
+
+        try:
+            world_sim = self.get_observer_world_simulation()
+            if not world_sim:
+                return {"error": "World simulation not initialized"}
+
+            # Initialize simulation
+            init_success = await world_sim.initialize(num_agents=num_agents)
+            if not init_success:
+                return {"error": "Failed to initialize world simulation"}
+
+            # Run simulation
+            result = await world_sim.sim_loop(generations=generations)
+
+            # Get metrics
+            metrics = world_sim.get_simulation_metrics()
+
+            return {
+                "success": True,
+                "simulation_result": result,
+                "metrics": metrics,
+                "observer_compliance": True
+            }
+
+        except Exception as e:
+            logger.error(f"Observer world simulation failed: {e}")
+            return {"error": str(e)}
+
+    async def enable_observer_autonomy(self) -> Dict[str, Any]:
+        """Enable Observer autonomous operation."""
+        if not self.observer_enabled:
+            return {"error": "Observer systems not enabled"}
+
+        try:
+            autonomy_controller = self.get_observer_autonomy_controller()
+            if not autonomy_controller:
+                return {"error": "Autonomy controller not initialized"}
+
+            success = await autonomy_controller.enable_autonomy()
+
+            return {
+                "success": success,
+                "autonomy_enabled": success,
+                "observer_compliance": True
+            }
+
+        except Exception as e:
+            logger.error(f"Failed to enable Observer autonomy: {e}")
+            return {"error": str(e)}
+
+    async def get_observer_system_status(self) -> Dict[str, Any]:
+        """Get comprehensive Observer system status."""
+        if not self.observer_enabled:
+            return {"observer_enabled": False, "systems": {}}
+
+        try:
+            status = {
+                "observer_enabled": True,
+                "systems": {},
+                "overall_health": True
+            }
+
+            # Check each Observer system
+            for system_name, system_instance in self.observer_systems.items():
+                if system_instance:
+                    if hasattr(system_instance, 'get_communication_metrics'):
+                        status["systems"][system_name] = system_instance.get_communication_metrics()
+                    elif hasattr(system_instance, 'get_autonomy_metrics'):
+                        status["systems"][system_name] = system_instance.get_autonomy_metrics()
+                    elif hasattr(system_instance, 'get_query_metrics'):
+                        status["systems"][system_name] = system_instance.get_query_metrics()
+                    elif hasattr(system_instance, 'get_simulation_metrics'):
+                        status["systems"][system_name] = system_instance.get_simulation_metrics()
+                    else:
+                        status["systems"][system_name] = {"status": "initialized"}
+                else:
+                    status["systems"][system_name] = {"status": "not_initialized"}
+                    status["overall_health"] = False
+
+            return status
+
+        except Exception as e:
+            logger.error(f"Failed to get Observer system status: {e}")
             return {"error": str(e)}

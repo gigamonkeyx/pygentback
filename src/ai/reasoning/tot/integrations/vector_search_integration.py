@@ -18,8 +18,21 @@ search_path = Path(__file__).parent.parent.parent.parent.parent / "search"
 sys.path.insert(0, str(search_path))
 
 # Set up UTF-8 logger
-from .....utils.utf8_logger import get_pygent_logger
-logger = get_pygent_logger("ai_reasoning_vector_search")
+# Use absolute import with fallback
+try:
+    from .....utils.utf8_logger import get_pygent_logger
+    logger = get_pygent_logger("ai_reasoning_vector_search")
+except ImportError:
+    # Fallback to absolute import
+    try:
+        import sys
+        import os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', '..'))
+        from src.utils.utf8_logger import get_pygent_logger
+        logger = get_pygent_logger("ai_reasoning_tot_integrations_vector_search")
+    except ImportError:
+        import logging
+        logger = logging.getLogger("ai_reasoning_tot_integrations_vector_search")
 
 try:
     from gpu_search import create_vector_index, VectorSearchConfig, IndexType, SearchResult

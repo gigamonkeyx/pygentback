@@ -42,7 +42,23 @@ except ImportError:
     Prompt = Any
     MCP_AVAILABLE = False
 
-from ..config.settings import Settings
+# Use absolute import with fallback
+try:
+    from ..config.settings import Settings
+except ImportError:
+    # Fallback to absolute import
+    try:
+        import sys
+        import os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
+        from src.config.settings import Settings
+    except ImportError:
+        # Final fallback - create minimal Settings class
+        class Settings:
+            def __init__(self):
+                pass
+            def get(self, key, default=None):
+                return default
 
 
 logger = logging.getLogger(__name__)

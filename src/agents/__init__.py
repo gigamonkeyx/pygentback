@@ -88,6 +88,19 @@ from .specialized_agents import (
     GenerationAgent
 )
 
+# Observer-approved fixed communication system
+try:
+    from .communication_system_fixed import (
+        ObserverCommunicationSystem,
+        CommunicationProtocol as ObserverCommunicationProtocol,
+        MessageType as ObserverMessageType,
+        AgentMessage as ObserverAgentMessage,
+        MessageRoute as ObserverMessageRoute
+    )
+    OBSERVER_COMMUNICATION_AVAILABLE = True
+except ImportError:
+    OBSERVER_COMMUNICATION_AVAILABLE = False
+
 # Build __all__ dynamically
 __all__ = [
     # New orchestration system
@@ -120,6 +133,16 @@ __all__ = [
     'AnalysisAgent',
     'GenerationAgent'
 ]
+
+# Add Observer communication system if available
+if OBSERVER_COMMUNICATION_AVAILABLE:
+    __all__.extend([
+        'ObserverCommunicationSystem',
+        'ObserverCommunicationProtocol',
+        'ObserverMessageType',
+        'ObserverAgentMessage',
+        'ObserverMessageRoute'
+    ])
 
 # Add legacy agents if they exist
 if ReasoningAgent:

@@ -12,8 +12,13 @@ from abc import ABC, abstractmethod
 import random
 
 # Set up UTF-8 logger
-from ...utils.utf8_logger import get_pygent_logger
-logger = get_pygent_logger("ai_rl_policy_networks")
+try:
+    from ...utils.utf8_logger import get_pygent_logger
+    logger = get_pygent_logger("ai_rl_policy_networks")
+except ImportError:
+    # Fallback to standard logging if relative import fails
+    import logging
+    logger = logging.getLogger("ai_rl_policy_networks")
 
 try:
     import torch
