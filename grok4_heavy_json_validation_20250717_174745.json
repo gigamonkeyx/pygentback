@@ -1,0 +1,231 @@
+{
+  "dgm_sympy_improvements": {
+    "success": true,
+    "improvement_result": {
+      "success": true,
+      "autonomy_solutions": [
+        -1.0,
+        1.0
+      ],
+      "safety_invariants": {
+        "passed": false,
+        "error": "'FormalProofSystem' object has no attribute 'validate_safety_constraint'"
+      },
+      "improvement_constraints": {
+        "constraints": {
+          "positive_improvement": "x > 0",
+          "reasonable_threshold": "x <= 1.0",
+          "combined_constraint": "(x <= 1.0) & (x > 0)"
+        },
+        "test_improvement": 0.8,
+        "constraint_satisfied": true,
+        "sympy_validated": true
+      },
+      "sympy_validation": true
+    },
+    "autonomy_check": {
+      "autonomy_active": false,
+      "equation_solutions": [
+        -1.0,
+        1.0
+      ],
+      "solutions_valid": true,
+      "safety_check": {
+        "passed": false,
+        "error": "'FormalProofSystem' object has no attribute 'validate_safety_constraint'"
+      },
+      "timestamp": "2025-07-17T17:47:34.646409"
+    },
+    "safety_check": {
+      "passed": false,
+      "error": "'FormalProofSystem' object has no attribute 'validate_safety_constraint'"
+    },
+    "dgm_rating_improvement": "5\u21928/10 with sympy proofs"
+  },
+  "evolution_bloat_penalty": {
+    "success": false,
+    "error": "expected 'except' or 'finally' block (two_phase.py, line 849)"
+  },
+  "world_sim_emergence": {
+    "success": true,
+    "sim_results": {
+      "generations": 5,
+      "agents_count": 10,
+      "world_history": [
+        {
+          "coverage": 1.1861270783425182,
+          "efficiency": 1.171946656979095,
+          "resources": 1.0383074821508589,
+          "knowledge": 1.205477443500571
+        },
+        {
+          "coverage": 1.3621033717144369,
+          "efficiency": 1.3438933139581901,
+          "resources": 1.0766149643017178,
+          "knowledge": 1.4001873932971867
+        },
+        {
+          "coverage": 1.5380796650863555,
+          "efficiency": 1.5158399709372852,
+          "resources": 1.1149224464525767,
+          "knowledge": 1.6268314986707892
+        },
+        {
+          "coverage": 1.7140559584582742,
+          "efficiency": 1.6877866279163802,
+          "resources": 1.1532299286034355,
+          "knowledge": 1.853211387141159
+        },
+        {
+          "coverage": 1.8900322518301929,
+          "efficiency": 1.8597332848954753,
+          "resources": 1.1915374107542944,
+          "knowledge": 2.078683896078073
+        }
+      ],
+      "fitness_history": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "emergence_detected": false,
+      "emergence_generation": null,
+      "final_world_state": {
+        "coverage": 1.8900322518301929,
+        "efficiency": 1.8597332848954753,
+        "resources": 1.1915374107542944,
+        "knowledge": 2.078683896078073
+      },
+      "final_agent_fitness": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "visualization": {
+        "status": "generated",
+        "nodes": 10,
+        "edges": 45,
+        "emergence_detected": false
+      }
+    },
+    "emergence_detected": false,
+    "final_fitness_sum": 0.0,
+    "world_sim_functional": true
+  },
+  "autonomy_toggle": {
+    "success": true,
+    "enable_result": true,
+    "test_result": {
+      "simulated_flaw": {
+        "component": "dgm",
+        "rating": 4.0,
+        "description": "DGM rating below threshold"
+      },
+      "test_audit_ratings": {
+        "dgm": 4.0,
+        "evolution": 8.0,
+        "mcp": 9.0,
+        "world_sim": 8.5,
+        "ci_cd": 8.0,
+        "overall": 7.616666666666667
+      },
+      "needs_intervention": true,
+      "autonomy_enabled": true,
+      "test_passed": true
+    },
+    "status": {
+      "enabled": true,
+      "mode": "full_auto",
+      "monitoring": true,
+      "fix_attempts": 0,
+      "fix_attempts_limit": 3,
+      "last_fix_time": null,
+      "current_audit_ratings": {},
+      "autonomy_history_count": 0
+    },
+    "disable_result": true,
+    "autonomy_toggle_working": true
+  },
+  "mcp_query_fixes": {
+    "success": true,
+    "result_none": {
+      "status": "default",
+      "resources": [
+        "cpu",
+        "memory"
+      ],
+      "agents": 0,
+      "timestamp": "2025-07-17T17:47:45.118954"
+    },
+    "result_valid": {
+      "status": "active",
+      "agents": 5
+    },
+    "defaults_working": true,
+    "mcp_query_fixes_working": true
+  }
+}

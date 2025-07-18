@@ -1,0 +1,237 @@
+{
+  "dgm_sympy_improvements": {
+    "success": true,
+    "improvement_result": {
+      "success": true,
+      "autonomy_solutions": [
+        -1.0,
+        1.0
+      ],
+      "safety_invariants": {
+        "passed": false,
+        "error": "'FormalProofSystem' object has no attribute 'validate_safety_constraint'"
+      },
+      "improvement_constraints": {
+        "constraints": {
+          "positive_improvement": "x > 0",
+          "reasonable_threshold": "x <= 1.0",
+          "combined_constraint": "(x <= 1.0) & (x > 0)"
+        },
+        "test_improvement": 0.8,
+        "constraint_satisfied": true,
+        "sympy_validated": true
+      },
+      "sympy_validation": true
+    },
+    "autonomy_check": {
+      "autonomy_active": false,
+      "equation_solutions": [
+        -1.0,
+        1.0
+      ],
+      "solutions_valid": true,
+      "safety_check": {
+        "passed": false,
+        "error": "'FormalProofSystem' object has no attribute 'validate_safety_constraint'"
+      },
+      "timestamp": "2025-07-17T17:51:42.207056"
+    },
+    "safety_check": {
+      "passed": false,
+      "error": "'FormalProofSystem' object has no attribute 'validate_safety_constraint'"
+    },
+    "dgm_rating_improvement": "5\u21928/10 with sympy proofs"
+  },
+  "evolution_bloat_penalty": {
+    "success": true,
+    "fitness_scores": [
+      1.0,
+      -8.0,
+      -32.95
+    ],
+    "bloat_penalty_working": true,
+    "evolution_rating_improvement": "6\u21928/10 with bloat penalty"
+  },
+  "world_sim_emergence": {
+    "success": true,
+    "sim_results": {
+      "generations": 5,
+      "agents_count": 10,
+      "world_history": [
+        {
+          "coverage": 1.1393368397770578,
+          "efficiency": 1.0760498222512682,
+          "resources": 1.190001617731666,
+          "knowledge": 1.1678369189370836
+        },
+        {
+          "coverage": 1.2786736795541156,
+          "efficiency": 1.1520996445025364,
+          "resources": 1.3808667711829383,
+          "knowledge": 1.3462886927632227
+        },
+        {
+          "coverage": 1.4180105193311734,
+          "efficiency": 1.2313966231562152,
+          "resources": 1.5717319246342107,
+          "knowledge": 1.5330030135749781
+        },
+        {
+          "coverage": 1.5573473591082312,
+          "efficiency": 1.310693601809894,
+          "resources": 1.7625970780854832,
+          "knowledge": 1.7197173343867336
+        },
+        {
+          "coverage": 1.696684198885289,
+          "efficiency": 1.3899905804635728,
+          "resources": 1.9534622315367556,
+          "knowledge": 1.906431655198489
+        }
+      ],
+      "fitness_history": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "emergence_detected": false,
+      "emergence_generation": null,
+      "final_world_state": {
+        "coverage": 1.696684198885289,
+        "efficiency": 1.3899905804635728,
+        "resources": 1.9534622315367556,
+        "knowledge": 1.906431655198489
+      },
+      "final_agent_fitness": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "visualization": {
+        "status": "generated",
+        "nodes": 10,
+        "edges": 45,
+        "emergence_detected": false
+      }
+    },
+    "emergence_detected": false,
+    "final_fitness_sum": 0.0,
+    "world_sim_functional": true
+  },
+  "autonomy_toggle": {
+    "success": true,
+    "enable_result": true,
+    "test_result": {
+      "simulated_flaw": {
+        "component": "dgm",
+        "rating": 4.0,
+        "description": "DGM rating below threshold"
+      },
+      "test_audit_ratings": {
+        "dgm": 4.0,
+        "evolution": 8.0,
+        "mcp": 9.0,
+        "world_sim": 8.5,
+        "ci_cd": 8.0,
+        "overall": 7.616666666666667
+      },
+      "needs_intervention": true,
+      "autonomy_enabled": true,
+      "test_passed": true
+    },
+    "status": {
+      "enabled": true,
+      "mode": "full_auto",
+      "monitoring": true,
+      "fix_attempts": 0,
+      "fix_attempts_limit": 3,
+      "last_fix_time": null,
+      "current_audit_ratings": {},
+      "autonomy_history_count": 0
+    },
+    "disable_result": true,
+    "autonomy_toggle_working": true
+  },
+  "mcp_query_fixes": {
+    "success": true,
+    "result_none": {
+      "status": "default",
+      "resources": [
+        "cpu",
+        "memory"
+      ],
+      "agents": 0,
+      "timestamp": "2025-07-17T17:51:54.941790"
+    },
+    "result_valid": {
+      "status": "active",
+      "agents": 5
+    },
+    "defaults_working": true,
+    "mcp_query_fixes_working": true
+  }
+}

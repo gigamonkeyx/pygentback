@@ -1277,3 +1277,152 @@ class WorldSimulation:
         except Exception as e:
             logger.error(f"Interactive dashboard generation failed: {e}")
             return False
+
+
+# Standalone sim_loop function for Grok4 Heavy JSON validation
+def sim_loop(generations: int = 10) -> Dict[str, Any]:
+    """
+    Grok4 Heavy JSON World Simulation Loop
+    Standalone function that runs 10 agents through evolution with emergence detection
+    """
+    try:
+        logger.info(f"🌍 Starting Grok4 Heavy JSON world simulation for {generations} generations")
+
+        # Initialize agents with roles
+        roles = ['explorer'] * 3 + ['builder'] * 3 + ['gatherer'] * 2 + ['learner'] * 2
+        agents = []
+
+        for i, role in enumerate(roles):
+            agent = {
+                'id': i,
+                'role': role,
+                'traits': [random.random() for _ in range(5)],
+                'fitness': 0.0,
+                'age': 0
+            }
+            agents.append(agent)
+
+        # Initialize world state
+        world = {
+            'coverage': 1.0,
+            'efficiency': 1.0,
+            'resources': 1.0,
+            'knowledge': 1.0
+        }
+
+        # Simulation results
+        simulation_results = {
+            'generations': generations,
+            'agents_count': len(agents),
+            'world_history': [],
+            'fitness_history': [],
+            'emergence_detected': False,
+            'emergence_generation': None,
+            'final_world_state': {},
+            'final_agent_fitness': []
+        }
+
+        # Run simulation
+        for gen in range(generations):
+            logger.debug(f"Generation {gen + 1}/{generations}")
+
+            # Agents act based on their roles
+            generation_fitness = []
+            for agent in agents:
+                # Role-based action
+                if agent['role'] == 'explorer':
+                    coverage_increase = agent['traits'][0] * 0.1
+                    world['coverage'] += coverage_increase
+                elif agent['role'] == 'builder':
+                    efficiency_increase = agent['traits'][1] * 0.08
+                    world['efficiency'] += efficiency_increase
+                elif agent['role'] == 'gatherer':
+                    resource_increase = agent['traits'][2] * 0.12
+                    world['resources'] += resource_increase
+                elif agent['role'] == 'learner':
+                    knowledge_increase = agent['traits'][3] * 0.15
+                    world['knowledge'] += knowledge_increase
+
+                # Calculate fitness based on role and world state
+                if agent['role'] == 'explorer':
+                    fitness = world['coverage'] * agent['traits'][0]
+                elif agent['role'] == 'builder':
+                    fitness = world['efficiency'] * agent['traits'][1]
+                elif agent['role'] == 'gatherer':
+                    fitness = world['resources'] * agent['traits'][2]
+                elif agent['role'] == 'learner':
+                    fitness = world['knowledge'] * agent['traits'][3]
+                else:
+                    fitness = (world['coverage'] + world['efficiency'] +
+                             world['resources'] + world['knowledge']) / 4.0
+
+                # Apply bloat penalty (Grok4 Heavy JSON)
+                bloat = len(str(agent))
+                bloat_penalty = max(0, bloat - 100) * 0.05
+                fitness = max(0.0, fitness - bloat_penalty)
+
+                agent['fitness'] = fitness
+                agent['age'] += 1
+                generation_fitness.append(fitness)
+
+            # Check for emergence (fitness sum > 10)
+            total_fitness = sum(generation_fitness)
+            if total_fitness > 10 and not simulation_results['emergence_detected']:
+                simulation_results['emergence_detected'] = True
+                simulation_results['emergence_generation'] = gen + 1
+                logger.info(f"🌟 Emergence achieved at generation {gen + 1}! Total fitness: {total_fitness:.2f}")
+
+            # Simple evolution: mutate traits
+            for agent in agents:
+                for i in range(len(agent['traits'])):
+                    if random.random() < 0.1:  # 10% mutation rate
+                        agent['traits'][i] += random.gauss(0, 0.1)
+                        agent['traits'][i] = max(0.0, min(1.0, agent['traits'][i]))  # Clamp to [0,1]
+
+            # Record generation data
+            simulation_results['world_history'].append(world.copy())
+            simulation_results['fitness_history'].append(generation_fitness.copy())
+
+            logger.debug(f"Gen {gen + 1}: Total fitness={total_fitness:.2f}, World coverage={world['coverage']:.2f}")
+
+        # Final results
+        simulation_results['final_world_state'] = world.copy()
+        simulation_results['final_agent_fitness'] = [agent['fitness'] for agent in agents]
+
+        # Generate visualization if NetworkX/matplotlib available
+        try:
+            import networkx as nx
+            import matplotlib.pyplot as plt
+
+            # Create simple agent network
+            G = nx.Graph()
+            for i, agent in enumerate(agents):
+                G.add_node(i, role=agent['role'], fitness=agent['fitness'])
+
+            # Add edges based on fitness similarity
+            for i in range(len(agents)):
+                for j in range(i + 1, len(agents)):
+                    fitness_similarity = 1.0 - abs(agents[i]['fitness'] - agents[j]['fitness'])
+                    if fitness_similarity > 0.5 or random.random() > 0.7:
+                        G.add_edge(i, j, weight=fitness_similarity)
+
+            simulation_results['visualization'] = {
+                'status': 'generated',
+                'nodes': len(G.nodes()),
+                'edges': len(G.edges()),
+                'emergence_detected': simulation_results['emergence_detected']
+            }
+
+        except ImportError:
+            simulation_results['visualization'] = {'status': 'networkx_not_available'}
+        except Exception as e:
+            simulation_results['visualization'] = {'status': 'visualization_failed', 'error': str(e)}
+
+        logger.info(f"Simulation complete: Emergence={'Yes' if simulation_results['emergence_detected'] else 'No'}, "
+                   f"Final fitness sum={sum(simulation_results['final_agent_fitness']):.2f}")
+
+        return simulation_results
+
+    except Exception as e:
+        logger.error(f"World simulation failed: {e}")
+        return {'error': str(e), 'generations': 0}

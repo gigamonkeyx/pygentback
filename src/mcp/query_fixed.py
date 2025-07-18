@@ -518,3 +518,58 @@ class ObserverQuerySystem:
         except Exception as e:
             self.logger.warning(f"Response validation failed: {e}")
             return False
+
+
+class QuerySystem:
+    """
+    Grok4 Heavy JSON Query System
+    Simplified interface for MCP query fixes with loop limits and defaults
+    """
+
+    def __init__(self, config: Dict[str, Any] = None):
+        self.config = config or {}
+        self.observer_query_system = ObserverQuerySystem(config)
+        self.logger = get_logger()
+
+        logger.info("Grok4 Heavy JSON QuerySystem initialized")
+
+    async def query_env(self, server, max_attempts: int = 3) -> Dict[str, Any]:
+        """
+        Grok4 Heavy JSON query environment with loop limits and defaults
+        Enhanced query_env method with 3-attempt limit and 10-loop protection
+        """
+        try:
+            # Use the enhanced query_env method from ObserverQuerySystem
+            result = await self.observer_query_system.query_env(server, max_attempts)
+            return result
+
+        except Exception as e:
+            self.logger.error(f"QuerySystem query_env failed: {e}")
+            # Default environment configuration fallback for None responses
+            return {
+                'status': 'error',
+                'error': str(e),
+                'timestamp': datetime.now().isoformat(),
+                'fallback': True
+            }
+
+    async def execute_query(self, query_type: str, query_params: Dict[str, Any] = None, query_id: str = None) -> Dict[str, Any]:
+        """Execute query with Grok4 Heavy JSON safeguards"""
+        try:
+            return await self.observer_query_system.execute_query(query_type, query_params, query_id)
+        except Exception as e:
+            self.logger.error(f"QuerySystem execute_query failed: {e}")
+            return {
+                'success': False,
+                'error': str(e),
+                'query_type': query_type,
+                'fallback': True
+            }
+
+    def get_query_metrics(self) -> Dict[str, Any]:
+        """Get query system metrics"""
+        try:
+            return self.observer_query_system.get_query_metrics()
+        except Exception as e:
+            self.logger.error(f"QuerySystem get_query_metrics failed: {e}")
+            return {'error': str(e)}

@@ -846,6 +846,10 @@ class TwoPhaseEvolutionSystem:
 
             return effectiveness_boost
 
+        except Exception as e:
+            logger.error(f"Effectiveness boost calculation failed: {e}")
+            return 0.0
+
     def dgm_calibrate_synergy_thresholds(self, performance_history: List[Dict[str, Any]]) -> Dict[str, Any]:
         """
         Observer-approved DGM-based synergy threshold calibration
@@ -1054,10 +1058,6 @@ class TwoPhaseEvolutionSystem:
 
         except Exception as e:
             logger.error(f"Standard effectiveness calculation failed: {e}")
-            return 0.0
-
-        except Exception as e:
-            logger.error(f"Effectiveness boost calculation failed: {e}")
             return 0.0
 
     def get_mcp_integration_stats(self) -> Dict[str, Any]:
