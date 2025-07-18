@@ -20,6 +20,7 @@ from src.memory.memory_manager import MemoryManager
 from src.mcp.server_registry import MCPServerManager
 from src.config.settings import Settings
 from src.ai.providers.provider_registry import get_provider_registry
+from src.core.ollama_startup import ensure_ollama_startup, get_ollama_status
 
 # Observer-approved fixed modules integration
 try:
@@ -221,6 +222,7 @@ class AgentFactory:
         self.provider_registry = get_provider_registry()
         self.registry = AgentRegistry()
         self._initialized = False
+        self.ollama_validated = False  # Observer-mandated Ollama validation flag
 
         # Phase 4 Integration: Simulation environment and behavior detection
         self.simulation_env = None
@@ -454,6 +456,16 @@ class AgentFactory:
                           gold_bias: bool = False) -> BaseAgent:  # Observer-approved GOLD bias
         """Create a new agent instance."""
         try:
+            # OBSERVER-MANDATED: Validate Ollama before any agent creation
+            if not self.ollama_validated:
+                logger.info("🔍 OBSERVER VALIDATION: Ensuring Ollama startup before agent creation")
+                ollama_status = await ensure_ollama_startup()
+                if not ollama_status['success']:
+                    logger.error(f"❌ OBSERVER VALIDATION FAILED: {ollama_status.get('error', 'Unknown error')}")
+                    raise RuntimeError(f"RIPER-Ω PROTOCOL VIOLATION: Ollama validation failed - {ollama_status.get('error')}")
+                else:
+                    self.ollama_validated = True
+                    logger.info(f"✅ OBSERVER VALIDATION SUCCESS: Ollama ready with {ollama_status['models_count']} models")
             # Get agent class
             agent_class = self.registry.get_agent_class(agent_type)
             if not agent_class:
