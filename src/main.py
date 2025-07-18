@@ -30,15 +30,17 @@ logger = get_pygent_logger("pygent_factory_main")
 
 class PyGentFactoryApp:
     """Main PyGent Factory application"""
-    
-    def __init__(self):
+
+    def __init__(self, autonomous=False):
         self.is_initialized = False
+        self.autonomous = autonomous  # Grok4 Heavy JSON autonomy flag
         self.components = {
             "database": False,
             "cache": False,
             "gpu": False,
             "ollama": False,
-            "api_gateway": False
+            "api_gateway": False,
+            "autonomy": False
         }
     
     async def initialize(self) -> bool:
@@ -93,6 +95,25 @@ class PyGentFactoryApp:
             else:
                 logger.error("API gateway initialization failed")
                 return False
+
+            # Initialize Grok4 Heavy JSON autonomy system if enabled
+            if self.autonomous:
+                logger.info("Initializing Grok4 Heavy JSON autonomy system...")
+                try:
+                    from autonomy.mode import enable_hands_off_mode
+                    autonomy_enabled = enable_hands_off_mode()
+                    if autonomy_enabled:
+                        self.components["autonomy"] = True
+                        logger.info("✅ Grok4 Heavy JSON autonomy system enabled - hands-off mode active")
+                    else:
+                        logger.warning("⚠️ Autonomy system initialization failed")
+                        self.components["autonomy"] = False
+                except Exception as e:
+                    logger.error(f"❌ Autonomy system initialization failed: {e}")
+                    self.components["autonomy"] = False
+            else:
+                logger.info("Autonomy system disabled (autonomous=False)")
+                self.components["autonomy"] = False
 
             self.is_initialized = True
             logger.info("PyGent Factory initialized successfully!")
@@ -270,8 +291,8 @@ class PyGentFactoryApp:
             sys.exit(1)
 
 
-# Global application instance
-app = PyGentFactoryApp()
+# Global application instance (will be initialized with autonomy flag in main)
+app = None
 
 
 async def main():
@@ -304,8 +325,12 @@ if __name__ == "__main__":
     parser.add_argument("--port", type=int, default=8000, help="Port to bind to")
     parser.add_argument("--reload", action="store_true", help="Enable auto-reload")
     parser.add_argument("--init-only", action="store_true", help="Initialize and exit")
-    
+    parser.add_argument("--autonomous", action="store_true", help="Enable Grok4 Heavy JSON autonomy mode")
+
     args = parser.parse_args()
+
+    # Initialize app instance with autonomy flag
+    app = PyGentFactoryApp(autonomous=args.autonomous)
     
     if args.init_only:
         # Just initialize and exit
