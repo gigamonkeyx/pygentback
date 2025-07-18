@@ -143,18 +143,35 @@ class OllamaManager:
                 if response.status == 200:
                     data = await response.json()
                     available_names = [model["name"] for model in data.get("models", [])]
-                    
+
                     for model_name, model_config in self.available_models.items():
                         # Check exact match or base name match
-                        is_available = (model_name in available_names or 
+                        is_available = (model_name in available_names or
                                       any(name.startswith(model_name.split(":")[0]) for name in available_names))
                         model_config.is_available = is_available
-                        
+
                         if is_available:
                             logger.info(f"Found available model: {model_name}")
-                        
+
         except Exception as e:
             logger.error(f"Failed to detect available models: {e}")
+
+    async def is_model_available(self, model_name: str) -> bool:
+        """Check if a specific model is available."""
+        if not self._initialized:
+            await self.initialize()
+
+        # Check in our available models
+        if model_name in self.available_models:
+            return self.available_models[model_name].is_available
+
+        # Check by base name (e.g., "llama3" for "llama3:8b")
+        base_name = model_name.split(":")[0]
+        for name, model in self.available_models.items():
+            if name.startswith(base_name) and model.is_available:
+                return True
+
+        return False
     
     def _get_best_available_model(self, capability: ModelCapability) -> Optional[str]:
         """Get the best available model for a specific capability."""

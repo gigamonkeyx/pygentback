@@ -41,27 +41,50 @@ class OllamaBackend(LLMBackend):
     
     async def generate(self, prompt: str, **kwargs) -> str:
         """Generate text using Ollama"""
+        session = None
         try:
             import aiohttp
-            
+
+            # Use a default model if none specified or if model doesn't exist
+            model_to_use = self.model_name or "llama3:8b"
+
             payload = {
-                "model": self.model_name,
+                "model": model_to_use,
                 "prompt": prompt,
                 "stream": False,
                 **kwargs
             }
-            
-            async with aiohttp.ClientSession() as session:
-                async with session.post(f"{self.base_url}/api/generate", json=payload) as response:
-                    if response.status == 200:
-                        result = await response.json()
-                        return result.get("response", "").strip()
-                    else:
-                        logger.error(f"Ollama API error: {response.status}")
-                        return ""
+
+            session = aiohttp.ClientSession()
+            async with session.post(f"{self.base_url}/api/generate", json=payload) as response:
+                if response.status == 200:
+                    result = await response.json()
+                    return result.get("response", "").strip()
+                elif response.status == 404:
+                    logger.warning(f"Model '{model_to_use}' not found, trying fallback")
+                    # Try with a common model
+                    fallback_payload = {
+                        "model": "llama3:8b",
+                        "prompt": prompt,
+                        "stream": False,
+                        **kwargs
+                    }
+                    async with session.post(f"{self.base_url}/api/generate", json=fallback_payload) as fallback_response:
+                        if fallback_response.status == 200:
+                            result = await fallback_response.json()
+                            return result.get("response", "").strip()
+                        else:
+                            logger.error(f"Ollama API error with fallback: {fallback_response.status}")
+                            return ""
+                else:
+                    logger.error(f"Ollama API error: {response.status}")
+                    return ""
         except Exception as e:
             logger.error(f"Error calling Ollama: {e}")
             return ""
+        finally:
+            if session:
+                await session.close()
 
 
 class ThoughtGenerator:

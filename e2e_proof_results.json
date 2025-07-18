@@ -1,0 +1,90 @@
+{
+  "timestamp": 1752829505.960288,
+  "test_type": "E2E Comprehensive Proof",
+  "observer_compliance": true,
+  "proof_stages": {
+    "stage1_ollama": {
+      "startup_time": 37.92551279067993,
+      "success": true,
+      "running": true,
+      "models_count": 8,
+      "models": [
+        "llama3:8b",
+        "gemma3n:e4b",
+        "deepseek-coder:6.7b",
+        "deepseek-coder:1.3b",
+        "nomic-embed-text:latest"
+      ],
+      "error": null
+    },
+    "stage2_factory": {
+      "factory_time": 1.0762720108032227,
+      "agents_created": 2,
+      "target_count": 3,
+      "ollama_validated": true,
+      "agent_details": [
+        {
+          "type": "general",
+          "id": "bf28c691-c9d0-4c52-874c-cff7d1a03711",
+          "creation_time": 0.5646240711212158,
+          "ollama_validated": true,
+          "status": "created"
+        },
+        {
+          "type": "reasoning",
+          "status": "failed",
+          "error": "Agent creation failed: 'OllamaManager' object has no attribute 'is_model_available'"
+        },
+        {
+          "type": "search",
+          "id": "521de725-f94e-4e3a-aa86-ed65772b96aa",
+          "creation_time": 0.06981158256530762,
+          "ollama_validated": true,
+          "status": "created"
+        }
+      ]
+    },
+    "stage3_api": {
+      "api_time": 0.33472681045532227,
+      "tests": {
+        "tags_endpoint": {
+          "status": 200,
+          "success": true
+        },
+        "version_endpoint": {
+          "status": 200,
+          "success": true
+        },
+        "generate_endpoint": {
+          "status": 200,
+          "success": true,
+          "model": "llama3:8b"
+        }
+      },
+      "success_count": 3,
+      "total_tests": 3
+    },
+    "stage4_simulation": {
+      "sim_time": 0.0009543895721435547,
+      "generations": 5,
+      "agents_count": 10,
+      "emergence_detected": true,
+      "emergence_generation": 1,
+      "final_fitness": [
+        192.8287507812962,
+        179.0751996488898,
+        191.80223066505783,
+        188.3286162540182,
+        194.62861625401823,
+        164.71251423112787,
+        170.28163195868834,
+        182.93011409687026,
+        201.06591654431733,
+        199.92460034279628
+      ],
+      "cooperation_score": 1.7599999999999998,
+      "average_fitness": 186.55781907770807
+    }
+  },
+  "final_verdict": true
+}

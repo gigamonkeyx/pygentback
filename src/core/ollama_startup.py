@@ -36,19 +36,19 @@ class OllamaStartupManager:
                         data = await response.json()
                         self.models_available = [model.get('name', 'unknown') for model in data.get('models', [])]
                         self.is_running = True
-                        logger.info(f"✅ Ollama already running with {len(self.models_available)} models")
+                        logger.info(f"*** Ollama already running with {len(self.models_available)} models")
                         return True
                     else:
-                        logger.warning(f"❌ Ollama responded with status {response.status}")
+                        logger.warning(f"*** Ollama responded with status {response.status}")
                         return False
         except Exception as e:
-            logger.warning(f"❌ Ollama not running: {e}")
+            logger.warning(f"*** Ollama not running: {e}")
             return False
     
     def start_ollama_service(self) -> bool:
         """Start Ollama service if not running"""
         try:
-            logger.info("🚀 Starting Ollama service...")
+            logger.info("*** Starting Ollama service...")
             
             # Try to start Ollama serve
             if sys.platform == "win32":
@@ -73,21 +73,21 @@ class OllamaStartupManager:
 
             # Check if process is still running
             if process.poll() is None:
-                logger.info("✅ Ollama service started successfully")
+                logger.info("*** Ollama service started successfully")
                 # Additional wait for model loading
                 logger.info("*** Waiting for models to load...")
                 time.sleep(15)  # Wait for models to be ready
                 return True
             else:
                 stdout, stderr = process.communicate()
-                logger.error(f"❌ Ollama failed to start: {stderr.decode()}")
+                logger.error(f"*** Ollama failed to start: {stderr.decode()}")
                 return False
                 
         except FileNotFoundError:
-            logger.error("❌ Ollama not found in PATH. Please install Ollama first.")
+            logger.error("*** Ollama not found in PATH. Please install Ollama first.")
             return False
         except Exception as e:
-            logger.error(f"❌ Failed to start Ollama: {e}")
+            logger.error(f"*** Failed to start Ollama: {e}")
             return False
     
     async def wait_for_ollama_ready(self) -> bool:
@@ -161,19 +161,19 @@ class OllamaStartupManager:
             logger.warning("⚠️ No models available in Ollama")
             return False
         
-        logger.info(f"✅ Ollama models available: {', '.join(self.models_available)}")
-        
+        logger.info(f"*** Ollama models available: {', '.join(self.models_available)}")
+
         # Check for at least one model
         if len(self.models_available) > 0:
-            logger.info(f"✅ Ollama validation successful with {len(self.models_available)} models")
+            logger.info(f"*** Ollama validation successful with {len(self.models_available)} models")
             return True
         else:
-            logger.error("❌ No models found in Ollama")
+            logger.error("*** No models found in Ollama")
             return False
     
     async def ensure_ollama_ready(self) -> Dict[str, Any]:
         """Observer-mandated: Ensure Ollama is ready before any operations"""
-        logger.info("🔍 OBSERVER-MANDATED OLLAMA VALIDATION STARTING")
+        logger.info("*** OBSERVER-MANDATED OLLAMA VALIDATION STARTING")
         
         result = {
             'success': False,
@@ -193,24 +193,24 @@ class OllamaStartupManager:
                 # Validate models
                 if await self.validate_ollama_models():
                     result['success'] = True
-                    logger.info("✅ OBSERVER VALIDATION: Ollama ready and validated")
+                    logger.info("*** OBSERVER VALIDATION: Ollama ready and validated")
                     return result
                 else:
                     result['error'] = "No models available"
-                    logger.error("❌ OBSERVER VALIDATION FAILED: No models available")
+                    logger.error("*** OBSERVER VALIDATION FAILED: No models available")
                     return result
             
             # Step 2: Try to start Ollama
-            logger.info("🚀 OBSERVER DIRECTIVE: Starting Ollama service")
+            logger.info("*** OBSERVER DIRECTIVE: Starting Ollama service")
             if not self.start_ollama_service():
                 result['error'] = "Failed to start Ollama service"
-                logger.error("❌ OBSERVER VALIDATION FAILED: Could not start Ollama")
+                logger.error("*** OBSERVER VALIDATION FAILED: Could not start Ollama")
                 return result
             
             # Step 3: Wait for ready
             if not await self.wait_for_ollama_ready():
                 result['error'] = "Ollama failed to become ready"
-                logger.error("❌ OBSERVER VALIDATION FAILED: Ollama not ready")
+                logger.error("*** OBSERVER VALIDATION FAILED: Ollama not ready")
                 return result
             
             # Step 4: Final validation
@@ -220,16 +220,16 @@ class OllamaStartupManager:
             
             if await self.validate_ollama_models():
                 result['success'] = True
-                logger.info("✅ OBSERVER VALIDATION COMPLETE: Ollama fully operational")
+                logger.info("*** OBSERVER VALIDATION COMPLETE: Ollama fully operational")
             else:
                 result['error'] = "Model validation failed"
-                logger.error("❌ OBSERVER VALIDATION FAILED: Model validation failed")
+                logger.error("*** OBSERVER VALIDATION FAILED: Model validation failed")
             
             return result
             
         except Exception as e:
             result['error'] = str(e)
-            logger.error(f"❌ OBSERVER VALIDATION CRITICAL FAILURE: {e}")
+            logger.error(f"*** OBSERVER VALIDATION CRITICAL FAILURE: {e}")
             return result
     
     def get_status(self) -> Dict[str, Any]:

@@ -458,14 +458,14 @@ class AgentFactory:
         try:
             # OBSERVER-MANDATED: Validate Ollama before any agent creation
             if not self.ollama_validated:
-                logger.info("🔍 OBSERVER VALIDATION: Ensuring Ollama startup before agent creation")
+                logger.info("*** OBSERVER VALIDATION: Ensuring Ollama startup before agent creation")
                 ollama_status = await ensure_ollama_startup()
                 if not ollama_status['success']:
-                    logger.error(f"❌ OBSERVER VALIDATION FAILED: {ollama_status.get('error', 'Unknown error')}")
+                    logger.error(f"*** OBSERVER VALIDATION FAILED: {ollama_status.get('error', 'Unknown error')}")
                     raise RuntimeError(f"RIPER-Ω PROTOCOL VIOLATION: Ollama validation failed - {ollama_status.get('error')}")
                 else:
                     self.ollama_validated = True
-                    logger.info(f"✅ OBSERVER VALIDATION SUCCESS: Ollama ready with {ollama_status['models_count']} models")
+                    logger.info(f"*** OBSERVER VALIDATION SUCCESS: Ollama ready with {ollama_status['models_count']} models")
             # Get agent class
             agent_class = self.registry.get_agent_class(agent_type)
             if not agent_class:
