@@ -15,7 +15,7 @@ import uuid
 from dataclasses import dataclass
 from datetime import datetime
 
-from .agent import BaseAgent, AgentConfig, AgentStatus, AgentError
+from src.core.agent import BaseAgent, AgentConfig, AgentStatus, AgentError
 from src.memory.memory_manager import MemoryManager
 from src.mcp.server_registry import MCPServerManager
 from src.config.settings import Settings
@@ -60,8 +60,8 @@ except ImportError as e:
 
 # Phase 4 Integration: Import new simulation and behavior detection modules
 try:
-    from .sim_env import SimulationEnvironment, create_simulation_environment
-    from .emergent_behavior_detector import Docker443EmergentBehaviorDetector
+    from src.core.sim_env import SimulationEnvironment, create_simulation_environment
+    from src.core.emergent_behavior_detector import Docker443EmergentBehaviorDetector
     PHASE4_MODULES_AVAILABLE = True
 except ImportError as e:
     PHASE4_MODULES_AVAILABLE = False
@@ -328,12 +328,12 @@ class AgentFactory:
     def _setup_default_agent_types(self) -> None:
         """Set up default agent types."""
         try:
-            from agents.reasoning_agent import ReasoningAgent
-            from agents.search_agent import SearchAgent
-            from agents.general_agent import GeneralAgent
-            from agents.evolution_agent import EvolutionAgent
-            from agents.coding_agent import CodingAgent
-            from agents.research_agent_adapter import ResearchAgentAdapter
+            from src.agents.reasoning_agent import ReasoningAgent
+            from src.agents.search_agent import SearchAgent
+            from src.agents.general_agent import GeneralAgent
+            from src.agents.evolution_agent import EvolutionAgent
+            from src.agents.coding_agent import CodingAgent
+            from src.agents.research_agent_adapter import ResearchAgentAdapter
 
             # Register the 6 real agent types
             self.registry.register_agent_type("reasoning", ReasoningAgent)
@@ -445,12 +445,13 @@ class AgentFactory:
             logger.error(f"Failed to initialize Observer systems: {e}")
             self.observer_enabled = False
     
-    async def create_agent(self, 
-                          agent_type: str, 
+    async def create_agent(self,
+                          agent_type: str,
                           name: Optional[str] = None,
                           capabilities: Optional[List[str]] = None,
                           mcp_tools: Optional[List[str]] = None,
-                          custom_config: Optional[Dict[str, Any]] = None) -> BaseAgent:
+                          custom_config: Optional[Dict[str, Any]] = None,
+                          gold_bias: bool = False) -> BaseAgent:  # Observer-approved GOLD bias
         """Create a new agent instance."""
         try:
             # Get agent class
@@ -463,6 +464,20 @@ class AgentFactory:
             if not name:
                 name = f"{agent_type}_{agent_id[:8]}"
             
+            # Observer-approved GOLD bias configuration
+            enhanced_custom_config = custom_config or {}
+            if gold_bias:
+                # Apply GOLD optimization patterns for beyond gold performance
+                enhanced_custom_config.update({
+                    'gold_optimized': True,
+                    'cooperation_boost': 1.760,  # GOLD cooperation score
+                    'fitness_multiplier': 153.21,  # GOLD fitness baseline
+                    'emergence_catalyst': True,
+                    'a2a_enhanced': True,
+                    'beyond_gold_ready': True
+                })
+                logger.info(f"Creating GOLD-biased agent {name} with enhanced A2A optimization")
+
             # Create agent configuration
             config = AgentConfig(
                 agent_id=agent_id,
@@ -472,7 +487,7 @@ class AgentFactory:
                 mcp_tools=mcp_tools or [],
                 default_timeout=getattr(self.settings, 'DEFAULT_AGENT_TIMEOUT', 300),
                 max_retries=3,
-                custom_config=custom_config or {}
+                custom_config=enhanced_custom_config
             )
             
             # Validate model availability
@@ -1097,7 +1112,7 @@ class AgentFactory:
 
             # Enhanced model availability check with Ollama integration
             try:
-                from ..core.ollama_integration import OllamaManager
+                from src.core.ollama_integration import OllamaManager
                 ollama_manager = OllamaManager()
                 await ollama_manager.initialize()
 
