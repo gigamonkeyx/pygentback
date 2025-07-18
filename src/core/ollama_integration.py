@@ -52,6 +52,14 @@ class OllamaManager:
         
         # Model registry based on available models
         self.available_models = {
+            "llama3:8b": OllamaModel(
+                name="llama3:8b",
+                size_gb=4.7,
+                capabilities=[ModelCapability.CODE_ANALYSIS, ModelCapability.REASONING, ModelCapability.FAST_RESPONSE],
+                description="Enhanced Llama3 8B model optimized for coding and reasoning tasks",
+                context_length=8192,
+                temperature=0.7
+            ),
             "qwen2.5:3b": OllamaModel(
                 name="qwen2.5:3b",
                 size_gb=2.0,
@@ -60,7 +68,7 @@ class OllamaManager:
                 context_length=8192
             ),
             "qwen2.5:7b": OllamaModel(
-                name="qwen2.5:7b", 
+                name="qwen2.5:7b",
                 size_gb=4.4,
                 capabilities=[ModelCapability.REASONING, ModelCapability.FACT_CHECKING],
                 description="Balanced model for reasoning and analysis",
@@ -82,12 +90,12 @@ class OllamaManager:
             )
         }
         
-        # Model assignment for different tasks
+        # Model assignment for different tasks - Enhanced with Llama3 8B priority
         self.task_models = {
-            ModelCapability.FAST_RESPONSE: "qwen2.5:3b",
-            ModelCapability.REASONING: "deepseek-r1:8b", 
+            ModelCapability.FAST_RESPONSE: "llama3:8b",  # Enhanced: Llama3 8B for fast coding responses
+            ModelCapability.REASONING: "llama3:8b",      # Enhanced: Llama3 8B for reasoning tasks
             ModelCapability.FACT_CHECKING: "qwen2.5:7b",
-            ModelCapability.CODE_ANALYSIS: "deepseek-r1:8b",
+            ModelCapability.CODE_ANALYSIS: "llama3:8b",  # Enhanced: Llama3 8B primary for coding
             ModelCapability.MULTIMODAL: "janus:latest"
         }
         

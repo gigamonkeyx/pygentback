@@ -28,18 +28,26 @@ openai>=1.82.0
 anthropic>=0.52.0
 ollama>=0.4.0
 # Observer Dependency Resolution - Pinned Compatible Versions
-torch==2.0.1
-torchvision==0.15.2
-torchaudio==2.0.2
-transformers==4.30.0  # Observer fix: Compatible with PyTorch 2.0.1
+# Removed duplicate torch entries - using Phase 2.3 compatible versions below
 sentence-transformers>=4.1.0
-torch==2.0.0  # Earliest available version for CI/CD compatibility - Observer correction
 
 # RAG & LangChain
 langchain>=0.3.25
 langchain-core>=0.3.58
 langchain-text-splitters>=0.3.8
 langsmith>=0.3.42
+
+# Phase 2.3: LoRA Fine-tuning Integration - Observer Approved (Compatible Versions)
+# Use compatible versions to avoid conflicts
+torch>=2.1.0,<2.2.0
+transformers>=4.35.0,<4.54.0
+peft>=0.8.0,<0.17.0
+datasets>=2.14.0,<3.7.0
+trl>=0.7.0,<0.9.0
+bitsandbytes>=0.41.0,<0.46.0
+accelerate>=0.20.0,<1.10.0
+# Skip unsloth for now due to dependency conflicts
+# unsloth[cu118]>=2024.1
 
 # Development - Observer Enhancement for Parallel Testing
 black>=25.1.0

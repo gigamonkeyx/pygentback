@@ -50,13 +50,16 @@ class ObserverEvolutionLoop:
             "emergency_timeout": config.get("emergency_timeout", 30)  # 30 sec per generation max
         }
         
-        # Bloat penalty configuration
+        # Phase 2.1: Enhanced bloat penalty configuration (Observer-approved)
+        # Target: Reduce evolution bloat to < 0.15 threshold with -0.05 penalty per 100 chars
         self.bloat_config = {
             "enabled": config.get("bloat_penalty_enabled", True),
-            "base_penalty": config.get("bloat_base_penalty", 0.1),
-            "length_threshold": config.get("bloat_length_threshold", 500),
+            "base_penalty": config.get("bloat_base_penalty", 0.05),  # Phase 2.1: -0.05 penalty
+            "length_threshold": config.get("bloat_length_threshold", 100),  # Phase 2.1: 100 char threshold
             "complexity_threshold": config.get("bloat_complexity_threshold", 10),
-            "penalty_scaling": config.get("bloat_penalty_scaling", 0.001)
+            "penalty_scaling": config.get("bloat_penalty_scaling", 0.05),  # Phase 2.1: 0.05 per unit
+            "max_penalty": config.get("bloat_max_penalty", 0.5),  # Cap at 50% fitness reduction
+            "bloat_target_threshold": config.get("bloat_target_threshold", 0.15)  # Phase 2.1: < 0.15 target
         }
         
         # GPU optimization settings
@@ -290,11 +293,21 @@ class ObserverEvolutionLoop:
 
                 new_population.append(offspring)
 
+            # Phase 2.1: Calculate bloat metrics for monitoring
+            bloat_metrics = self._calculate_population_bloat_metrics(new_population[:len(population)])
+
+            # Log bloat metrics if significant bloat detected
+            if bloat_metrics["bloat_ratio"] > 0.1:  # More than 10% of population bloated
+                logger.info(f"Phase 2.1 bloat monitoring: ratio={bloat_metrics['bloat_ratio']:.3f}, "
+                           f"avg_length={bloat_metrics['avg_length']:.1f}, "
+                           f"penalties_applied={bloat_penalties_applied}")
+
             return {
                 "population": new_population[:len(population)],
                 "best_fitness": best_fitness,
                 "best_individual": best_individual,
-                "bloat_penalties": bloat_penalties_applied
+                "bloat_penalties": bloat_penalties_applied,
+                "bloat_metrics": bloat_metrics  # Phase 2.1: Include bloat metrics
             }
 
         except Exception as e:
@@ -302,7 +315,10 @@ class ObserverEvolutionLoop:
             raise
 
     def _calculate_bloat_penalty(self, individual) -> float:
-        """Calculate Observer-approved bloat penalty for individual"""
+        """
+        Phase 2.1: Enhanced Observer-approved bloat penalty for individual
+        Target: Reduce evolution bloat to < 0.15 threshold with -0.05 penalty per 100 chars
+        """
         try:
             # Estimate code length/complexity
             if hasattr(individual, '__len__'):
@@ -313,13 +329,79 @@ class ObserverEvolutionLoop:
                 # Default complexity estimation
                 code_length = len(str(individual))
 
-            # Apply penalty if above threshold
+            # Phase 2.1: Apply penalty if above 100 character threshold
             if code_length > self.bloat_config["length_threshold"]:
-                excess_length = code_length - self.bloat_config["length_threshold"]
-                penalty = self.bloat_config["base_penalty"] + (excess_length * self.bloat_config["penalty_scaling"])
-                return min(penalty, 0.5)  # Cap penalty at 50% fitness reduction
+                # Calculate excess length in units of 100 characters
+                excess_units = (code_length - self.bloat_config["length_threshold"]) / 100.0
+
+                # Apply -0.05 penalty per 100 character unit
+                penalty = excess_units * self.bloat_config["penalty_scaling"]
+
+                # Cap penalty at maximum threshold
+                penalty = min(penalty, self.bloat_config["max_penalty"])
+
+                # Log bloat penalty application for monitoring
+                if penalty > 0.01:  # Only log significant penalties
+                    logger.debug(f"Phase 2.1 bloat penalty applied: {penalty:.3f} for length {code_length} (threshold: {self.bloat_config['length_threshold']})")
+
+                return penalty
 
             return 0.0
+
+        except Exception as e:
+            logger.error(f"Bloat penalty calculation failed: {e}")
+            return 0.0
+
+    def _calculate_population_bloat_metrics(self, population) -> Dict[str, float]:
+        """
+        Phase 2.1: Calculate population-wide bloat metrics for monitoring
+        Target: Monitor bloat levels to ensure < 0.15 threshold achievement
+        """
+        try:
+            if not population:
+                return {"avg_length": 0.0, "max_length": 0.0, "bloat_ratio": 0.0, "penalty_ratio": 0.0}
+
+            lengths = []
+            penalties = []
+
+            for individual in population:
+                # Calculate individual length
+                if hasattr(individual, '__len__'):
+                    length = len(individual)
+                elif hasattr(individual, 'code') and hasattr(individual.code, '__len__'):
+                    length = len(individual.code)
+                else:
+                    length = len(str(individual))
+
+                lengths.append(length)
+
+                # Calculate penalty for this individual
+                penalty = self._calculate_bloat_penalty(individual)
+                penalties.append(penalty)
+
+            # Calculate metrics
+            avg_length = sum(lengths) / len(lengths)
+            max_length = max(lengths)
+            bloated_individuals = sum(1 for length in lengths if length > self.bloat_config["length_threshold"])
+            penalized_individuals = sum(1 for penalty in penalties if penalty > 0.0)
+
+            bloat_ratio = bloated_individuals / len(population)
+            penalty_ratio = penalized_individuals / len(population)
+            avg_penalty = sum(penalties) / len(penalties) if penalties else 0.0
+
+            return {
+                "avg_length": avg_length,
+                "max_length": max_length,
+                "bloat_ratio": bloat_ratio,
+                "penalty_ratio": penalty_ratio,
+                "avg_penalty": avg_penalty,
+                "bloated_count": bloated_individuals,
+                "total_population": len(population)
+            }
+
+        except Exception as e:
+            logger.error(f"Population bloat metrics calculation failed: {e}")
+            return {"avg_length": 0.0, "max_length": 0.0, "bloat_ratio": 0.0, "penalty_ratio": 0.0}
 
         except Exception as e:
             logger.warning(f"Bloat penalty calculation failed: {e}")

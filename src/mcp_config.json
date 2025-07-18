@@ -23,6 +23,13 @@
     "cloudflare-observability": {
       "command": "npx",
       "args": ["mcp-remote", "https://observability.mcp.cloudflare.com/sse"]
+    },
+    "rag-system": {
+      "command": "python",
+      "args": ["D:\\rag\\fixed_rag_mcp.py"],
+      "env": {
+        "PYTHONPATH": "D:\\rag"
+      }
     }
   }
 }

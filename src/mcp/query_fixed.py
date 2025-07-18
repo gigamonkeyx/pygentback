@@ -429,69 +429,131 @@ class ObserverQuerySystem:
 
     async def query_env(self, server, max_attempts: int = 3) -> Dict[str, Any]:
         """
-        Grok4 Heavy JSON query environment with loop limits and defaults
-        Implements audit improvements for MCP 9/10 rating
+        Phase 2.3: Enhanced query environment with infinite loop prevention
+        Target: MAX_ATTEMPTS = 10, attempts < MAX validation, timeout mechanisms
         """
         try:
-            # Grok4 Heavy JSON configuration
-            MAX_ATTEMPTS = max_attempts
+            # Phase 2.3: Enhanced configuration with stricter limits
+            MAX_ATTEMPTS = min(max_attempts, 10)  # Phase 2.3: Hard limit of 10 attempts
             LOOP_LIMIT = 10  # Prevent infinite loops
             RETRY_DELAY = 0.5
+            TIMEOUT_SECONDS = 5.0  # Phase 2.3: Timeout per attempt
             DEFAULT_ENV_CONFIG = {
                 'status': 'default',
                 'resources': ['cpu', 'memory'],
                 'agents': 0,
-                'timestamp': datetime.now().isoformat()
+                'timestamp': datetime.now().isoformat(),
+                'phase_2_3_enhanced': True
             }
 
             attempts = 0
+            start_time = time.time()
+
+            # Phase 2.3: Enhanced loop with strict validation
             while attempts < MAX_ATTEMPTS:
                 try:
+                    # Phase 2.3: Validate attempts < MAX_ATTEMPTS before proceeding
+                    if attempts >= MAX_ATTEMPTS:
+                        self.logger.warning(f"Phase 2.3: Attempt limit reached ({attempts} >= {MAX_ATTEMPTS})")
+                        break
+
+                    # Phase 2.3: Check total execution time to prevent hangs
+                    elapsed_time = time.time() - start_time
+                    if elapsed_time > (MAX_ATTEMPTS * TIMEOUT_SECONDS):
+                        self.logger.warning(f"Phase 2.3: Total timeout exceeded ({elapsed_time:.1f}s)")
+                        break
+
+                    self.logger.debug(f"Phase 2.3: Query attempt {attempts + 1}/{MAX_ATTEMPTS}")
+
                     # Query with timeout and limits
                     response = await asyncio.wait_for(
                         server.query() if hasattr(server, 'query') else self._mock_server_query(),
-                        timeout=5.0  # 5 second timeout
+                        timeout=TIMEOUT_SECONDS  # Phase 2.3: Use configured timeout
                     )
 
-                    # Grok4 Heavy JSON fallback for None response
+                    # Phase 2.3: Enhanced fallback for None response
                     if response is None:
-                        self.logger.warning("Server returned None, using default config")
-                        return DEFAULT_ENV_CONFIG
+                        self.logger.warning(f"Phase 2.3: Server returned None on attempt {attempts + 1}")
+                        attempts += 1
+                        if attempts >= MAX_ATTEMPTS:
+                            # Return failure config with details instead of plain default
+                            total_time = time.time() - start_time
+                            failure_config = DEFAULT_ENV_CONFIG.copy()
+                            failure_config.update({
+                                'failure_details': {
+                                    'attempts_made': attempts,
+                                    'max_attempts': MAX_ATTEMPTS,
+                                    'total_time': total_time,
+                                    'failure_reason': 'server_returned_none'
+                                }
+                            })
+                            return failure_config
+                        await asyncio.sleep(RETRY_DELAY)
+                        continue
 
                     # Validate response
                     if self._is_valid_response(response):
+                        self.logger.info(f"Phase 2.3: Query successful on attempt {attempts + 1}")
                         return response
 
-                    # Grok4 Heavy JSON loop limit check
-                    if attempts > LOOP_LIMIT:
-                        self.logger.warning("Loop limit exceeded, breaking")
+                    # Phase 2.3: Enhanced loop limit check with early termination
+                    if attempts >= LOOP_LIMIT:
+                        self.logger.warning(f"Phase 2.3: Loop limit exceeded ({attempts} >= {LOOP_LIMIT})")
                         break
 
                     attempts += 1
 
-                    # Retry delay
+                    # Phase 2.3: Retry delay with exponential backoff
                     if attempts < MAX_ATTEMPTS:
-                        await asyncio.sleep(RETRY_DELAY)
+                        backoff_delay = RETRY_DELAY * (1.5 ** attempts)  # Exponential backoff
+                        await asyncio.sleep(min(backoff_delay, 5.0))  # Cap at 5 seconds
 
                 except asyncio.TimeoutError:
-                    self.logger.warning(f"Query timeout on attempt {attempts + 1}")
                     attempts += 1
+                    self.logger.warning(f"Phase 2.3: Query timeout on attempt {attempts}/{MAX_ATTEMPTS}")
+                    if attempts >= MAX_ATTEMPTS:
+                        break
+                    await asyncio.sleep(RETRY_DELAY)
+
+                except asyncio.TimeoutError:
+                    attempts += 1
+                    self.logger.warning(f"Phase 2.3: Query timeout on attempt {attempts}/{MAX_ATTEMPTS}")
+                    if attempts >= MAX_ATTEMPTS:
+                        break
 
                 except Exception as e:
-                    self.logger.warning(f"Query failed on attempt {attempts + 1}: {e}")
                     attempts += 1
+                    self.logger.warning(f"Phase 2.3: Query failed on attempt {attempts}/{MAX_ATTEMPTS}: {e}")
+                    if attempts >= MAX_ATTEMPTS:
+                        break
 
-            # Grok4 Heavy JSON default fallback
-            self.logger.info("All query attempts failed, returning default environment config")
-            return DEFAULT_ENV_CONFIG
+            # Phase 2.3: Enhanced failure handling with detailed metrics
+            total_time = time.time() - start_time
+            self.logger.warning(f"Phase 2.3: All query attempts failed after {attempts} attempts in {total_time:.1f}s")
+
+            # Return enhanced default configuration with failure details
+            failure_config = DEFAULT_ENV_CONFIG.copy()
+            failure_config.update({
+                'failure_details': {
+                    'attempts_made': attempts,
+                    'max_attempts': MAX_ATTEMPTS,
+                    'total_time': total_time,
+                    'failure_reason': 'max_attempts_exceeded'
+                }
+            })
+            return failure_config
 
         except Exception as e:
-            self.logger.error(f"Query environment failed: {e}")
-            # Final fallback
+            self.logger.error(f"Phase 2.3: query_env critical failure: {e}")
             return {
-                'status': 'error',
+                'status': 'critical_error',
                 'error': str(e),
-                'timestamp': datetime.now().isoformat()
+                'timestamp': datetime.now().isoformat(),
+                'phase_2_3_enhanced': True,
+                'failure_details': {
+                    'error_type': type(e).__name__,
+                    'critical_failure': True
+                }
             }
 
     async def _mock_server_query(self) -> Dict[str, Any]:

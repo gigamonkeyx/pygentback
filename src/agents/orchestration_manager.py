@@ -29,6 +29,14 @@ try:
 except ImportError:
     db_manager = None
 
+# Phase 4 integration: World simulation and DGM evolution
+try:
+    from ..sim.world_sim import sim_loop, DGMEvolver
+    from ..dgm.autonomy_fixed import AutonomySystem
+    PHASE_4_INTEGRATION_AVAILABLE = True
+except ImportError:
+    PHASE_4_INTEGRATION_AVAILABLE = False
+
 logger = logging.getLogger(__name__)
 
 

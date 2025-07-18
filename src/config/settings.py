@@ -65,10 +65,10 @@ class AISettings(BaseSettings):
     EMBEDDING_MODEL: str = Field(default="all-MiniLM-L6-v2", description="Embedding model for sentence-transformer")
     EMBEDDING_DIMENSION: int = Field(default=1536, description="Embedding vector dimension")
     
-    # Ollama Configuration
+    # Ollama Configuration - Enhanced with Llama3 8B
     OLLAMA_BASE_URL: str = Field(default="http://localhost:11434", description="Ollama base URL")
-    OLLAMA_MODEL: str = Field(default="deepseek-r1:8b", description="Default Ollama model")
-    OLLAMA_EMBED_MODEL: str = Field(default="deepseek-r1:8b", description="Ollama model for embeddings")
+    OLLAMA_MODEL: str = Field(default="llama3:8b", description="Enhanced default Ollama model - Llama3 8B for coding")
+    OLLAMA_EMBED_MODEL: str = Field(default="llama3:8b", description="Enhanced Ollama model for embeddings - Llama3 8B")
 
     # Generation Settings
     MAX_TOKENS: int = Field(default=2048, description="Maximum tokens for generation")

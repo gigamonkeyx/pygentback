@@ -1,0 +1,142 @@
+# PyGent Factory Production Deployment - Observer Approved
+# Phase 5: Production-ready configuration with world simulation integration
+# Grok4 Heavy JSON Integration Plan - Complete deployment
+
+version: '3.8'
+
+services:
+  pygent-factory:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: pygent-factory-production
+    environment:
+      # Observer-approved production environment variables
+      - ENVIRONMENT=production
+      - AUTONOMOUS=true
+      - OBSERVER_COMPLIANCE=true
+      - WORLD_SIM_ENABLED=true
+      - EMERGENCE_THRESHOLD=2.0
+      - FITNESS_TARGET=6.03
+      - AGENT_SCALE=4
+      - PHASE_5_VALIDATED=true
+      
+      # Database configuration
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/pygent_factory_prod
+      - REDIS_URL=redis://redis:6379/0
+      
+      # MCP configuration
+      - MCP_AUTO_DISCOVERY=true
+      - MCP_SERVERS_ENABLED=true
+      
+      # Security
+      - SECRET_KEY=${SECRET_KEY:-observer-approved-production-key}
+      - API_KEY=${API_KEY:-production-api-key}
+      
+      # Logging
+      - LOG_LEVEL=INFO
+      - LOG_FORMAT=json
+      - PYTHONIOENCODING=utf-8
+      - LANG=en_US.UTF-8
+      
+    ports:
+      - "8000:8000"  # Main API
+      - "8001:8001"  # MCP server
+      - "8002:8002"  # World simulation dashboard
+      
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./models:/app/models
+      
+    depends_on:
+      - postgres
+      - redis
+      
+    restart: unless-stopped
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: pygent-postgres-prod
+    environment:
+      - POSTGRES_DB=pygent_factory_prod
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: pygent-redis-prod
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  # Observer-approved world simulation service
+  world-sim:
+    build:
+      context: .
+      dockerfile: Dockerfile.sim
+      target: simulation
+    container_name: pygent-world-sim
+    environment:
+      - ENVIRONMENT=production
+      - SIM_GENERATIONS=10
+      - SIM_AGENTS=10
+      - EMERGENCE_THRESHOLD=2.0
+      - FITNESS_TARGET=8.14
+      - OBSERVER_COMPLIANCE=true
+    ports:
+      - "8003:8003"  # Simulation API
+    volumes:
+      - ./sim_data:/app/sim_data
+      - ./sim_logs:/app/logs
+    depends_on:
+      - pygent-factory
+    restart: unless-stopped
+
+  # Production monitoring
+  monitoring:
+    image: prom/prometheus:latest
+    container_name: pygent-monitoring
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  prometheus_data:
+    driver: local
+
+networks:
+  default:
+    name: pygent-production
+    driver: bridge
